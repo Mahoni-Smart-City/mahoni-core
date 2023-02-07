@@ -1,0 +1,71 @@
+version: "3.3"
+
+services:
+  zookeeper:
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    image: confluentinc/cp-zookeeper:latest
+    ports:
+      - "2181:2181/tcp"
+
+  kafka:
+    environment:
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9092:9092"
+    volumes:
+      - ./kafka/data:/var/lib/kafka/data
+    depends_on:
+      - zookeeper
+
+  user-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: test123
+      POSTGRES_USER: test123
+      POSTGRES_DB: mahoni
+    ports:
+      - "5432:5432/tcp"
+
+  user-service:
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    image: zsaschz/user-service:1.0-SNAPSHOT
+    depends_on:
+      - user-db
+    ports:
+      - "8080:8080"
+
+
+  kafka-schema-registry:
+    image: confluentinc/cp-schema-registry:5.4.0
+    hostname: kafka-schema-registry
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:29092
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
+      SCHEMA_REGISTRY_HOST_NAME: kafka-schema-registry
+      SCHEMA_REGISTRY_LISTENERS: http://kafka-schema-registry:8081
+    depends_on:
+      - zookeeper
+      - kafka
+
+  schema-registry-ui:
+    image: landoop/schema-registry-ui:0.9.4
+    hostname: kafka-schema-registry-ui
+    ports:
+      - "8001:8000"
+    environment:
+      SCHEMAREGISTRY_URL: http://kafka-schema-registry:8081/
+      PROXY: true
+      SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS: GET,POST,PUT,OPTIONS
+      SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN: "*"
+    depends_on:
+      - kafka-schema-registry
