@@ -25,13 +25,13 @@ jobs:
         name: Build and push User Service
         uses: docker/build-push-action@v4
         with:
-          context: ./user-service
+          context: ./user-service/Dockerfile
           push: true
           tags: zsaschz/user-service:latest
 #       -
 #         name: Build and push Tracking Service
 #         uses: docker/build-push-action@v4
 #         with:
-#           context: ./tracking-service
+#           context: ./tracking-service/Dockerfile
 #           push: true
 #           tags: zsaschz/tracking-service:latest
