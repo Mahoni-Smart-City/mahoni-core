@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/mahoni?user=test123&password=test123
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        ddl-auto: validate
+  kafka:
+    bootstrap.servers: localhost:9092
+    schema.registry.url: http://localhost:8081
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+---
+postgres.port: 5433
+postgres.host: tracking-db
+spring:
+  config.activate.on-profile: docker
+  datasource:
+    url: jdbc:postgresql://${postgres.host:localhost}:${postgres.port}/mahoni?user=test123&password=test123
+    driver-class-name: org.postgresql.Driver
+  kafka:
+    bootstrap.servers: "PLAINTEXT://kafka:29092"
+    schema.registry.url: http://kafka-schema-registry:8081

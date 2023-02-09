@@ -28,6 +28,7 @@
     <modules>
         <module>user-service</module>
         <module>schema-registry</module>
+        <module>tracking-service</module>
     </modules>
 
     <dependencyManagement>

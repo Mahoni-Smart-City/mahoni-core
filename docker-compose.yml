@@ -33,6 +33,15 @@ services:
     ports:
       - "5432:5432/tcp"
 
+  tracking-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: test123
+      POSTGRES_USER: test123
+      POSTGRES_DB: mahoni
+    ports:
+      - "5433:5432/tcp"
+
   user-service:
     environment:
       SPRING_PROFILES_ACTIVE: docker
