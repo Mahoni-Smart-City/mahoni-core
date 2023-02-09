@@ -25,6 +25,7 @@ jobs:
         name: Build and push User Service
         uses: docker/build-push-action@v4
         with:
+          context: ./user-service/
           file: ./user-service/Dockerfile
           push: true
           tags: zsaschz/user-service:latest
