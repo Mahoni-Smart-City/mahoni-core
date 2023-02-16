@@ -1,0 +1,20 @@
+RANDOMIZE_STREAM_DATA: true
+ENABLE_STREAM: true
+spring:
+  datasource:
+    url: jdbc:h2:file:/data/streamgenerator
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  h2:
+    console.enabled: true
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    hibernate.ddl-auto: update
+  kafka:
+    bootstrap.servers: localhost:9092
+    schema.registry.url: http://localhost:8081
+api:
+  airly:
+    locationId: 18504,103181,103397
+    key1: jzjR0MNpGXCxH7gbIBYrQ6P70lgkDt67

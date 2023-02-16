@@ -29,6 +29,7 @@
         <module>user-service</module>
         <module>schema-registry</module>
         <module>tracking-service</module>
+        <module>stream-data-generator</module>
     </modules>
 
     <dependencyManagement>
