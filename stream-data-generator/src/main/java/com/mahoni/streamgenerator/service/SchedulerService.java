@@ -20,7 +20,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
+import java.time.*;
 import java.util.*;
 
 @Service
@@ -97,27 +97,33 @@ public class SchedulerService {
     public void sendToKafka() {
         logger.info("Running send to kafka");
         if (enableStream) {
-            Long timestamp = Instant.ofEpochMilli(((Instant.now().toEpochMilli()+1800000)/(60000*60))*(60000*60)).toEpochMilli();
+            LocalDateTime datetime = LocalDateTime.now();
+            LocalDateTime rounded = datetime.minusMinutes(datetime.getMinute()).minusSeconds(datetime.getSecond());
+            Long timestamp = rounded.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(rounded)) * 1000L;
+
             for (String sensorId: airlyLocationIds) {
             logger.info(timestamp.toString());
-                AirQuality airQuality = !randomizeStreamData ? airQualityStreamRepository.findByTimestampAndSensorId(timestamp, sensorId) : new AirQuality(
-                    rand.nextLong(),
-                    "test",
-                    timestamp,
-                    rand.nextDouble(),
-                    rand.nextDouble(),
-                    rand.nextDouble(),
-                    rand.nextDouble(),
-                    rand.nextDouble(),
-                    rand.nextDouble(),
-                    rand.nextDouble(),
-                    rand.nextDouble(),
-                    rand.nextDouble(),
-                    rand.nextDouble(),
-                    rand.nextDouble(),
-                    rand.nextDouble(),
-                    rand.nextDouble()
-                );
+                AirQuality airQuality = airQualityStreamRepository.findByTimestampAndSensorId(timestamp, sensorId);
+                if (randomizeStreamData || airQuality == null){
+                    airQuality = new AirQuality(
+                        rand.nextLong(),
+                        sensorId,
+                        timestamp,
+                        rand.nextDouble(),
+                        rand.nextDouble(),
+                        rand.nextDouble(),
+                        rand.nextDouble(),
+                        rand.nextDouble(),
+                        rand.nextDouble(),
+                        rand.nextDouble(),
+                        rand.nextDouble(),
+                        rand.nextDouble(),
+                        rand.nextDouble(),
+                        rand.nextDouble(),
+                        rand.nextDouble(),
+                        rand.nextDouble()
+                    );
+                }
                 ProducerRecord<String, AirQualityRawSchema> record = createRecord(airQuality);
                 logger.info(record.toString());
                 kafkaTemplate.send(record);
@@ -139,15 +145,15 @@ public class SchedulerService {
                     set.getKey(),
                     Instant.parse(measurement.getTillDateTime()).toEpochMilli(),
                     measurement.getIndexes().get(0).getValue(),
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    flatten.get("PM5"),
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    flatten.get("PM25"),
                     flatten.get("PM10"),
                     flatten.get("PM1"),
-                    null,
+                    0.0,
                     flatten.get("PRESSURE"),
                     flatten.get("HUMIDITY"),
                     flatten.get("TEMPERATURE")

@@ -2,11 +2,13 @@ package com.mahoni.streamgenerator.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "AIR_QUALITY_RAW")
 @AllArgsConstructor
+@NoArgsConstructor
 public class AirQuality {
 
     @Id
