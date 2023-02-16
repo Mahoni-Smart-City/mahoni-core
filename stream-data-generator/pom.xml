@@ -98,7 +98,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.mahoni.userservice.UserServiceApplication</mainClass>
+                    <mainClass>com.mahoni.streamgenerator.StreamDataGeneratorApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
