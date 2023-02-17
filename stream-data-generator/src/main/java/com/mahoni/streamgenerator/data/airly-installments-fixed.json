@@ -1,0 +1,1272 @@
+{
+  "Bogor": [
+    {
+      "id": 18504,
+      "location": {
+        "latitude": -6.597147,
+        "longitude": 106.806039
+      },
+      "locationId": 18504,
+      "address": {
+        "country": "Indonesia",
+        "city": "Bogor",
+        "street": "Taman Malabar",
+        "number": null,
+        "displayAddress1": "Bogor",
+        "displayAddress2": "Taman Malabar"
+      },
+      "elevation": 259.93,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 33036,
+      "location": {
+        "latitude": -6.595631,
+        "longitude": 106.766100
+      },
+      "locationId": 32946,
+      "address": {
+        "country": "Indonesia",
+        "city": "Loji",
+        "street": "Jalan Raya Ciomas Permai",
+        "number": null,
+        "displayAddress1": "Loji",
+        "displayAddress2": "Jalan Raya Ciomas Permai"
+      },
+      "elevation": 214.88,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Cilebut": [
+    {
+      "id": 100654,
+      "location": {
+        "latitude": -6.526047,
+        "longitude": 106.780210
+      },
+      "locationId": 54958,
+      "address": {
+        "country": "Indonesia",
+        "city": "Kayumanis",
+        "street": "Jalan Anggrek Raya",
+        "number": null,
+        "displayAddress1": "Kayumanis",
+        "displayAddress2": "Mekarwangi"
+      },
+      "elevation": 149.94,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Bojong": [
+    {
+      "id": 96878,
+      "location": {
+        "latitude": -6.480450,
+        "longitude": 106.805543
+      },
+      "locationId": 51410,
+      "address": {
+        "country": "Indonesia",
+        "city": "Bojong Baru",
+        "street": "Jalan Tegar Beriman",
+        "number": null,
+        "displayAddress1": "Bojong Baru",
+        "displayAddress2": "Bojong Baru"
+      },
+      "elevation": 128.44,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 100654,
+      "location": {
+        "latitude": -6.526047,
+        "longitude": 106.780210
+      },
+      "locationId": 54958,
+      "address": {
+        "country": "Indonesia",
+        "city": "Kayumanis",
+        "street": "Jalan Anggrek Raya",
+        "number": null,
+        "displayAddress1": "Kayumanis",
+        "displayAddress2": "Mekarwangi"
+      },
+      "elevation": 149.94,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Citayam": [
+    {
+      "id": 16740,
+      "location": {
+        "latitude": -6.442364,
+        "longitude": 106.810014
+      },
+      "locationId": 16740,
+      "address": {
+        "country": "Indonesia",
+        "city": "Depok",
+        "street": null,
+        "number": null,
+        "displayAddress1": "Depok",
+        "displayAddress2": null
+      },
+      "elevation": 106.08,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 96878,
+      "location": {
+        "latitude": -6.480450,
+        "longitude": 106.805543
+      },
+      "locationId": 51410,
+      "address": {
+        "country": "Indonesia",
+        "city": "Bojong Baru",
+        "street": "Jalan Tegar Beriman",
+        "number": null,
+        "displayAddress1": "Bojong Baru",
+        "displayAddress2": "Bojong Baru"
+      },
+      "elevation": 128.44,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Depok": [
+    {
+      "id": 80692,
+      "location": {
+        "latitude": -6.381855,
+        "longitude": 106.821996
+      },
+      "locationId": 42888,
+      "address": {
+        "country": "Indonesia",
+        "city": "Depok",
+        "street": null,
+        "number": null,
+        "displayAddress1": "Depok",
+        "displayAddress2": null
+      },
+      "elevation": 86.35,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 35824,
+      "location": {
+        "latitude": -6.376627,
+        "longitude": 106.841464
+      },
+      "locationId": 35713,
+      "address": {
+        "country": "Indonesia",
+        "city": "Depok",
+        "street": "Pesona Khayangan Juanda",
+        "number": null,
+        "displayAddress1": "Depok",
+        "displayAddress2": "Pesona Khayangan Juanda"
+      },
+      "elevation": 65.58,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Depok Baru": [
+    {
+      "id": 80692,
+      "location": {
+        "latitude": -6.381855,
+        "longitude": 106.821996
+      },
+      "locationId": 42888,
+      "address": {
+        "country": "Indonesia",
+        "city": "Depok",
+        "street": null,
+        "number": null,
+        "displayAddress1": "Depok",
+        "displayAddress2": null
+      },
+      "elevation": 86.35,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 35824,
+      "location": {
+        "latitude": -6.376627,
+        "longitude": 106.841464
+      },
+      "locationId": 35713,
+      "address": {
+        "country": "Indonesia",
+        "city": "Depok",
+        "street": "Pesona Khayangan Juanda",
+        "number": null,
+        "displayAddress1": "Depok",
+        "displayAddress2": "Pesona Khayangan Juanda"
+      },
+      "elevation": 65.58,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Pocin": [
+    {
+      "id": 35824,
+      "location": {
+        "latitude": -6.376627,
+        "longitude": 106.841464
+      },
+      "locationId": 35713,
+      "address": {
+        "country": "Indonesia",
+        "city": "Depok",
+        "street": "Pesona Khayangan Juanda",
+        "number": null,
+        "displayAddress1": "Depok",
+        "displayAddress2": "Pesona Khayangan Juanda"
+      },
+      "elevation": 65.58,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 35787,
+      "location": {
+        "latitude": -6.358217,
+        "longitude": 106.819949
+      },
+      "locationId": 35677,
+      "address": {
+        "country": "Indonesia",
+        "city": "Depok",
+        "street": "Jalan Juragan Sinda III",
+        "number": null,
+        "displayAddress1": "Depok",
+        "displayAddress2": "Jalan Juragan Sinda III"
+      },
+      "elevation": 74.02,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "UI": [
+    {
+      "id": 35787,
+      "location": {
+        "latitude": -6.358217,
+        "longitude": 106.819949
+      },
+      "locationId": 35677,
+      "address": {
+        "country": "Indonesia",
+        "city": "Depok",
+        "street": "Jalan Juragan Sinda III",
+        "number": null,
+        "displayAddress1": "Depok",
+        "displayAddress2": "Jalan Juragan Sinda III"
+      },
+      "elevation": 74.02,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 35824,
+      "location": {
+        "latitude": -6.376627,
+        "longitude": 106.841464
+      },
+      "locationId": 35713,
+      "address": {
+        "country": "Indonesia",
+        "city": "Depok",
+        "street": "Pesona Khayangan Juanda",
+        "number": null,
+        "displayAddress1": "Depok",
+        "displayAddress2": "Pesona Khayangan Juanda"
+      },
+      "elevation": 65.58,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "UP": [
+    {
+      "id": 100927,
+      "location": {
+        "latitude": -6.324875,
+        "longitude": 106.839579
+      },
+      "locationId": 42889,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Gang Al Ijabah",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Gang Al Ijabah"
+      },
+      "elevation": 48.51,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 35787,
+      "location": {
+        "latitude": -6.358217,
+        "longitude": 106.819949
+      },
+      "locationId": 35677,
+      "address": {
+        "country": "Indonesia",
+        "city": "Depok",
+        "street": "Jalan Juragan Sinda III",
+        "number": null,
+        "displayAddress1": "Depok",
+        "displayAddress2": "Jalan Juragan Sinda III"
+      },
+      "elevation": 74.02,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Lenteng Agung": [
+    {
+      "id": 100927,
+      "location": {
+        "latitude": -6.324875,
+        "longitude": 106.839579
+      },
+      "locationId": 42889,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Gang Al Ijabah",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Gang Al Ijabah"
+      },
+      "elevation": 48.51,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 18453,
+      "location": {
+        "latitude": -6.307199,
+        "longitude": 106.843375
+      },
+      "locationId": 18453,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan Tanjung Mas Utama",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan Tanjung Mas Utama"
+      },
+      "elevation": 44.53,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Tanjung Barat": [
+    {
+      "id": 18453,
+      "location": {
+        "latitude": -6.307199,
+        "longitude": 106.843375
+      },
+      "locationId": 18453,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan Tanjung Mas Utama",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan Tanjung Mas Utama"
+      },
+      "elevation": 44.53,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 100927,
+      "location": {
+        "latitude": -6.324875,
+        "longitude": 106.839579
+      },
+      "locationId": 42889,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Gang Al Ijabah",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Gang Al Ijabah"
+      },
+      "elevation": 48.51,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Pasar Minggu": [
+    {
+      "id": 42975,
+      "location": {
+        "latitude": -6.281049,
+        "longitude": 106.855127
+      },
+      "locationId": 41172,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan Raya Condet",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Condet"
+      },
+      "elevation": 32.98,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 35960,
+      "location": {
+        "latitude": -6.272476,
+        "longitude": 106.854963
+      },
+      "locationId": 35831,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": null,
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": null
+      },
+      "elevation": 21.80,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Pasar Minggu Baru": [
+    {
+      "id": 35960,
+      "location": {
+        "latitude": -6.272476,
+        "longitude": 106.854963
+      },
+      "locationId": 35831,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": null,
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": null
+      },
+      "elevation": 21.80,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 100041,
+      "location": {
+        "latitude": -6.255879,
+        "longitude": 106.864708
+      },
+      "locationId": 54384,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan SMA 14",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan SMA 14"
+      },
+      "elevation": 28.09,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Duren Kalibata": [
+    {
+      "id": 100041,
+      "location": {
+        "latitude": -6.255879,
+        "longitude": 106.864708
+      },
+      "locationId": 54384,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan SMA 14",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan SMA 14"
+      },
+      "elevation": 28.09,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 107276,
+      "location": {
+        "latitude": -6.249008,
+        "longitude": 106.843387
+      },
+      "locationId": 59875,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "L'Avenue Office & Apartment",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Pancoran"
+      },
+      "elevation": 25.55,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Cawang": [
+    {
+      "id": 100041,
+      "location": {
+        "latitude": -6.255879,
+        "longitude": 106.864708
+      },
+      "locationId": 54384,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan SMA 14",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan SMA 14"
+      },
+      "elevation": 28.09,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 107276,
+      "location": {
+        "latitude": -6.249008,
+        "longitude": 106.843387
+      },
+      "locationId": 59875,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "L'Avenue Office & Apartment",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Pancoran"
+      },
+      "elevation": 25.55,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Tebet": [
+    {
+      "id": 18450,
+      "location": {
+        "latitude": -6.221876,
+        "longitude": 106.883215
+      },
+      "locationId": 18450,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan Cipinang Jaya AA",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan Cipinang Jaya AA"
+      },
+      "elevation": 16.09,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 107276,
+      "location": {
+        "latitude": -6.249008,
+        "longitude": 106.843387
+      },
+      "locationId": 59875,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "L'Avenue Office & Apartment",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Pancoran"
+      },
+      "elevation": 25.55,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Manggarai": [
+    {
+      "id": 16692,
+      "location": {
+        "latitude": -6.197911,
+        "longitude": 106.839360
+      },
+      "locationId": 16692,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan Surabaya",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan Surabaya"
+      },
+      "elevation": 8.43,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 40905,
+      "location": {
+        "latitude": -6.208485,
+        "longitude": 106.829751
+      },
+      "locationId": 40312,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan Haji R. Rasuna Said",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Setiabudi"
+      },
+      "elevation": 11.67,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Cikini": [
+    {
+      "id": 16692,
+      "location": {
+        "latitude": -6.197911,
+        "longitude": 106.839360
+      },
+      "locationId": 16692,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan Surabaya",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan Surabaya"
+      },
+      "elevation": 8.43,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 38596,
+      "location": {
+        "latitude": -6.189584,
+        "longitude": 106.833190
+      },
+      "locationId": 38331,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan Teuku Umar",
+        "number": "5A",
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jl Teuku Umar"
+      },
+      "elevation": 14.06,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Gondangdia": [
+    {
+      "id": 14266,
+      "location": {
+        "latitude": -6.182536,
+        "longitude": 106.834235
+      },
+      "locationId": 14266,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan Arief Rachman Hakim",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan Arief Rachman Hakim"
+      },
+      "elevation": 5.94,
+      "airly": false,
+      "sponsor": {
+        "id": 723,
+        "name": "AirNow",
+        "description": "Source",
+        "logo": "https://cdn.airly.eu/logo/AirNow.png",
+        "link": "https://www.airnow.gov",
+        "displayName": "U.S. Department of State Indonesia - Jakarta"
+      }
+    },
+    {
+      "id": 38596,
+      "location": {
+        "latitude": -6.189584,
+        "longitude": 106.833190
+      },
+      "locationId": 38331,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan Teuku Umar",
+        "number": "5A",
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jl Teuku Umar"
+      },
+      "elevation": 14.06,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Juanda": [
+    {
+      "id": 87300,
+      "location": {
+        "latitude": -6.170945,
+        "longitude": 106.831755
+      },
+      "locationId": 35720,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan KH Hasyim Asyari",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan KH Hasyim Asyari"
+      },
+      "elevation": 3.98,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 96571,
+      "location": {
+        "latitude": -6.159130,
+        "longitude": 106.818168
+      },
+      "locationId": 44970,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan K.H. Zainul Arifin",
+        "number": null,
+        "displayAddress1": "Jakarta",
+        "displayAddress2": "Krukut"
+      },
+      "elevation": 11.13,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Sawah Besar": [
+    {
+      "id": 96571,
+      "location": {
+        "latitude": -6.159130,
+        "longitude": 106.818168
+      },
+      "locationId": 44970,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan K.H. Zainul Arifin",
+        "number": null,
+        "displayAddress1": "Jakarta",
+        "displayAddress2": "Krukut"
+      },
+      "elevation": 11.13,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 87300,
+      "location": {
+        "latitude": -6.170945,
+        "longitude": 106.831755
+      },
+      "locationId": 35720,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan KH Hasyim Asyari",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan KH Hasyim Asyari"
+      },
+      "elevation": 3.98,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ],
+  "Mangga Besar": [
+    {
+      "id": 18456,
+      "location": {
+        "latitude": -6.148068,
+        "longitude": 106.820472
+      },
+      "locationId": 18456,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan Mangga Besar V",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan Mangga Besar V"
+      },
+      "elevation": 6.37,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 105476,
+      "location": {
+        "latitude": -6.146273,
+        "longitude": 106.816320
+      },
+      "locationId": 51429,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan Hayam Wuruk",
+        "number": "127",
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan Hayam Wuruk"
+      },
+      "elevation": 2.40,
+      "airly": false,
+      "sponsor": {
+        "id": 772,
+        "name": "PurpleAir",
+        "description": "Source",
+        "logo": "https://cdn.airly.eu/logo/PurpleAir_1611283214319_248860856.png",
+        "link": "https://www2.purpleair.com",
+        "displayName": "PurpleAir"
+      }
+    }
+  ],
+  "Jayakarta": [
+    {
+      "id": 18456,
+      "location": {
+        "latitude": -6.148068,
+        "longitude": 106.820472
+      },
+      "locationId": 18456,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan Mangga Besar V",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan Mangga Besar V"
+      },
+      "elevation": 6.37,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    },
+    {
+      "id": 105476,
+      "location": {
+        "latitude": -6.146273,
+        "longitude": 106.816320
+      },
+      "locationId": 51429,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan Hayam Wuruk",
+        "number": "127",
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan Hayam Wuruk"
+      },
+      "elevation": 2.40,
+      "airly": false,
+      "sponsor": {
+        "id": 772,
+        "name": "PurpleAir",
+        "description": "Source",
+        "logo": "https://cdn.airly.eu/logo/PurpleAir_1611283214319_248860856.png",
+        "link": "https://www2.purpleair.com",
+        "displayName": "PurpleAir"
+      }
+    }
+  ],
+  "Jakarta Kota": [
+    {
+      "id": 105476,
+      "location": {
+        "latitude": -6.146273,
+        "longitude": 106.816320
+      },
+      "locationId": 51429,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan Hayam Wuruk",
+        "number": "127",
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan Hayam Wuruk"
+      },
+      "elevation": 2.40,
+      "airly": false,
+      "sponsor": {
+        "id": 772,
+        "name": "PurpleAir",
+        "description": "Source",
+        "logo": "https://cdn.airly.eu/logo/PurpleAir_1611283214319_248860856.png",
+        "link": "https://www2.purpleair.com",
+        "displayName": "PurpleAir"
+      }
+    },
+    {
+      "id": 18456,
+      "location": {
+        "latitude": -6.148068,
+        "longitude": 106.820472
+      },
+      "locationId": 18456,
+      "address": {
+        "country": "Indonesia",
+        "city": "Daerah Khusus Ibukota Jakarta",
+        "street": "Jalan Mangga Besar V",
+        "number": null,
+        "displayAddress1": "Daerah Khusus Ibukota Jakarta",
+        "displayAddress2": "Jalan Mangga Besar V"
+      },
+      "elevation": 6.37,
+      "airly": true,
+      "sponsor": {
+        "id": 703,
+        "name": "Nafas",
+        "description": "Airly Sensor's sponsor",
+        "logo": "https://cdn.airly.eu/logo/Nafas_1613554284157_101873900.png",
+        "link": "https://nafas.co.id",
+        "displayName": "Nafas"
+      }
+    }
+  ]
+}
