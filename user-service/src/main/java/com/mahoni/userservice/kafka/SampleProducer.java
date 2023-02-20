@@ -16,41 +16,43 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class SampleProducer {
-
-    @Autowired
-    KafkaTemplate<String, UserEventSchema> kafkaTemplate;
 //
-//    final String TOPIC = "test-topic";
+//  @Autowired
+//  KafkaTemplate<String, UserEventSchema> kafkaTemplate;
 //
-//    public void sendToKafka(User data, UserEventType eventType) {
-//        ProducerRecord<String, UserEventSchema> record = createRecord(data, eventType);
+//  final String TOPIC = "test-topic";
 //
-//        try {
-//            kafkaTemplate.send( record);
-//        }
-//        catch (Exception e) {
-//            log.error(e.toString());
-//        }
+//  public void sendToKafka(User data, UserEventType eventType) {
+//    ProducerRecord<String, UserEventSchema> record = createRecord(data, eventType);
+//
+//    try {
+//      kafkaTemplate.send( record);
 //    }
-
-//    private ProducerRecord<String,UserEventSchema> createRecord(User data, UserEventType eventType) {
-//
-//        String id = UUID.randomUUID().toString();
-//
-//        UserSchema user = UserSchema.newBuilder()
-//                .setId(data.getId())
-//                .setEmail(data.getEmail())
-//                .setName(data.getName())
-//                .setPhoneNumber(data.getPhoneNumber())
-//                .build();
-//
-//        UserEventSchema event = UserEventSchema.newBuilder()
-//                .setEventId(id)
-//                .setTimestamp(Instant.now().toEpochMilli())
-//                .setEventType(eventType.name())
-//                .setData(user)
-//                .build();
-//
-//        return new ProducerRecord<>(TOPIC, id, event);
+//    catch (Exception e) {
+//      log.error(e.toString());
 //    }
+//  }
+//
+//  private ProducerRecord<String,UserEventSchema> createRecord(User data, UserEventType eventType) {
+//
+//    String id = UUID.randomUUID().toString();
+//
+//    UserSchema user = UserSchema
+//      .newBuilder()
+//      .setId(data.getId())
+//      .setEmail(data.getEmail())
+//      .setName(data.getName())
+//      .setPhoneNumber(data.getPhoneNumber())
+//      .build();
+//
+//    UserEventSchema event = UserEventSchema
+//      .newBuilder()
+//      .setEventId(id)
+//      .setTimestamp(Instant.now().toEpochMilli())
+//      .setEventType(eventType.name())
+//      .setData(user)
+//      .build();
+//
+//    return new ProducerRecord<>(TOPIC, id, event);
+//  }
 }

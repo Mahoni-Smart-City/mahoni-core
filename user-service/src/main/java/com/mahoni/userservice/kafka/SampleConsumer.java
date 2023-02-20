@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class SampleConsumer {
 
-    @KafkaListener( topics = "test-topic", groupId = "sample-consumer", containerFactory = "kafkaListenerContainerFactory")
-    public void consume(ConsumerRecord<String, UserEventSchema> record) {
-        System.out.println("Consumed message -> " + record.key());
-        System.out.println("Message payload -> " + record.value());
-    }
+  @KafkaListener( topics = "test-topic", groupId = "sample-consumer", containerFactory = "kafkaListenerContainerFactory")
+  public void consume(ConsumerRecord<String, UserEventSchema> record) {
+    System.out.println("Consumed message -> " + record.key());
+    System.out.println("Message payload -> " + record.value());
+  }
 }

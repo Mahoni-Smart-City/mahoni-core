@@ -8,10 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class KafkaTopic {
 
-    @Bean
-    public NewTopic testTopic() {
-        return TopicBuilder.name("test-topic")
-                .replicas(1)
-                .build();
-    }
+  @Bean
+  public NewTopic testTopic() {
+    return TopicBuilder
+      .name("test-topic")
+      .replicas(1)
+      .build();
+  }
 }
