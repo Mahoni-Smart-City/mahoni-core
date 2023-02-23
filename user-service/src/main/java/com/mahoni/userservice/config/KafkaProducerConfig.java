@@ -19,24 +19,24 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
-    @Value("${spring.kafka.bootstrap.servers}")
-    private String BOOTSTRAP_SERVERS;
+  @Value("${spring.kafka.bootstrap.servers}")
+  private String BOOTSTRAP_SERVERS;
 
-    @Value("${spring.kafka.schema.registry.url}")
-    private String SCHEMA_REGISTRY_URL;
+  @Value("${spring.kafka.schema.registry.url}")
+  private String SCHEMA_REGISTRY_URL;
 
-    @Bean
-    public ProducerFactory<String, UserEventSchema> producerFactory() {
-        Map<String, Object> config = new HashMap<>();
-        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
-        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
-        config.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, SCHEMA_REGISTRY_URL);
-        return new DefaultKafkaProducerFactory<>(config);
-    }
+  @Bean
+  public ProducerFactory<String, UserEventSchema> producerFactory() {
+    Map<String, Object> config = new HashMap<>();
+    config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+    config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+    config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
+    config.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, SCHEMA_REGISTRY_URL);
+    return new DefaultKafkaProducerFactory<>(config);
+  }
 
-    @Bean
-    public KafkaTemplate<String, UserEventSchema> kafkaTemplate() {
+  @Bean
+  public KafkaTemplate<String, UserEventSchema> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }
