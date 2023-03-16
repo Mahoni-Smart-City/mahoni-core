@@ -31,6 +31,7 @@
         <module>schema-registry</module>
         <module>tracking-service</module>
         <module>stream-data-generator</module>
+        <module>voucher-service</module>
     </modules>
 
     <dependencyManagement>
