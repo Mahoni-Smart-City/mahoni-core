@@ -25,11 +25,12 @@ management:
     prometheus:
       enabled: true
 server:
+  port: 8081
   error:
     include-message: ALWAYS
 ---
 postgres.port: 5433
-postgres.host: tracking-db
+postgres.host: trip-db
 spring:
   config.activate.on-profile: docker
   datasource:

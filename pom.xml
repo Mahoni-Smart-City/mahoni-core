@@ -29,7 +29,7 @@
     <modules>
         <module>user-service</module>
         <module>schema-registry</module>
-        <module>tracking-service</module>
+        <module>trip-service</module>
         <module>stream-data-generator</module>
         <module>voucher-service</module>
     </modules>

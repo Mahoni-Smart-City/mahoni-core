@@ -115,7 +115,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.mahoni.trackingservice.TrackingServiceApplication</mainClass>
+                    <mainClass>com.mahoni.tripservice.TripServiceApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

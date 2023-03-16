@@ -25,6 +25,7 @@ management:
     prometheus:
       enabled: true
 server:
+  port: 8082
   error:
     include-message: ALWAYS
 ---

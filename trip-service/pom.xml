@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>tracking-service</artifactId>
+    <artifactId>trip-service</artifactId>
 
     <dependencies>
         <!--        spring boot-->
@@ -116,7 +116,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.mahoni.trackingservice.TrackingServiceApplication</mainClass>
+                    <mainClass>com.mahoni.tripservice.TripServiceApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
