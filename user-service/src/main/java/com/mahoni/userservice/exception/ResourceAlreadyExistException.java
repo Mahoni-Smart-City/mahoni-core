@@ -4,7 +4,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class ResourceAlreadyExistException extends RuntimeException {
-  public ResourceAlreadyExistException(String message) {
-    super(message);
+  public ResourceAlreadyExistException(String username) {
+    super("User with username " + username + " is already exists");
   }
 }

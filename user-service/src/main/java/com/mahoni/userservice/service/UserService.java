@@ -25,7 +25,7 @@ public class UserService {
   @Transactional
   public User create(UserRequest user) {
     if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-      throw  new ResourceAlreadyExistException("User with username " + user.getUsername() + " is already exists");
+      throw  new ResourceAlreadyExistException(user.getUsername());
     }
     return userRepository.save(new User(user.getUsername(), user.getName(), user.getEmail(), DEFAULT_USER_POINT));
   }
@@ -33,7 +33,7 @@ public class UserService {
   public User getById(Long id) {
     Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {
-      throw new ResourceNotFoundException("User with id " + id + " is not found");
+      throw new ResourceNotFoundException(id);
     }
     return user.get();
   }
@@ -46,7 +46,7 @@ public class UserService {
   public User deleteById(Long id) {
     Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {
-      throw new ResourceNotFoundException("User with id " + id + " is not found");
+      throw new ResourceNotFoundException(id);
     }
     userRepository.deleteById(id);
     return user.get();
@@ -56,7 +56,7 @@ public class UserService {
   public User update(Long id, UserRequest newUser) {
     Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {
-      throw new ResourceNotFoundException("User with id " + id + " is not found");
+      throw new ResourceNotFoundException(id);
     }
     User updatedUser = user.get();
     updatedUser.setUsername(newUser.getUsername());
