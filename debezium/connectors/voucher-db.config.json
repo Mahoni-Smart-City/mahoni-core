@@ -1,0 +1,16 @@
+{
+  "name": "voucherdb-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "plugin.name": "pgoutput",
+    "database.hostname": "voucher-db",
+    "database.port": "5434",
+    "database.user": "test123",
+    "database.password": "test123",
+    "database.dbname": "mahoni",
+    "database.server.name": "postgres",
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "publication.autocreate.mode": "all_tables"
+  }
+}
