@@ -1,4 +1,4 @@
-package com.mahoni.voucherservice.voucher.repository.controller;
+package com.mahoni.voucherservice.merchant.controller;
 
 import com.mahoni.voucherservice.merchant.dto.MerchantRequest;
 import com.mahoni.voucherservice.merchant.exception.MerchantNotFoundException;
