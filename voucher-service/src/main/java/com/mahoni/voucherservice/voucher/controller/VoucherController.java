@@ -1,9 +1,9 @@
-package com.mahoni.voucherservice.controller;
+package com.mahoni.voucherservice.voucher.controller;
 
-import com.mahoni.voucherservice.dto.VoucherRequest;
-import com.mahoni.voucherservice.exception.VoucherNotFoundException;
-import com.mahoni.voucherservice.model.Voucher;
-import com.mahoni.voucherservice.service.VoucherService;
+import com.mahoni.voucherservice.voucher.dto.VoucherRequest;
+import com.mahoni.voucherservice.voucher.exception.VoucherNotFoundException;
+import com.mahoni.voucherservice.voucher.model.Voucher;
+import com.mahoni.voucherservice.voucher.service.VoucherService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

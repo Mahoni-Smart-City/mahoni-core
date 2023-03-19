@@ -1,4 +1,4 @@
-package com.mahoni.voucherservice.exception;
+package com.mahoni.voucherservice.voucher.exception;
 
 import lombok.NoArgsConstructor;
 

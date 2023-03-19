@@ -1,10 +1,10 @@
-package com.mahoni.voucherservice.service;
+package com.mahoni.voucherservice.merchant.service;
 
-import com.mahoni.voucherservice.dto.MerchantRequest;
-import com.mahoni.voucherservice.exception.MerchantAlreadyExistException;
-import com.mahoni.voucherservice.exception.MerchantNotFoundException;
-import com.mahoni.voucherservice.model.Merchant;
-import com.mahoni.voucherservice.repository.MerchantRepository;
+import com.mahoni.voucherservice.merchant.dto.MerchantRequest;
+import com.mahoni.voucherservice.merchant.exception.MerchantAlreadyExistException;
+import com.mahoni.voucherservice.merchant.exception.MerchantNotFoundException;
+import com.mahoni.voucherservice.merchant.model.Merchant;
+import com.mahoni.voucherservice.merchant.repository.MerchantRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,9 @@
-package com.mahoni.voucherservice.controller;
+package com.mahoni.voucherservice.voucher.repository.controller;
 
-import com.mahoni.voucherservice.dto.MerchantRequest;
-import com.mahoni.voucherservice.exception.MerchantNotFoundException;
-import com.mahoni.voucherservice.model.Merchant;
-import com.mahoni.voucherservice.service.MerchantService;
+import com.mahoni.voucherservice.merchant.dto.MerchantRequest;
+import com.mahoni.voucherservice.merchant.exception.MerchantNotFoundException;
+import com.mahoni.voucherservice.merchant.model.Merchant;
+import com.mahoni.voucherservice.merchant.service.MerchantService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

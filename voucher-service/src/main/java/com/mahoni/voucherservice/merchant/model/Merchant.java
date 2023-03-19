@@ -1,5 +1,6 @@
-package com.mahoni.voucherservice.model;
+package com.mahoni.voucherservice.merchant.model;
 
+import com.mahoni.voucherservice.voucher.model.Voucher;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

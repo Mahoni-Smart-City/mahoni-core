@@ -1,4 +1,4 @@
-package com.mahoni.voucherservice.dto;
+package com.mahoni.voucherservice.merchant.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

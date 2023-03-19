@@ -1,6 +1,6 @@
-package com.mahoni.voucherservice.repository;
+package com.mahoni.voucherservice.merchant.repository;
 
-import com.mahoni.voucherservice.model.Merchant;
+import com.mahoni.voucherservice.merchant.model.Merchant;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
