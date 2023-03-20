@@ -26,30 +26,42 @@ services:
 
   user-db:
     image: postgres:latest
+    restart: always
     environment:
       POSTGRES_PASSWORD: test123
       POSTGRES_USER: test123
       POSTGRES_DB: mahoni
+    volumes:
+      - ./debezium/init:/docker-entrypoint-initdb.d
+    command: -p 5432
     ports:
       - "5432:5432/tcp"
 
   trip-db:
     image: postgres:latest
+    restart: always
     environment:
       POSTGRES_PASSWORD: test123
       POSTGRES_USER: test123
       POSTGRES_DB: mahoni
+    volumes:
+      - ./debezium/init:/docker-entrypoint-initdb.d
+    command: -p 5433
     ports:
-      - "5433:5432/tcp"
+      - "5433:5433/tcp"
 
   voucher-db:
     image: postgres:latest
+    restart: always
     environment:
       POSTGRES_PASSWORD: test123
       POSTGRES_USER: test123
       POSTGRES_DB: mahoni
+    volumes:
+      - ./debezium/init:/docker-entrypoint-initdb.d
+    command: -p 5434
     ports:
-      - "5434:5432/tcp"
+      - "5434:5434/tcp"
 
   user-service:
     environment:
@@ -75,6 +87,24 @@ services:
       - zookeeper
       - kafka
 
+  debezium:
+    image: debezium/connect:1.9
+    environment:
+      BOOTSTRAP_SERVERS: kafka:29092
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: connect_configs
+      OFFSET_STORAGE_TOPIC: connect_offsets
+      KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
+      VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
+    depends_on:
+      - kafka
+      - kafka-schema-registry
+    ports:
+      - "8083:8083"
+
+  # Utility
   schema-registry-ui:
     image: landoop/schema-registry-ui:0.9.4
     hostname: kafka-schema-registry-ui
@@ -87,3 +117,14 @@ services:
       SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN: "*"
     depends_on:
       - kafka-schema-registry
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    restart: "no"
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:29092"
+      JVM_OPTS: "-Xms16M -Xmx512M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
+    ports:
+      - "9000:9000"
+    depends_on:
+      - kafka
