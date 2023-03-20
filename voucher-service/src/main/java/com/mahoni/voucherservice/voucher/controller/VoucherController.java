@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/vouchers")
@@ -37,7 +38,7 @@ public class VoucherController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Voucher> get(@PathVariable("id") Long id) {
+  public ResponseEntity<Voucher> get(@PathVariable("id") UUID id) {
     try {
       Voucher voucher = voucherService.getById(id);
       return ResponseEntity.ok(voucher);
@@ -47,7 +48,7 @@ public class VoucherController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Voucher> delete(@PathVariable("id") Long id) {
+  public ResponseEntity<Voucher> delete(@PathVariable("id") UUID id) {
     try {
       Voucher deletedVoucher = voucherService.deleteById(id);
       return ResponseEntity.ok(deletedVoucher);
@@ -57,7 +58,7 @@ public class VoucherController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Object> update(@PathVariable("id") Long id, @Valid @RequestBody VoucherRequest request) {
+  public ResponseEntity<Object> update(@PathVariable("id") UUID id, @Valid @RequestBody VoucherRequest request) {
     try {
       Voucher updatedVoucher = voucherService.update(id, request);
       return ResponseEntity.ok(updatedVoucher);

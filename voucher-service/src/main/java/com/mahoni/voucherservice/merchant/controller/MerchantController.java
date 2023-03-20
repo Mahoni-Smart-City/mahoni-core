@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/merchants")
@@ -39,7 +40,7 @@ public class MerchantController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Merchant> get(@PathVariable("id") Long id ) {
+  public ResponseEntity<Merchant> get(@PathVariable("id") UUID id ) {
     try {
       Merchant merchant = merchantService.getById(id);
       return ResponseEntity.ok(merchant);
@@ -49,7 +50,7 @@ public class MerchantController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Merchant> delete(@PathVariable("id") Long id) {
+  public ResponseEntity<Merchant> delete(@PathVariable("id") UUID id) {
     try {
       Merchant deletedMerchant = merchantService.deleteById(id);
       return ResponseEntity.ok(deletedMerchant);
@@ -59,7 +60,7 @@ public class MerchantController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Object> update(@PathVariable("id") Long id, @Valid @RequestBody MerchantRequest request) {
+  public ResponseEntity<Object> update(@PathVariable("id") UUID id, @Valid @RequestBody MerchantRequest request) {
     try {
       Merchant updatedMerchant = merchantService.update(id, request);
       return ResponseEntity.ok(updatedMerchant);

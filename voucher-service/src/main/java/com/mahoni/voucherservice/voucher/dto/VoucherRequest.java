@@ -18,8 +18,8 @@ public class VoucherRequest {
   @NotNull
   private String code;
   @NotNull
-  private LocalDateTime start_at;
+  private LocalDateTime startAt;
   @NotNull
-  private LocalDateTime expired_at;
+  private LocalDateTime expiredAt;
 
 }

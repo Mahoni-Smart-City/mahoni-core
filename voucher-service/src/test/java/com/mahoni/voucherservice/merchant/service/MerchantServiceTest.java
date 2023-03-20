@@ -1,10 +1,10 @@
-package com.mahoni.voucherservice.service;
+package com.mahoni.voucherservice.merchant.service;
 
-import com.mahoni.voucherservice.dto.MerchantRequest;
-import com.mahoni.voucherservice.exception.MerchantAlreadyExistException;
-import com.mahoni.voucherservice.exception.MerchantNotFoundException;
-import com.mahoni.voucherservice.model.Merchant;
-import com.mahoni.voucherservice.repository.MerchantRepository;
+import com.mahoni.voucherservice.merchant.dto.MerchantRequest;
+import com.mahoni.voucherservice.merchant.exception.MerchantAlreadyExistException;
+import com.mahoni.voucherservice.merchant.exception.MerchantNotFoundException;
+import com.mahoni.voucherservice.merchant.model.Merchant;
+import com.mahoni.voucherservice.merchant.repository.MerchantRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -61,7 +62,7 @@ class MerchantServiceTest {
 
   @Test
   public void testGivenId_thenReturnMerchant() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
     Merchant merchant = new Merchant("Test", "Test", "Test@mail.com");
 
     when(merchantRepository.findById(any())).thenReturn(Optional.of(merchant));
@@ -73,7 +74,7 @@ class MerchantServiceTest {
 
   @Test
   public void testGivenId_thenThrowMerchantNotFound() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
 
     when(merchantRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -97,7 +98,7 @@ class MerchantServiceTest {
 
   @Test
   public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedMerchant() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
     Merchant merchant = new Merchant("Test", "Test", "Test@mail.com");
 
     when(merchantRepository.findById(any())).thenReturn(Optional.of(merchant));
@@ -109,7 +110,7 @@ class MerchantServiceTest {
 
   @Test
   public void testGivenIdToBeDeleted_thenThrowMerchantNotFound() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
 
     when(merchantRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -120,7 +121,7 @@ class MerchantServiceTest {
 
   @Test
   public void testGivenIdAndMerchantRequest_thenUpdateAndReturnUpdatedMerchant() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
     MerchantRequest request = new MerchantRequest("Test2", "Test", "Test@mail.com" );
     Merchant merchant = new Merchant("Test", "Test", "Test@mail.com");
     Merchant expectedMerchant = new Merchant("Test2", "Test", "Test@mail.com");
@@ -136,7 +137,7 @@ class MerchantServiceTest {
 
   @Test
   public void testGivenIdAndMerchantRequest_thenThrowMerchantNotFound() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
     MerchantRequest request = new MerchantRequest("Test2", "Test", "Test@mail.com" );
 
     when(merchantRepository.findById(any())).thenReturn(Optional.empty());

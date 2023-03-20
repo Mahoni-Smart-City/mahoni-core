@@ -1,10 +1,10 @@
-package com.mahoni.voucherservice.service;
+package com.mahoni.voucherservice.voucher.service;
 
-import com.mahoni.voucherservice.dto.VoucherRequest;
-import com.mahoni.voucherservice.exception.VoucherAlreadyExistException;
-import com.mahoni.voucherservice.exception.VoucherNotFoundException;
-import com.mahoni.voucherservice.model.Voucher;
-import com.mahoni.voucherservice.repository.VoucherRepository;
+import com.mahoni.voucherservice.voucher.dto.VoucherRequest;
+import com.mahoni.voucherservice.voucher.exception.VoucherAlreadyExistException;
+import com.mahoni.voucherservice.voucher.exception.VoucherNotFoundException;
+import com.mahoni.voucherservice.voucher.model.Voucher;
+import com.mahoni.voucherservice.voucher.repository.VoucherRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -63,7 +64,7 @@ public class VoucherServiceTest {
 
   @Test
   public void testGivenId_thenReturnVoucher() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
     Voucher voucher = new Voucher("Test", "Test", "Test", LocalDateTime.now(), LocalDateTime.now());
 
     when(voucherRepository.findById(any())).thenReturn(Optional.of(voucher));
@@ -75,7 +76,7 @@ public class VoucherServiceTest {
 
   @Test
   public void testGivenId_thenThrowVoucherNotFound() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
 
     when(voucherRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -99,7 +100,7 @@ public class VoucherServiceTest {
 
   @Test
   public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedVoucher() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
     Voucher voucher = new Voucher("Test", "Test", "Test", LocalDateTime.now(), LocalDateTime.now());
 
     when(voucherRepository.findById(any())).thenReturn(Optional.of(voucher));
@@ -111,7 +112,7 @@ public class VoucherServiceTest {
 
   @Test
   public void testGivenIdToBeDeleted_thenThrowVoucherNotFound() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
 
     when(voucherRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -122,7 +123,7 @@ public class VoucherServiceTest {
 
   @Test
   public void testGivenIdAndVoucherRequest_thenUpdateAndReturnUpdatedVoucher() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
     VoucherRequest request = new VoucherRequest("Test2", "Test", "Test", LocalDateTime.now(), LocalDateTime.now());
     Voucher voucher = new Voucher("Test", "Test", "Test", LocalDateTime.now(), LocalDateTime.now());
     Voucher expectedVoucher = new Voucher("Test2", "Test", "Test", LocalDateTime.now(), LocalDateTime.now());
@@ -138,7 +139,7 @@ public class VoucherServiceTest {
 
   @Test
   public void testGivenIdAndVoucherRequest_thenThrowVoucherNotFound() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
     VoucherRequest request = new VoucherRequest("Test2", "Test", "Test", LocalDateTime.now(), LocalDateTime.now());
 
     when(voucherRepository.findById(any())).thenReturn(Optional.empty());

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -27,11 +28,11 @@ public class VoucherService {
     return voucherRepository.save(new Voucher(voucher.getName(),
       voucher.getDescription(),
       voucher.getCode(),
-      voucher.getStart_at(),
-      voucher.getExpired_at()));
+      voucher.getStartAt(),
+      voucher.getExpiredAt()));
   }
 
-  public Voucher getById(Long id) {
+  public Voucher getById(UUID id) {
     Optional<Voucher> voucher = voucherRepository.findById(id);
     if (voucher.isEmpty()) {
       throw new VoucherNotFoundException(id);
@@ -43,7 +44,7 @@ public class VoucherService {
     return voucherRepository.findAll();
   }
 
-  public Voucher deleteById(Long id) {
+  public Voucher deleteById(UUID id) {
     Optional<Voucher> voucher = voucherRepository.findById(id);
     if (voucher.isEmpty()) {
       throw new VoucherNotFoundException(id);
@@ -52,7 +53,7 @@ public class VoucherService {
     return voucher.get();
   }
 
-  public Voucher update(Long id, VoucherRequest newVoucher) {
+  public Voucher update(UUID id, VoucherRequest newVoucher) {
     Optional<Voucher> voucher = voucherRepository.findById(id);
     if (voucher.isEmpty()) {
       throw new VoucherNotFoundException();
@@ -61,8 +62,8 @@ public class VoucherService {
     updatedVoucher.setName(newVoucher.getName());
     updatedVoucher.setDescription(newVoucher.getDescription());
     updatedVoucher.setCode(newVoucher.getCode());
-    updatedVoucher.setStart_at(newVoucher.getStart_at());
-    updatedVoucher.setExpired_at(newVoucher.getExpired_at());
+    updatedVoucher.setStartAt(newVoucher.getStartAt());
+    updatedVoucher.setExpiredAt(newVoucher.getExpiredAt());
     return voucherRepository.save(updatedVoucher);
   }
 }

@@ -8,10 +8,10 @@ import com.mahoni.voucherservice.merchant.repository.MerchantRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -20,7 +20,6 @@ public class MerchantService {
   @Autowired
   MerchantRepository merchantRepository;
 
-  @Transactional
   public Merchant create(MerchantRequest merchant) {
     if (merchantRepository.findByUsername(merchant.getUsername()).isPresent()) {
       throw new MerchantAlreadyExistException(merchant.getUsername());
@@ -28,7 +27,7 @@ public class MerchantService {
     return merchantRepository.save(new Merchant(merchant.getUsername(), merchant.getName(), merchant.getEmail()));
   }
 
-  public Merchant getById(Long id) {
+  public Merchant getById(UUID id) {
     Optional<Merchant> merchant = merchantRepository.findById(id);
     if (merchant.isEmpty()) {
       throw new MerchantNotFoundException(id);
@@ -40,8 +39,7 @@ public class MerchantService {
     return merchantRepository.findAll();
   }
 
-  @Transactional
-  public Merchant deleteById(Long id) {
+  public Merchant deleteById(UUID id) {
     Optional<Merchant> merchant = merchantRepository.findById(id);
     if (merchant.isEmpty()) {
       throw new MerchantNotFoundException(id);
@@ -50,8 +48,7 @@ public class MerchantService {
     return merchant.get();
   }
 
-  @Transactional
-  public Merchant update(Long id, MerchantRequest newMerchant) {
+  public Merchant update(UUID id, MerchantRequest newMerchant) {
     Optional<Merchant> merchant = merchantRepository.findById(id);
     if (merchant.isEmpty()) {
       throw new MerchantNotFoundException(id);

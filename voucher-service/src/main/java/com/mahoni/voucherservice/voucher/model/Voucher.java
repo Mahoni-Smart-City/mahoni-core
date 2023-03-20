@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
@@ -17,9 +19,14 @@ import java.time.LocalDateTime;
 public class Voucher {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(generator = "UUID")
+  @GenericGenerator(
+    name = "UUID",
+    strategy = "org.hibernate.id.UUIDGenerator"
+  )
+  @Column(name = "id", updatable = false, nullable = false)
   @Getter
-  private Long id;
+  private UUID id;
 
   @Column(nullable = false)
   private String name;
@@ -31,16 +38,18 @@ public class Voucher {
   private String code;
 
   @Temporal(TemporalType.TIMESTAMP)
-  private LocalDateTime start_at;
+  @Column(name = "start_at")
+  private LocalDateTime startAt;
 
   @Temporal(TemporalType.TIMESTAMP)
-  private LocalDateTime expired_at;
+  @Column(name = "expired_at")
+  private LocalDateTime expiredAt;
 
-  public Voucher(String name, String description, String code, LocalDateTime start_at, LocalDateTime expired_at) {
+  public Voucher(String name, String description, String code, LocalDateTime startAt, LocalDateTime expiredAt) {
     this.name = name;
     this.description = description;
     this.code = code;
-    this.start_at = start_at;
-    this.expired_at = expired_at;
+    this.startAt = startAt;
+    this.expiredAt = expiredAt;
   }
 }
