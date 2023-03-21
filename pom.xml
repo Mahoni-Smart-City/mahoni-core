@@ -32,6 +32,7 @@
         <module>trip-service</module>
         <module>stream-data-generator</module>
         <module>voucher-service</module>
+        <module>flink-jobs</module>
     </modules>
 
     <dependencyManagement>
