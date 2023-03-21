@@ -61,7 +61,7 @@ public class AirSensorService {
     return airSensor.get();
   }
 
-  public AirSensor updateById(Long id, AirSensorRequest newAirSensor) {
+  public AirSensor update(Long id, AirSensorRequest newAirSensor) {
     Optional<AirSensor> airSensor = airSensorRepository.findById(id);
     if (airSensor.isEmpty()) {
       throw new AirSensorNotFoundException(id);

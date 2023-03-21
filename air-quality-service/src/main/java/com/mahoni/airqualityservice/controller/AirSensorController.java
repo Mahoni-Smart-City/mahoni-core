@@ -61,7 +61,7 @@ public class AirSensorController {
   @PutMapping("/{id}")
   public ResponseEntity<AirSensor> update(@PathVariable("id") Long id, @Valid @RequestBody AirSensorRequest request) {
     try {
-      AirSensor updatedAirSensor = airSensorService.updateById(id, request);
+      AirSensor updatedAirSensor = airSensorService.update(id, request);
       return ResponseEntity.ok(updatedAirSensor);
     } catch (AirSensorNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
