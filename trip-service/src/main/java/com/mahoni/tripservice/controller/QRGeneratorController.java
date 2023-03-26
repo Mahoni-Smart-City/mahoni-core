@@ -1,5 +1,7 @@
 package com.mahoni.tripservice.controller;
 
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mahoni.tripservice.dto.QRGeneratorRequest;
 import com.mahoni.tripservice.exception.QRGeneratorNotFoundException;
 import com.mahoni.tripservice.model.QRGenerator;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,4 +72,24 @@ public class QRGeneratorController {
     }
   }
 
+  @GetMapping("/{id}/generate-qr")
+  public ResponseEntity<String> generateQR(@PathVariable("id") UUID qrGeneratorId) {
+    try {
+      String token = qrGeneratorService.generateQRToken(qrGeneratorId);
+      return ResponseEntity.ok(QRGeneratorService.generateQRCodeImage(token));
+    } catch (QRGeneratorNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+    } catch (Exception e) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    }
+  }
+
+  @GetMapping("/validate-qr")
+  public Boolean validateQR(@RequestParam("token") String token) {
+    try {
+      return qrGeneratorService.validateQRToken(token);
+    } catch (JsonProcessingException e) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    }
+  }
 }
