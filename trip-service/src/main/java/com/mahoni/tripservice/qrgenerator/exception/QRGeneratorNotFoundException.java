@@ -1,4 +1,4 @@
-package com.mahoni.tripservice.exception;
+package com.mahoni.tripservice.qrgenerator.exception;
 
 import lombok.NoArgsConstructor;
 

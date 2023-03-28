@@ -1,4 +1,4 @@
-package com.mahoni.tripservice.service;
+package com.mahoni.tripservice.qrgenerator.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,11 +6,11 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.mahoni.tripservice.dto.QRGeneratorRequest;
-import com.mahoni.tripservice.dto.QRToken;
-import com.mahoni.tripservice.exception.QRGeneratorNotFoundException;
-import com.mahoni.tripservice.model.QRGenerator;
-import com.mahoni.tripservice.repository.QRGeneratorRepository;
+import com.mahoni.tripservice.qrgenerator.dto.QRGeneratorRequest;
+import com.mahoni.tripservice.qrgenerator.dto.QRToken;
+import com.mahoni.tripservice.qrgenerator.exception.QRGeneratorNotFoundException;
+import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
+import com.mahoni.tripservice.qrgenerator.repository.QRGeneratorRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

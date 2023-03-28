@@ -1,11 +1,11 @@
-package com.mahoni.tripservice.controller;
+package com.mahoni.tripservice.qrgenerator.controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.mahoni.tripservice.dto.QRGeneratorRequest;
-import com.mahoni.tripservice.exception.QRGeneratorNotFoundException;
-import com.mahoni.tripservice.model.QRGenerator;
-import com.mahoni.tripservice.service.QRGeneratorService;
+import com.mahoni.tripservice.qrgenerator.dto.QRGeneratorRequest;
+import com.mahoni.tripservice.qrgenerator.exception.QRGeneratorNotFoundException;
+import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
+import com.mahoni.tripservice.qrgenerator.service.QRGeneratorService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.UUID;
 

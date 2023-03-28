@@ -1,6 +1,5 @@
-package com.mahoni.tripservice.dto;
+package com.mahoni.tripservice.qrgenerator.dto;
 
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;

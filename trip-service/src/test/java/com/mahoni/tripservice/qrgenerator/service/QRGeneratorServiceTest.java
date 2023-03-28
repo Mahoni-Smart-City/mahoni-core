@@ -1,10 +1,11 @@
-package com.mahoni.tripservice.service;
+package com.mahoni.tripservice.qrgenerator.service;
 
-import com.mahoni.tripservice.dto.QRGeneratorRequest;
-import com.mahoni.tripservice.dto.QRGeneratorType;
-import com.mahoni.tripservice.exception.QRGeneratorNotFoundException;
-import com.mahoni.tripservice.model.QRGenerator;
-import com.mahoni.tripservice.repository.QRGeneratorRepository;
+import com.mahoni.tripservice.qrgenerator.dto.QRGeneratorRequest;
+import com.mahoni.tripservice.qrgenerator.dto.QRGeneratorType;
+import com.mahoni.tripservice.qrgenerator.exception.QRGeneratorNotFoundException;
+import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
+import com.mahoni.tripservice.qrgenerator.repository.QRGeneratorRepository;
+import com.mahoni.tripservice.qrgenerator.service.QRGeneratorService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
