@@ -17,11 +17,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,6 +34,7 @@ public class QRGeneratorService {
   @Autowired
   CryptographyService cryptographyService;
 
+  @Value("${spring.security.qr-token.lifespan}")
   Integer QR_LIFESPAN = 5;
 
   @Value("${spring.security.qr-token.secret}")
@@ -116,7 +115,7 @@ public class QRGeneratorService {
   public Boolean validateQRToken(String token) throws JsonProcessingException {
     String stringToken = cryptographyService.decrypt(token, secret);
     QRToken qrToken = objectMapper.readValue(stringToken, QRToken.class);
-    return qrToken.getExpired_at().isAfter(LocalDateTime.now());
+    return qrToken.getExpiredAt().isAfter(LocalDateTime.now());
   }
 
   private LocalDateTime getNearestTokenStartAt() {

@@ -12,7 +12,9 @@ spring:
     bootstrap.servers: localhost:9092
     schema.registry.url: http://localhost:8081
   security:
-    qr-token.secret: test123
+    qr-token:
+      lifespan: 5
+      secret: test123
 management:
   endpoints:
     web:

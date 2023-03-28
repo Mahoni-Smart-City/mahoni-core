@@ -11,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QRToken {
-  LocalDateTime start_at;
-  LocalDateTime expired_at;
+  LocalDateTime startAt;
+  LocalDateTime expiredAt;
   UUID QRGeneratorId;
 }
