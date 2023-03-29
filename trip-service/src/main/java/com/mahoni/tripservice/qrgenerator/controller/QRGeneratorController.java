@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mahoni.tripservice.qrgenerator.dto.QRGeneratorRequest;
 import com.mahoni.tripservice.qrgenerator.exception.QRGeneratorNotFoundException;
 import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
+import com.mahoni.tripservice.qrgenerator.model.QRGeneratorNode;
 import com.mahoni.tripservice.qrgenerator.service.QRGeneratorService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -88,6 +89,24 @@ public class QRGeneratorController {
     try {
       return qrGeneratorService.validateQRToken(token);
     } catch (JsonProcessingException e) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    }
+  }
+
+  @GetMapping("/nodes")
+  public ResponseEntity<List<QRGeneratorNode>> getNode() {
+    try {
+      return ResponseEntity.ok(qrGeneratorService.getAllNode());
+    } catch (Exception e) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    }
+  }
+
+  @GetMapping("/shortest-path")
+  public ResponseEntity<List<QRGeneratorNode>> shortestPath(@RequestParam("node1") UUID node1, @RequestParam("node2") UUID node2 ) {
+    try {
+      return ResponseEntity.ok(qrGeneratorService.shortestPathBetweenNodes(node1, node2));
+    } catch (Exception e) {
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
   }

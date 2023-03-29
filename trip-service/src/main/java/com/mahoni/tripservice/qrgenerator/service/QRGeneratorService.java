@@ -10,6 +10,8 @@ import com.mahoni.tripservice.qrgenerator.dto.QRGeneratorRequest;
 import com.mahoni.tripservice.qrgenerator.dto.QRToken;
 import com.mahoni.tripservice.qrgenerator.exception.QRGeneratorNotFoundException;
 import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
+import com.mahoni.tripservice.qrgenerator.model.QRGeneratorNode;
+import com.mahoni.tripservice.qrgenerator.repository.QRGeneratorNodeRepository;
 import com.mahoni.tripservice.qrgenerator.repository.QRGeneratorRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class QRGeneratorService {
 
   @Autowired
   QRGeneratorRepository qrGeneratorRepository;
+
+  @Autowired
+  QRGeneratorNodeRepository qrGeneratorNodeRepository;
 
   @Autowired
   CryptographyService cryptographyService;
@@ -107,7 +112,7 @@ public class QRGeneratorService {
     if (qrGenerator.isEmpty()) {
       throw new QRGeneratorNotFoundException(id);
     }
-    QRToken token = new QRToken(getNearestTokenStartAt(), getCurrentTokenExpiration(), id);
+    QRToken token = new QRToken(nearestTokenStartAt(), currentTokenExpiration(), id);
     String stringToken = objectMapper.writeValueAsString(token);
     return cryptographyService.encrypt(stringToken, secret);
   }
@@ -118,13 +123,25 @@ public class QRGeneratorService {
     return qrToken.getExpiredAt().isAfter(LocalDateTime.now());
   }
 
-  private LocalDateTime getNearestTokenStartAt() {
+  public List<QRGeneratorNode> getAllNode() {
+    List<QRGeneratorNode> nodes = qrGeneratorNodeRepository.findAll();
+    for (QRGeneratorNode node: nodes) {
+      System.out.println(node);
+    }
+    return nodes;
+  }
+
+  public List<QRGeneratorNode> shortestPathBetweenNodes(UUID node1, UUID node2) {
+    return qrGeneratorNodeRepository.shortestPath(node1, node2);
+  }
+
+  private LocalDateTime nearestTokenStartAt() {
     LocalDateTime now = LocalDateTime.now();
     int minuteDiff = now.getMinute() % QR_LIFESPAN;
     return now.minusMinutes(minuteDiff).minusSeconds(now.getSecond()).minusNanos(now.getNano());
   }
 
-  private LocalDateTime getCurrentTokenExpiration() {
+  private LocalDateTime currentTokenExpiration() {
     LocalDateTime now = LocalDateTime.now();
     int minuteDiff = now.getMinute() % QR_LIFESPAN;
     return now.minusMinutes(minuteDiff).plusMinutes(QR_LIFESPAN).minusSeconds(now.getSecond()).minusNanos(now.getNano());
