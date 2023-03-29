@@ -76,8 +76,10 @@ public class TripService {
       QRGenerator scanInPlace = trip.getScanInPlaceId();
       QRGenerator scanOutPlace = trip.getScanOutPlaceId();
       List<QRGeneratorNode> shortestPath = qrGeneratorService.shortestPathBetweenNodes(scanInPlace.getId(), scanOutPlace.getId());
-      int point = calculatePoint(shortestPath, trip);
-
+      double aqi = maxAqi(shortestPath);
+      int point = calculatePoint(aqi, trip);
+      trip.setAqi(aqi);
+      trip.setPoint(point);
       return trip;
     } else {
       // update expired trip and start new trip
@@ -102,30 +104,28 @@ public class TripService {
     }
   }
 
-  private int calculatePoint(List<QRGeneratorNode> nodes, Trip trip) {
-    int aqi = 0;
-    for (QRGeneratorNode node: nodes) {
-      // check aqi
-      QRGenerator qrGenerator = qrGeneratorRepository.findById(node.getQrGeneratorId()).orElseThrow();
-      int maxAqi = maxAqi(qrGenerator);
-      if (aqi <= maxAqi) {
-        aqi = maxAqi;
-      }
-    }
-
+  private int calculatePoint(double aqi, Trip trip) {
     Long durationInMinutes = Duration.between(trip.getScanInAt(), trip.getScanOutAt()).toMinutes();
     return (int) ((aqi * AQI_MULTIPLIER) + (durationInMinutes * DURATION_MULTIPLIER) * BASE_MULTIPLIER);
   }
 
-  private int maxAqi(QRGenerator qrGenerator) {
+  private double maxAqi(List<QRGeneratorNode> nodes) {
     // TODO: Update when can get value from KTable
-//    int aqi1 = getAqi(qrGenerator.getSensorId1()); // get from KTable
-//    int aqi2 = Integer.MIN_VALUE;
-//    if (qrGenerator.getSensorId2() != null) {
-//      aqi2 = getAqi(qrGenerator.getSensorId2()); // get from KTable
-//    }
-//    return max(aqi1, aqi2);
-    return (int) (Math.random() * 100);
+    double aqi = 0;
+    for (QRGeneratorNode node: nodes) {
+      QRGenerator qrGenerator = qrGeneratorRepository.findById(node.getQrGeneratorId()).orElseThrow();
+    //    int aqi1 = getAqi(qrGenerator.getSensorId1()); // get from KTable
+    //    int aqi2 = Integer.MIN_VALUE;
+    //    if (qrGenerator.getSensorId2() != null) {
+    //      aqi2 = getAqi(qrGenerator.getSensorId2()); // get from KTable
+    //    }
+    //    int maxAqi = max(aqi1, aqi2);
+      double maxAqi = Math.abs(Math.random());
+      if (aqi <= maxAqi) {
+        aqi = maxAqi;
+      }
+    }
+    return aqi;
   }
 
   private boolean isOngoing(Trip trip) {
