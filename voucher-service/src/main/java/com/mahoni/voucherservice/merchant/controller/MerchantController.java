@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -64,6 +65,8 @@ public class MerchantController {
       return ResponseEntity.ok(response);
     } catch (MerchantNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+    } catch (AccessDeniedException e) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
     }
   }
 
@@ -75,6 +78,8 @@ public class MerchantController {
       return ResponseEntity.ok(response);
     } catch (MerchantNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+    } catch (AccessDeniedException e) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
     }
   }
 }

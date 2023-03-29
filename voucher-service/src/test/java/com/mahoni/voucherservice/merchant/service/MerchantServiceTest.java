@@ -13,6 +13,10 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
@@ -22,8 +26,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class MerchantServiceTest {
@@ -103,6 +106,8 @@ class MerchantServiceTest {
   public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedMerchant() {
     UUID id = UUID.randomUUID();
     Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
+    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(merchant, null, merchant.getAuthorities());
+    SecurityContextHolder.getContext().setAuthentication(auth);
 
     when(merchantRepository.findById(any())).thenReturn(Optional.of(merchant));
     Merchant deletedMerchant = merchantService.deleteById(id);
@@ -121,11 +126,25 @@ class MerchantServiceTest {
   }
 
   @Test
+  public void testGivenIdToBeDeleted_thenThrowAccessDenied() {
+    UUID id = UUID.randomUUID();
+    Merchant merchant = new Merchant("Test2", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
+    Authentication authentication = mock(Authentication.class);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    when(merchantRepository.findById(any())).thenReturn(Optional.of(merchant));
+
+    assertThrows(AccessDeniedException.class ,() -> merchantService.deleteById(id));
+  }
+
+  @Test
   public void testGivenIdAndMerchantRequest_thenUpdateAndReturnUpdatedMerchant() {
     UUID id = UUID.randomUUID();
     MerchantRequest request = new MerchantRequest("Test2", "Test", "Test@mail.com", "Test");
     Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
     Merchant expectedMerchant = new Merchant("Test2", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
+    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(merchant, null, merchant.getAuthorities());
+    SecurityContextHolder.getContext().setAuthentication(auth);
 
     when(merchantRepository.findById(any())).thenReturn(Optional.of(merchant));
     when(merchantRepository.save(any())).thenReturn(expectedMerchant);
@@ -145,5 +164,18 @@ class MerchantServiceTest {
     when(merchantRepository.findById(any())).thenReturn(Optional.empty());
 
     assertThrows(MerchantNotFoundException.class, () -> merchantService.update(id, request));
+  }
+
+  @Test
+  public void testGivenIdAndMerchantRequest_thenThrowAccessDenied() {
+    UUID id = UUID.randomUUID();
+    MerchantRequest request = new MerchantRequest("Test2", "Test", "Test@mail.com", "Test");
+    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
+    Authentication authentication = mock(Authentication.class);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    when(merchantRepository.findById(any())).thenReturn(Optional.of(merchant));
+
+    assertThrows(AccessDeniedException.class, () -> merchantService.update(id, request));
   }
 }

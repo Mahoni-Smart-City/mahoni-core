@@ -8,6 +8,8 @@ import com.mahoni.voucherservice.merchant.model.Merchant;
 import com.mahoni.voucherservice.merchant.repository.MerchantRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +57,10 @@ public class MerchantService {
     if (merchant.isEmpty()) {
       throw new MerchantNotFoundException(id);
     }
+    String authenticatedUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+    if (!merchant.get().getUsername().equals(authenticatedUsername)) {
+      throw new AccessDeniedException("You don’t have permission to access this resource");
+    }
     merchantRepository.deleteById(id);
     return merchant.get();
   }
@@ -63,6 +69,10 @@ public class MerchantService {
     Optional<Merchant> merchant = merchantRepository.findById(id);
     if (merchant.isEmpty()) {
       throw new MerchantNotFoundException(id);
+    }
+    String authenticatedUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+    if (!merchant.get().getUsername().equals(authenticatedUsername)) {
+      throw new AccessDeniedException("You don’t have permission to access this resource");
     }
     Merchant updatedMerchant = merchant.get();
     updatedMerchant.setUsername(newMerchant.getUsername());
