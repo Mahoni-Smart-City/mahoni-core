@@ -1,0 +1,135 @@
+package com.mahoni.tripservice.trip.service;
+
+import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
+import com.mahoni.tripservice.qrgenerator.model.QRGeneratorNode;
+import com.mahoni.tripservice.qrgenerator.repository.QRGeneratorRepository;
+import com.mahoni.tripservice.qrgenerator.service.QRGeneratorService;
+import com.mahoni.tripservice.trip.dto.TripRequest;
+import com.mahoni.tripservice.trip.dto.TripStatus;
+import com.mahoni.tripservice.trip.model.Trip;
+import com.mahoni.tripservice.trip.repository.TripRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.UUID;
+
+import static java.lang.Math.max;
+
+@Service
+@Slf4j
+public class TripService {
+
+  @Autowired
+  TripRepository tripRepository;
+
+  @Autowired
+  QRGeneratorRepository qrGeneratorRepository;
+
+  @Autowired
+  QRGeneratorService qrGeneratorService;
+
+  @Value("${spring.trip.expired-duration}")
+  Integer EXPIRED_DURATION;
+
+  @Value("${spring.trip.base-multiplier}")
+  Double BASE_MULTIPLIER;
+
+  @Value("${spring.trip.aqi-multiplier}")
+  Double AQI_MULTIPLIER;
+
+  @Value("${spring.trip.duration-multiplier}")
+  Double DURATION_MULTIPLIER;
+
+  public List<Trip> getAllByUserId(UUID userId) throws Exception {
+    Optional<List<Trip>> trips = tripRepository.findByUserId(userId);
+    if (trips.isEmpty()) {
+      throw new Exception("Not found");
+    }
+    return trips.get();
+  }
+  public Trip scanTrip(TripRequest tripRequest) throws Exception {
+    Optional<Trip> latestTrip = tripRepository.findLatestTripByUserId(tripRequest.getUserId());
+    Optional<QRGenerator> qrGenerator = qrGeneratorRepository.findById(tripRequest.getScanPlaceId());
+    if (qrGenerator.isEmpty()) {
+      throw new Exception("Not found");
+    }
+    if (latestTrip.isEmpty()) {
+      return new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name());
+    }
+
+    Trip trip = latestTrip.get();
+    if (isOngoing(trip)) {
+      // scan out ongoing trip
+      trip.setStatus(TripStatus.FINISHED.name());
+      trip.setScanOutPlaceId(qrGenerator.get());
+      trip.setScanOutAt(LocalDateTime.now());
+
+      // calculate point
+      QRGenerator scanInPlace = trip.getScanInPlaceId();
+      QRGenerator scanOutPlace = trip.getScanOutPlaceId();
+      List<QRGeneratorNode> shortestPath = qrGeneratorService.shortestPathBetweenNodes(scanInPlace.getId(), scanOutPlace.getId());
+      int point = calculatePoint(shortestPath, trip);
+
+      return trip;
+    } else {
+      // update expired trip and start new trip
+      checkAndUpdateStatus(trip);
+      return new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name());
+    }
+  }
+
+  @Scheduled(cron = "0 */6 * * * *")
+  public void scheduleCheckAndUpdateStatus() {
+    Optional<List<Trip>> ongoingTrips = tripRepository.findByStatus(TripStatus.ACTIVE.name());
+    if (ongoingTrips.isPresent()) {
+      for (Trip trip: ongoingTrips.get()) {
+        checkAndUpdateStatus(trip);
+      }
+    }
+  }
+
+  public void checkAndUpdateStatus(Trip trip) {
+    if (!isOngoing(trip) && trip.getStatus() == TripStatus.ACTIVE.name()) {
+      trip.setStatus(TripStatus.EXPIRED.name());
+    }
+  }
+
+  private int calculatePoint(List<QRGeneratorNode> nodes, Trip trip) {
+    int aqi = 0;
+    for (QRGeneratorNode node: nodes) {
+      // check aqi
+      QRGenerator qrGenerator = qrGeneratorRepository.findById(node.getQrGeneratorId()).orElseThrow();
+      int maxAqi = maxAqi(qrGenerator);
+      if (aqi <= maxAqi) {
+        aqi = maxAqi;
+      }
+    }
+
+    Long durationInMinutes = Duration.between(trip.getScanInAt(), trip.getScanOutAt()).toMinutes();
+    return (int) ((aqi * AQI_MULTIPLIER) + (durationInMinutes * DURATION_MULTIPLIER) * BASE_MULTIPLIER);
+  }
+
+  private int maxAqi(QRGenerator qrGenerator) {
+    // TODO: Update when can get value from KTable
+//    int aqi1 = getAqi(qrGenerator.getSensorId1()); // get from KTable
+//    int aqi2 = Integer.MIN_VALUE;
+//    if (qrGenerator.getSensorId2() != null) {
+//      aqi2 = getAqi(qrGenerator.getSensorId2()); // get from KTable
+//    }
+//    return max(aqi1, aqi2);
+    return (int) (Math.random() * 100);
+  }
+
+  private boolean isOngoing(Trip trip) {
+    LocalDateTime now = LocalDateTime.now();
+    return trip.getScanInAt().plusMinutes(EXPIRED_DURATION).isAfter(now);
+  }
+}
