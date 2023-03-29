@@ -2,6 +2,11 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5433/mahoni?user=test123&password=test123
     driver-class-name: org.postgresql.Driver
+  neo4j:
+    uri: neo4j+s://d85e1577.databases.neo4j.io
+    authentication:
+      username: neo4j
+      password: u0uBlPeYzBc2O73WdXJabtErgXLLEcQq0Sk6CYE0lXc
   jpa:
     properties:
       hibernate:
@@ -15,7 +20,11 @@ spring:
     qr-token:
       lifespan: 5
       secret: test123
-management:
+  trip:
+    expired-duration: 360
+    base-multiplier: 1.0
+    aqi-multiplier: 2.0
+    duration-multiplier: 2.0
   endpoints:
     web:
       base-path: /actuator
