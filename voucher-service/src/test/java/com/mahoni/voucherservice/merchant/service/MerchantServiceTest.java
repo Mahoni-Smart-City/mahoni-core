@@ -1,6 +1,7 @@
 package com.mahoni.voucherservice.merchant.service;
 
 import com.mahoni.voucherservice.merchant.dto.MerchantRequest;
+import com.mahoni.voucherservice.merchant.model.MerchantRole;
 import com.mahoni.voucherservice.merchant.exception.MerchantAlreadyExistException;
 import com.mahoni.voucherservice.merchant.exception.MerchantNotFoundException;
 import com.mahoni.voucherservice.merchant.model.Merchant;
@@ -12,6 +13,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,9 @@ class MerchantServiceTest {
   @Mock
   MerchantRepository merchantRepository;
 
+  @Mock
+  PasswordEncoder passwordEncoder;
+
   @InjectMocks
   MerchantService merchantService;
 
@@ -36,34 +41,34 @@ class MerchantServiceTest {
   ArgumentCaptor<Merchant> merchantArgumentCaptor;
 
   @Test
-  public void testGivenMerchantRequest_thenSaveMerchant() throws Exception {
-    MerchantRequest request = new MerchantRequest("Test", "Test", "Test@mail.com");
-    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com");
+  public void testGivenMerchantRequest_thenSaveMerchant() {
+    MerchantRequest request = new MerchantRequest("Test", "Test", "Test@mail.com", "Test");
+    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
 
     when(merchantRepository.findByUsername(any())).thenReturn(Optional.empty());
     when(merchantRepository.save(any())).thenReturn(merchant);
+    when(passwordEncoder.encode(any())).thenReturn(any(String.class));
     Merchant savedMerchant = merchantService.create(request);
 
     assertEquals(savedMerchant, merchant);
     verify(merchantRepository).save(any());
+    verify(passwordEncoder).encode(any());
   }
 
   @Test
-  public void testGivenMerchantRequest_thenThrowMerchantAlreadyExist() throws Exception {
-    MerchantRequest request = new MerchantRequest("Test", "Test", "Test@mail.com");
-    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com");
+  public void testGivenMerchantRequest_thenThrowMerchantAlreadyExist() {
+    MerchantRequest request = new MerchantRequest("Test", "Test", "Test@mail.com", "Test");
+    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
 
     when(merchantRepository.findByUsername(any())).thenReturn(Optional.of(merchant));
 
-    assertThrows(MerchantAlreadyExistException.class, () -> {
-      merchantService.create(request);
-    });
+    assertThrows(MerchantAlreadyExistException.class, () -> merchantService.create(request));
   }
 
   @Test
-  public void testGivenId_thenReturnMerchant() throws Exception {
+  public void testGivenId_thenReturnMerchant() {
     UUID id = UUID.randomUUID();
-    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com");
+    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
 
     when(merchantRepository.findById(any())).thenReturn(Optional.of(merchant));
     Merchant savedMerchant = merchantService.getById(id);
@@ -73,19 +78,17 @@ class MerchantServiceTest {
   }
 
   @Test
-  public void testGivenId_thenThrowMerchantNotFound() throws Exception {
+  public void testGivenId_thenThrowMerchantNotFound() {
     UUID id = UUID.randomUUID();
 
     when(merchantRepository.findById(any())).thenReturn(Optional.empty());
 
-    assertThrows(MerchantNotFoundException.class, () -> {
-      merchantService.getById(id);
-    });
+    assertThrows(MerchantNotFoundException.class, () -> merchantService.getById(id));
   }
 
   @Test
-  public void testGetAll_thenReturnMerchants() throws Exception {
-    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com");
+  public void testGetAll_thenReturnMerchants() {
+    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
     List<Merchant> merchants = new ArrayList<>();
     merchants.add(merchant);
 
@@ -97,9 +100,9 @@ class MerchantServiceTest {
   }
 
   @Test
-  public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedMerchant() throws Exception {
+  public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedMerchant() {
     UUID id = UUID.randomUUID();
-    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com");
+    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
 
     when(merchantRepository.findById(any())).thenReturn(Optional.of(merchant));
     Merchant deletedMerchant = merchantService.deleteById(id);
@@ -109,25 +112,24 @@ class MerchantServiceTest {
   }
 
   @Test
-  public void testGivenIdToBeDeleted_thenThrowMerchantNotFound() throws Exception {
+  public void testGivenIdToBeDeleted_thenThrowMerchantNotFound() {
     UUID id = UUID.randomUUID();
 
     when(merchantRepository.findById(any())).thenReturn(Optional.empty());
 
-    assertThrows(MerchantNotFoundException.class, () -> {
-      merchantService.deleteById(id);
-    });
+    assertThrows(MerchantNotFoundException.class, () -> merchantService.deleteById(id));
   }
 
   @Test
-  public void testGivenIdAndMerchantRequest_thenUpdateAndReturnUpdatedMerchant() throws Exception {
+  public void testGivenIdAndMerchantRequest_thenUpdateAndReturnUpdatedMerchant() {
     UUID id = UUID.randomUUID();
-    MerchantRequest request = new MerchantRequest("Test2", "Test", "Test@mail.com" );
-    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com");
-    Merchant expectedMerchant = new Merchant("Test2", "Test", "Test@mail.com");
+    MerchantRequest request = new MerchantRequest("Test2", "Test", "Test@mail.com", "Test");
+    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
+    Merchant expectedMerchant = new Merchant("Test2", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
 
     when(merchantRepository.findById(any())).thenReturn(Optional.of(merchant));
     when(merchantRepository.save(any())).thenReturn(expectedMerchant);
+    when(passwordEncoder.encode(any())).thenReturn(any(String.class));
     Merchant updatedMerchant = merchantService.update(id, request);
 
     assertEquals(updatedMerchant, expectedMerchant);
@@ -136,14 +138,12 @@ class MerchantServiceTest {
   }
 
   @Test
-  public void testGivenIdAndMerchantRequest_thenThrowMerchantNotFound() throws Exception {
+  public void testGivenIdAndMerchantRequest_thenThrowMerchantNotFound() {
     UUID id = UUID.randomUUID();
-    MerchantRequest request = new MerchantRequest("Test2", "Test", "Test@mail.com" );
+    MerchantRequest request = new MerchantRequest("Test2", "Test", "Test@mail.com", "Test");
 
     when(merchantRepository.findById(any())).thenReturn(Optional.empty());
 
-    assertThrows(MerchantNotFoundException.class, () -> {
-      merchantService.update(id, request);
-    });
+    assertThrows(MerchantNotFoundException.class, () -> merchantService.update(id, request));
   }
 }

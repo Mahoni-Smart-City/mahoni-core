@@ -1,4 +1,4 @@
-package com.mahoni.voucherservice.merchant.dto;
+package com.mahoni.voucherservice.auth.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,13 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MerchantRequest {
+public class AuthenticationRequest {
   @NotNull
   private String username;
-  @NotNull
-  private String name;
-  @NotNull
-  private String email;
   @NotNull
   private String password;
 }
