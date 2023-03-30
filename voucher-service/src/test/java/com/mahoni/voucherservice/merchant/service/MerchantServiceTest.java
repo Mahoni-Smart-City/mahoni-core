@@ -90,6 +90,27 @@ class MerchantServiceTest {
   }
 
   @Test
+  public void testGivenUsername_thenReturnMerchant() {
+    String username = "Test";
+    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
+
+    when(merchantRepository.findByUsername(any())).thenReturn(Optional.of(merchant));
+    Merchant savedMerchant = merchantService.getByUsername(username);
+
+    assertEquals(savedMerchant, merchant);
+    verify(merchantRepository).findByUsername(any());
+  }
+
+  @Test
+  public void testGivenUsername_thenThrowMerchantNotFound() {
+    String username = "Test";
+
+    when(merchantRepository.findByUsername(any())).thenReturn(Optional.empty());
+
+    assertThrows(MerchantNotFoundException.class, () -> merchantService.getByUsername(username));
+  }
+
+  @Test
   public void testGetAll_thenReturnMerchants() {
     Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
     List<Merchant> merchants = new ArrayList<>();
@@ -103,10 +124,25 @@ class MerchantServiceTest {
   }
 
   @Test
-  public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedMerchant() {
+  public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedMerchantWithMerchantRole() {
     UUID id = UUID.randomUUID();
     Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
     UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(merchant, null, merchant.getAuthorities());
+    SecurityContextHolder.getContext().setAuthentication(auth);
+
+    when(merchantRepository.findById(any())).thenReturn(Optional.of(merchant));
+    Merchant deletedMerchant = merchantService.deleteById(id);
+
+    assertEquals(deletedMerchant, merchant);
+    verify(merchantRepository).deleteById(any());
+  }
+
+  @Test
+  public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedMerchantWithAdminRole() {
+    UUID id = UUID.randomUUID();
+    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
+    Merchant admin = new Merchant("Test2", "Test", "Test@mail.com", "Test", MerchantRole.ADMIN);
+    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(admin, null, admin.getAuthorities());
     SecurityContextHolder.getContext().setAuthentication(auth);
 
     when(merchantRepository.findById(any())).thenReturn(Optional.of(merchant));
@@ -138,12 +174,32 @@ class MerchantServiceTest {
   }
 
   @Test
-  public void testGivenIdAndMerchantRequest_thenUpdateAndReturnUpdatedMerchant() {
+  public void testGivenIdAndMerchantRequest_thenUpdateAndReturnUpdatedMerchantWithMerchantRole() {
     UUID id = UUID.randomUUID();
     MerchantRequest request = new MerchantRequest("Test2", "Test", "Test@mail.com", "Test");
     Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
     Merchant expectedMerchant = new Merchant("Test2", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
     UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(merchant, null, merchant.getAuthorities());
+    SecurityContextHolder.getContext().setAuthentication(auth);
+
+    when(merchantRepository.findById(any())).thenReturn(Optional.of(merchant));
+    when(merchantRepository.save(any())).thenReturn(expectedMerchant);
+    when(passwordEncoder.encode(any())).thenReturn(any(String.class));
+    Merchant updatedMerchant = merchantService.update(id, request);
+
+    assertEquals(updatedMerchant, expectedMerchant);
+    verify(merchantRepository).save(merchantArgumentCaptor.capture());
+    assertEquals(merchantArgumentCaptor.getValue().getUsername(), expectedMerchant.getUsername());
+  }
+
+  @Test
+  public void testGivenIdAndMerchantRequest_thenUpdateAndReturnUpdatedMerchantWithAdminRole() {
+    UUID id = UUID.randomUUID();
+    MerchantRequest request = new MerchantRequest("Test2", "Test", "Test@mail.com", "Test");
+    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
+    Merchant expectedMerchant = new Merchant("Test2", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
+    Merchant admin = new Merchant("Test2", "Test", "Test@mail.com", "Test", MerchantRole.ADMIN);
+    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(admin, null, admin.getAuthorities());
     SecurityContextHolder.getContext().setAuthentication(auth);
 
     when(merchantRepository.findById(any())).thenReturn(Optional.of(merchant));

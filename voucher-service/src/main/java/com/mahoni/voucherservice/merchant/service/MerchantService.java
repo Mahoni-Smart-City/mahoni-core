@@ -9,6 +9,7 @@ import com.mahoni.voucherservice.merchant.repository.MerchantRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,14 @@ public class MerchantService {
     return merchant.get();
   }
 
+  public Merchant getByUsername(String username) {
+    Optional<Merchant> merchant = merchantRepository.findByUsername(username);
+    if (merchant.isEmpty()) {
+      throw new MerchantNotFoundException(username);
+    }
+    return merchant.get();
+  }
+
   public List<Merchant> getAll() {
     return merchantRepository.findAll();
   }
@@ -57,8 +66,9 @@ public class MerchantService {
     if (merchant.isEmpty()) {
       throw new MerchantNotFoundException(id);
     }
-    String authenticatedUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-    if (!merchant.get().getUsername().equals(authenticatedUsername)) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (!(merchant.get().getUsername().equals(auth.getName()) || auth.getAuthorities().stream()
+      .anyMatch(r -> r.getAuthority().equals("ADMIN")))) {
       throw new AccessDeniedException("You don’t have permission to access this resource");
     }
     merchantRepository.deleteById(id);
@@ -70,8 +80,9 @@ public class MerchantService {
     if (merchant.isEmpty()) {
       throw new MerchantNotFoundException(id);
     }
-    String authenticatedUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-    if (!merchant.get().getUsername().equals(authenticatedUsername)) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (!(merchant.get().getUsername().equals(auth.getName()) || auth.getAuthorities().stream()
+      .anyMatch(r -> r.getAuthority().equals("ADMIN")))) {
       throw new AccessDeniedException("You don’t have permission to access this resource");
     }
     Merchant updatedMerchant = merchant.get();
