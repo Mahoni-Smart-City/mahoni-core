@@ -28,7 +28,7 @@ public class TripController {
   @PostMapping
   public ResponseEntity<Trip> post(@Valid @RequestBody TripRequest request) {
     try {
-      if (qrGeneratorService.validateQRToken(request.getQrToken())) {
+      if (qrGeneratorService.validateQRToken(request.getQrToken(), request.getScanPlaceId())) {
         return ResponseEntity.ok(tripService.scanTrip(request));
       } else {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "QR Code is not valid");

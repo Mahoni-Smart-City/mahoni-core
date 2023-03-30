@@ -18,7 +18,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
 
 import static java.lang.Math.max;
@@ -56,13 +55,13 @@ public class TripService {
     return trips.get();
   }
   public Trip scanTrip(TripRequest tripRequest) throws Exception {
-    Optional<Trip> latestTrip = tripRepository.findLatestTripByUserId(tripRequest.getUserId());
+    Optional<Trip> latestTrip = tripRepository.findLatestActiveTripByUserId(tripRequest.getUserId());
     Optional<QRGenerator> qrGenerator = qrGeneratorRepository.findById(tripRequest.getScanPlaceId());
     if (qrGenerator.isEmpty()) {
       throw new Exception("Not found");
     }
     if (latestTrip.isEmpty()) {
-      return new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name());
+      return tripRepository.save(new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name()));
     }
 
     Trip trip = latestTrip.get();
@@ -80,11 +79,11 @@ public class TripService {
       int point = calculatePoint(aqi, trip);
       trip.setAqi(aqi);
       trip.setPoint(point);
-      return trip;
+      return tripRepository.save(trip);
     } else {
       // update expired trip and start new trip
       checkAndUpdateStatus(trip);
-      return new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name());
+      return tripRepository.save(new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name()));
     }
   }
 

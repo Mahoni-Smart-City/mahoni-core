@@ -14,6 +14,6 @@ public interface TripRepository extends JpaRepository<Trip, UUID> {
 
   Optional<List<Trip>> findByStatus(String status);
 
-  @Query("SELECT a FROM Trip a WHERE a.userId = ?1 ORDER BY a.scanInAt DESC LIMIT 1")
-  Optional<Trip> findLatestTripByUserId(UUID userId);
+  @Query("SELECT a FROM Trip a WHERE a.userId = ?1 and a.status = 'ACTIVE' ORDER BY a.scanInAt DESC LIMIT 1")
+  Optional<Trip> findLatestActiveTripByUserId(UUID userId);
 }

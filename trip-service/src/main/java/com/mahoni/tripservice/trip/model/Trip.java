@@ -34,7 +34,7 @@ public class Trip {
   private QRGenerator scanInPlaceId;
 
   @ManyToOne
-  @JoinColumn(name = "scan_out_place_id", referencedColumnName = "id", nullable = false)
+  @JoinColumn(name = "scan_out_place_id", referencedColumnName = "id")
   private QRGenerator scanOutPlaceId;
 
   @Column(name = "scan_in_at", nullable = false)

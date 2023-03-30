@@ -2,6 +2,8 @@ package com.mahoni.tripservice.qrgenerator.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
@@ -46,7 +48,7 @@ public class QRGeneratorService {
   String secret;
 
   @Autowired
-  private ObjectMapper objectMapper;
+  ObjectMapper objectMapper;
 
   static int MATRIX_WIDTH = 200;
 
@@ -117,10 +119,10 @@ public class QRGeneratorService {
     return cryptographyService.encrypt(stringToken, secret);
   }
 
-  public Boolean validateQRToken(String token) throws JsonProcessingException {
+  public Boolean validateQRToken(String token, UUID qrGeneratorId) throws JsonProcessingException {
     String stringToken = cryptographyService.decrypt(token, secret);
     QRToken qrToken = objectMapper.readValue(stringToken, QRToken.class);
-    return qrToken.getExpiredAt().isAfter(LocalDateTime.now());
+    return qrToken.getExpiredAt().isAfter(LocalDateTime.now()) && qrGeneratorId.equals(qrToken.getQRGeneratorId());
   }
 
   public List<QRGeneratorNode> getAllNode() {

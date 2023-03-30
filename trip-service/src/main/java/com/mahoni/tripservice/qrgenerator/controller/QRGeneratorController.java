@@ -85,9 +85,9 @@ public class QRGeneratorController {
   }
 
   @GetMapping("/validate-qr")
-  public Boolean validateQR(@RequestParam("token") String token) {
+  public Boolean validateQR(@RequestParam("token") String token, @RequestParam("qr-generator-id") UUID id) {
     try {
-      return qrGeneratorService.validateQRToken(token);
+      return qrGeneratorService.validateQRToken(token, id);
     } catch (JsonProcessingException e) {
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
