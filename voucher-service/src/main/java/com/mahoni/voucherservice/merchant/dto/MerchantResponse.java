@@ -8,13 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MerchantRequest {
+public class MerchantResponse {
   @NotNull
   private String username;
   @NotNull
   private String name;
   @NotNull
   private String email;
-  @NotNull
-  private String password;
 }

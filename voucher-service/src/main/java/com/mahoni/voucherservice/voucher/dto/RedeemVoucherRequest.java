@@ -1,20 +1,18 @@
-package com.mahoni.voucherservice.merchant.dto;
+package com.mahoni.voucherservice.voucher.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MerchantRequest {
+public class RedeemVoucherRequest {
   @NotNull
-  private String username;
+  private UUID voucherId;
   @NotNull
-  private String name;
-  @NotNull
-  private String email;
-  @NotNull
-  private String password;
+  private UUID userId;
 }
