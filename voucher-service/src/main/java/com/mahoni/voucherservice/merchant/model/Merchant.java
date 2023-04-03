@@ -1,6 +1,5 @@
 package com.mahoni.voucherservice.merchant.model;
 
-import com.mahoni.voucherservice.voucher.model.Voucher;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,10 +46,6 @@ public class Merchant implements UserDetails {
 
   @Enumerated(EnumType.ORDINAL)
   private MerchantRole role;
-
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "merchant_id", referencedColumnName = "id")
-  private List<Voucher> vouchers;
 
   public Merchant(String username, String name, String email, String password, MerchantRole role) {
     this.username = username;
