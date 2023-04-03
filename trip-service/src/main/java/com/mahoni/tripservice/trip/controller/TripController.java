@@ -9,11 +9,10 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/trips")
@@ -33,6 +32,15 @@ public class TripController {
       } else {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "QR Code is not valid");
       }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @GetMapping("/latest-trip/{userId}")
+  public ResponseEntity<Trip> getLatestTrip(@PathVariable("userId") UUID userId) {
+    try {
+      return ResponseEntity.ok(tripService.getLatestTripByUserId(userId));
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

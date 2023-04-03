@@ -1,5 +1,6 @@
 package com.mahoni.tripservice.trip.service;
 
+import com.mahoni.tripservice.qrgenerator.exception.QRGeneratorNotFoundException;
 import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
 import com.mahoni.tripservice.qrgenerator.model.QRGeneratorNode;
 import com.mahoni.tripservice.qrgenerator.repository.QRGeneratorRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -49,16 +51,13 @@ public class TripService {
 
   public List<Trip> getAllByUserId(UUID userId) throws Exception {
     Optional<List<Trip>> trips = tripRepository.findByUserId(userId);
-    if (trips.isEmpty()) {
-      throw new Exception("Not found");
-    }
-    return trips.get();
+    return trips.orElseGet(ArrayList::new);
   }
   public Trip scanTrip(TripRequest tripRequest) throws Exception {
     Optional<Trip> latestTrip = tripRepository.findLatestActiveTripByUserId(tripRequest.getUserId());
     Optional<QRGenerator> qrGenerator = qrGeneratorRepository.findById(tripRequest.getScanPlaceId());
     if (qrGenerator.isEmpty()) {
-      throw new Exception("Not found");
+      throw new QRGeneratorNotFoundException();
     }
     if (latestTrip.isEmpty()) {
       return tripRepository.save(new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name()));
@@ -85,6 +84,11 @@ public class TripService {
       checkAndUpdateStatus(trip);
       return tripRepository.save(new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name()));
     }
+  }
+
+  public Trip getLatestTripByUserId(UUID userId) {
+    Optional<Trip> trip = tripRepository.findLatestTripByUserId(userId);
+    return trip.orElse(null);
   }
 
   @Scheduled(cron = "0 */6 * * * *")
