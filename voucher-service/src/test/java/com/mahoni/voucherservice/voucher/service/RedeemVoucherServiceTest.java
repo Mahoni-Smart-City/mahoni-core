@@ -294,4 +294,17 @@ public class RedeemVoucherServiceTest {
     verify(redeemVoucherRepository).save(redeemVoucherArgumentCaptor.capture());
     assertEquals(redeemVoucherArgumentCaptor.getValue().getStatus(), expectedRedeemVoucher.getStatus());
   }
+
+  @Test
+  public void testScheduledCheck_thenUpdateStatus() {
+    List<RedeemVoucher> redeemVouchers = new ArrayList<>();
+    redeemVoucher.setStatus(VoucherStatus.ACTIVE);
+    redeemVouchers.add(redeemVoucher);
+
+    redeemVoucherRepository.save(redeemVoucher);
+    when(redeemVoucherRepository.findAllByStatus(any())).thenReturn(redeemVouchers);
+    redeemVoucherService.scheduledCheckAndUpdateStatus();
+
+    assertEquals(redeemVoucher.getStatus(), VoucherStatus.EXPIRED);
+  }
 }

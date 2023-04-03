@@ -8,6 +8,7 @@ import com.mahoni.voucherservice.voucher.model.VoucherStatus;
 import com.mahoni.voucherservice.voucher.repository.RedeemVoucherRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -99,7 +100,7 @@ public class RedeemVoucherService {
       throw new RedeemVoucherNotFoundException(request.getVoucherId());
     }
 
-    //TODO: subtract user point
+    //TODO: send event redeemed
 
     RedeemVoucher updatedRedeemVoucher = redeemVoucher.get();
     updatedRedeemVoucher.setUserId(request.getUserId());
@@ -117,6 +118,19 @@ public class RedeemVoucherService {
     RedeemVoucher updatedRedeemVoucher = redeemVoucher.get();
     updatedRedeemVoucher.setStatus(VoucherStatus.REDEEMED);
     return redeemVoucherRepository.save(updatedRedeemVoucher);
+  }
+
+  @Scheduled(cron = "0 0 0 * * *")
+  public void scheduledCheckAndUpdateStatus() {
+    List<RedeemVoucher> activeRedeemVoucher = redeemVoucherRepository.findAllByStatus(VoucherStatus.ACTIVE);
+    if (!activeRedeemVoucher.isEmpty()) {
+      for (RedeemVoucher redeemVoucher: activeRedeemVoucher) {
+        LocalDateTime now = LocalDateTime.now();
+        if (redeemVoucher.getExpiredAt().isBefore(now)) {
+          redeemVoucher.setStatus(VoucherStatus.EXPIRED);
+        }
+      }
+    }
   }
 
   private boolean isAdmin() {

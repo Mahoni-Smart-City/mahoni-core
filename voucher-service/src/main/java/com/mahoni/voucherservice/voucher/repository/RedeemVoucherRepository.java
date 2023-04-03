@@ -1,6 +1,7 @@
 package com.mahoni.voucherservice.voucher.repository;
 
 import com.mahoni.voucherservice.voucher.model.RedeemVoucher;
+import com.mahoni.voucherservice.voucher.model.VoucherStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,6 +14,8 @@ public interface RedeemVoucherRepository extends JpaRepository<RedeemVoucher, UU
   Optional<RedeemVoucher> findAvailableRedeemVoucherByVoucherId(UUID voucherId);
 
   List<RedeemVoucher> findAllByUserId(UUID uuid);
+
+  List<RedeemVoucher> findAllByStatus(VoucherStatus status);
 
   @Query("SELECT a FROM RedeemVoucher a WHERE a.voucher.merchant.username = ?1")
   List<RedeemVoucher> findAllByMerchant(String username);
