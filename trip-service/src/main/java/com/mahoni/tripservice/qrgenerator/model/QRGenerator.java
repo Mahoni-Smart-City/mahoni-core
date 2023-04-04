@@ -1,4 +1,4 @@
-package com.mahoni.tripservice.model;
+package com.mahoni.tripservice.qrgenerator.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

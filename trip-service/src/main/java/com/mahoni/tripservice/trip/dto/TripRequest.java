@@ -1,6 +1,5 @@
-package com.mahoni.tripservice.dto;
+package com.mahoni.tripservice.trip.dto;
 
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,11 +10,11 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class QRGeneratorRequest {
-  private String location;
+public class TripRequest {
   @NotNull
-  private  QRGeneratorType type;
+  private String qrToken;
   @NotNull
-  private UUID sensorId1;
-  private UUID sensorId2;
+  private UUID userId;
+  @NotNull
+  private UUID scanPlaceId;
 }

@@ -1,4 +1,4 @@
-package com.mahoni.tripservice.dto;
+package com.mahoni.tripservice.qrgenerator.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
