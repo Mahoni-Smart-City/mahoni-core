@@ -23,6 +23,7 @@ services:
       - ./kafka/data:/var/lib/kafka/data
     depends_on:
       - zookeeper
+    user: root
 
   user-db:
     image: postgres:latest
@@ -105,26 +106,40 @@ services:
       - "8083:8083"
 
   # Utility
-  schema-registry-ui:
-    image: landoop/schema-registry-ui:0.9.4
-    hostname: kafka-schema-registry-ui
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
     ports:
-      - "8001:8000"
+      - "8080:8080"
+    restart: always
     environment:
-      SCHEMAREGISTRY_URL: http://kafka-schema-registry:8081/
-      PROXY: true
-      SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS: GET,POST,PUT,OPTIONS
-      SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN: "*"
-    depends_on:
-      - kafka-schema-registry
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: PLAINTEXT://kafka:29092
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://kafka-schema-registry:8081/
 
-  kafdrop:
-    image: obsidiandynamics/kafdrop
-    restart: "no"
-    environment:
-      KAFKA_BROKERCONNECT: "kafka:29092"
-      JVM_OPTS: "-Xms16M -Xmx512M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
+  jobmanager:
+    image: flink:latest
+    hostname: jobmanager
     ports:
-      - "9000:9000"
+      - "8050:8081"
+    command: jobmanager
+    environment:
+      FLINK_PROPERTIES: "jobmanager.rpc.address: jobmanager"
+    volumes:
+      - ./job/artifacts:/home
+
+  taskmanager:
+    image: flink:latest
+    hostname: taskmanager
     depends_on:
-      - kafka
+      - jobmanager
+    command: taskmanager
+    deploy:
+      replicas: 2
+    volumes:
+      - ./job/artifacts:/home
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 4

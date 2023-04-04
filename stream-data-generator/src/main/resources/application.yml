@@ -4,7 +4,7 @@ server:
   port : 8083
 spring:
   datasource:
-    url: jdbc:h2:file:/data/streamgenerator
+    url: jdbc:h2:file:./data/streamgenerator
     username: sa
     password: password
     driverClassName: org.h2.Driver
@@ -18,5 +18,6 @@ spring:
     schema.registry.url: http://localhost:8081
 api:
   airly:
-    locationId: 18453,42975,80692,40905,105476,33036,100041,107276,18450,100654,96878,35824,16692,18456,96571,14266,35787,35960,16740,38596,18504,87300,100927
+    locationId: 18453, 42975
+    #locationId: 18453,42975,80692,40905,105476,33036,100041,107276,18450,100654,96878,35824,16692,18456,96571,14266,35787,35960,16740,38596,18504,87300,100927
     key1: jzjR0MNpGXCxH7gbIBYrQ6P70lgkDt67

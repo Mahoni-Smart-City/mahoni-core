@@ -93,7 +93,7 @@ public class SchedulerService {
         parseAndSaveData(data);
     }
 
-    @Scheduled(cron = "*/5 * * * * *")
+    @Scheduled(cron = "*/1 * * * * *")
     public void sendToKafka() {
         logger.info("Running send to kafka");
         if (enableStream) {
@@ -169,7 +169,7 @@ public class SchedulerService {
         String id = UUID.randomUUID().toString();
 
         AirQualityRawSchema event = AirQualityRawSchema.newBuilder()
-            .setEventId(data.getId().toString())
+            .setEventId(id)
             .setSensorId(data.getSensorId())
             .setTimestamp(data.getTimestamp())
             .setAqi(data.getAqi())
@@ -185,7 +185,7 @@ public class SchedulerService {
             .setPressure(data.getPressure())
             .setHumidity(data.getHumidity())
             .build();
-
+        //kafkaTemplate.send(TOPIC, id, event);
         return new ProducerRecord<>(TOPIC, id, event);
     }
 }
