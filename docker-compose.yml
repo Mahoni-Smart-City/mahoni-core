@@ -23,6 +23,7 @@ services:
       - ./kafka/data:/var/lib/kafka/data
     depends_on:
       - zookeeper
+    user: root
 
   user-db:
     image: postgres:latest
@@ -128,3 +129,11 @@ services:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: PLAINTEXT://kafka:29092
       KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://kafka-schema-registry:8081/
+
+  cassandra-db:
+    image: cassandra:latest
+    container_name: cassandra
+    ports:
+      - "9042:9042"
+    volumes:
+      - ./cassandra:/var/lib/cassandra
