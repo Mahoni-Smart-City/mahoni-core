@@ -29,7 +29,6 @@ public class Merchant implements UserDetails {
     strategy = "org.hibernate.id.UUIDGenerator"
   )
   @Column(name = "id", updatable = false, nullable = false)
-  @Getter
   private UUID id;
 
   @Column(unique = true)

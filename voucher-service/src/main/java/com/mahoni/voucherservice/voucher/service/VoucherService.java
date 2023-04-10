@@ -56,35 +56,39 @@ public class VoucherService {
   }
 
   public Voucher deleteById(UUID id) {
-    Optional<Voucher> voucher = voucherRepository.findById(id);
-    if (voucher.isEmpty()) {
-      throw new VoucherNotFoundException(id);
-    }
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    if (!(voucher.get().getMerchant().getUsername().equals(auth.getName()) || auth.getAuthorities().stream()
-      .anyMatch(r -> r.getAuthority().equals("ADMIN")))) {
-      throw new AccessDeniedException("You don’t have permission to access this resource");
-    }
+    Voucher voucher = authorizedFindVoucherById(id);
     voucherRepository.deleteById(id);
-    return voucher.get();
+    return voucher;
   }
 
   public Voucher update(UUID id, VoucherRequest newVoucher) {
-    Optional<Voucher> voucher = voucherRepository.findById(id);
-    if (voucher.isEmpty()) {
-      throw new VoucherNotFoundException(id);
-    }
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    if (!(voucher.get().getMerchant().getUsername().equals(auth.getName()) || auth.getAuthorities().stream()
-      .anyMatch(r -> r.getAuthority().equals("ADMIN")))) {
-      throw new AccessDeniedException("You don’t have permission to access this resource");
-    }
-    Voucher updatedVoucher = voucher.get();
+    Voucher updatedVoucher = authorizedFindVoucherById(id);
     updatedVoucher.setName(newVoucher.getName());
     updatedVoucher.setDescription(newVoucher.getDescription());
     updatedVoucher.setType(newVoucher.getType());
     updatedVoucher.setStartAt(newVoucher.getStartAt());
     updatedVoucher.setExpiredAt(newVoucher.getExpiredAt());
     return voucherRepository.save(updatedVoucher);
+  }
+
+  private boolean isAdmin() {
+    return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ADMIN"));
+  }
+
+  private boolean isAllowedMerchantByVoucher(Voucher voucher) {
+    return SecurityContextHolder.getContext().getAuthentication().getName().equals(
+      voucher.getMerchant().getUsername()
+    );
+  }
+
+  private Voucher authorizedFindVoucherById(UUID id) {
+    Optional<Voucher> voucher = voucherRepository.findById(id);
+    if (voucher.isEmpty()) {
+      throw new VoucherNotFoundException(id);
+    }
+    if (!(isAllowedMerchantByVoucher(voucher.get()) || isAdmin())) {
+      throw new AccessDeniedException("You don’t have permission to access this resource");
+    }
+    return voucher.get();
   }
 }

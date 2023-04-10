@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface RedeemVoucherRepository extends JpaRepository<RedeemVoucher, UUID> {
-  @Query("SELECT a FROM RedeemVoucher a WHERE a.voucher.id = ?1 ORDER BY a.status DESC LIMIT 1")
+  @Query("SELECT a FROM RedeemVoucher a WHERE a.voucher.id = ?1 AND a.status = null ORDER BY a.redeemCode LIMIT 1")
   Optional<RedeemVoucher> findAvailableRedeemVoucherByVoucherId(UUID voucherId);
 
   List<RedeemVoucher> findAllByUserId(UUID uuid);
