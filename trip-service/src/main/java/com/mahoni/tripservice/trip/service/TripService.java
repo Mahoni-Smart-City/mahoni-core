@@ -7,14 +7,19 @@ import com.mahoni.tripservice.qrgenerator.repository.QRGeneratorRepository;
 import com.mahoni.tripservice.qrgenerator.service.QRGeneratorService;
 import com.mahoni.tripservice.trip.dto.TripRequest;
 import com.mahoni.tripservice.trip.dto.TripStatus;
+import com.mahoni.tripservice.trip.kafka.TripEventProducer;
 import com.mahoni.tripservice.trip.model.Trip;
 import com.mahoni.tripservice.trip.repository.TripRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.streams.KafkaStreams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -37,6 +42,14 @@ public class TripService {
   @Autowired
   QRGeneratorService qrGeneratorService;
 
+  @Autowired
+  TripEventProducer tripEventProducer;
+
+  @Autowired
+  StreamsBuilderFactoryBean factoryBean;
+
+  KafkaStreams kafkaStreams;
+
   @Value("${spring.trip.expired-duration}")
   Integer EXPIRED_DURATION;
 
@@ -49,10 +62,17 @@ public class TripService {
   @Value("${spring.trip.duration-multiplier}")
   Double DURATION_MULTIPLIER;
 
+//  @PostConstruct
+//  public void init() {
+//    this.kafkaStreams = factoryBean.;
+//  }
+
   public List<Trip> getAllByUserId(UUID userId) throws Exception {
     Optional<List<Trip>> trips = tripRepository.findByUserId(userId);
     return trips.orElseGet(ArrayList::new);
   }
+
+  @Transactional
   public Trip scanTrip(TripRequest tripRequest) throws Exception {
     Optional<Trip> latestTrip = tripRepository.findLatestActiveTripByUserId(tripRequest.getUserId());
     Optional<QRGenerator> qrGenerator = qrGeneratorRepository.findById(tripRequest.getScanPlaceId());
@@ -78,6 +98,9 @@ public class TripService {
       int point = calculatePoint(aqi, trip);
       trip.setAqi(aqi);
       trip.setPoint(point);
+
+      // send event to kafka
+      tripEventProducer.send(trip);
       return tripRepository.save(trip);
     } else {
       // update expired trip and start new trip
