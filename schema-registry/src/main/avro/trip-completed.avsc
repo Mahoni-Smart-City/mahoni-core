@@ -1,0 +1,51 @@
+{
+  "type": "record",
+  "name": "TripCompletedSchema",
+  "namespace": "com.mahoni.schema",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": "string"
+    },
+    {
+      "name": "timestamp",
+      "type": "long"
+    },
+    {
+      "name": "tripId",
+      "type": "string"
+    },
+    {
+      "name": "userId",
+      "type": "string"
+    },
+    {
+      "name": "scanInPlaceId",
+      "type": "string"
+    },
+    {
+      "name": "scanInTimestamp",
+      "type": "long"
+    },
+    {
+      "name": "scanOutPlaceId",
+      "type": "string"
+    },
+    {
+      "name": "scanOutTimestamp",
+      "type": "long"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "aqi",
+      "type": "double"
+    },
+    {
+      "name": "point",
+      "type": "int"
+    }
+  ]
+}

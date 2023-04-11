@@ -1,0 +1,35 @@
+{
+  "type": "record",
+  "name": "AirQualityProcessedSchema",
+  "namespace": "com.mahoni.schema",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": "string"
+    },
+    {
+      "name": "sensorId",
+      "type": "string"
+    },
+    {
+      "name": "timestamp",
+      "type": "long"
+    },
+    {
+      "name": "aqi",
+      "type": "double"
+    },
+    {
+      "name": "no2",
+      "type": "double"
+    },
+    {
+      "name": "pm25",
+      "type": "double"
+    },
+    {
+      "name": "pm10",
+      "type": "double"
+    }
+  ]
+}

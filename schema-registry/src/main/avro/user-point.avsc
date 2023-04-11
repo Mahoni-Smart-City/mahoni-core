@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "UserPointSchema",
+  "namespace": "com.mahoni.schema",
+  "fields": [
+    {
+      "name": "userId",
+      "type": "string"
+    },
+    {
+      "name": "point",
+      "type": "int"
+    }
+  ]
+}
