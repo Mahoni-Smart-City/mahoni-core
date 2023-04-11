@@ -20,9 +20,9 @@ public class TripServiceStream {
   @Value("${spring.kafka.schema.registry.url}")
   private String schemaRegistryUrl;
 
-  @Bean
-  @Autowired
-  public KTable<String, UserPointSchema> buildPipeline(StreamsBuilder streamsBuilder) {
+//  @Bean
+//  @Autowired
+//  public KTable<String, UserPointSchema> buildPipeline(StreamsBuilder streamsBuilder) {
 //    Map<String, Object> serdeConfig = new HashMap<>();
 //    serdeConfig.put(SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
 //
@@ -33,12 +33,12 @@ public class TripServiceStream {
 //
 //    StreamsBuilder streamsBuilder = new StreamsBuilder();
 //    streamsBuilder.stream(USER_POINT_COMPACTED_TOPIC, Consumed.with(stringSerde, avroSerde))
-    return streamsBuilder
-      .stream(USER_POINT_COMPACTED_TOPIC, Consumed.with(stringSerde, avroSerde))
-      .toTable();
+//    return streamsBuilder
+//      .stream(USER_POINT_COMPACTED_TOPIC, Consumed.with(stringSerde, avroSerde))
+//      .toTable();
 
 
 //    return streamsBuilder
 //      .table(USER_POINT_COMPACTED_TOPIC, Materialized.as("user-point-store"));
-  }
+//  }
 }
