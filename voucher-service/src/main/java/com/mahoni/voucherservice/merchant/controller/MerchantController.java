@@ -30,8 +30,7 @@ public class MerchantController {
   public ResponseEntity<MerchantResponse> post(@Valid @RequestBody MerchantRequest request) {
     try {
       Merchant newMerchant = merchantService.create(request);
-      MerchantResponse response = new MerchantResponse(newMerchant.getUsername(), newMerchant.getName(), newMerchant.getEmail());
-      return ResponseEntity.ok(response);
+      return ResponseEntity.ok(mapper(newMerchant));
     } catch (RuntimeException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
@@ -40,18 +39,14 @@ public class MerchantController {
   @GetMapping
   private ResponseEntity<List<MerchantResponse>> getAll() {
     List<Merchant> allMerchants = merchantService.getAll();
-    List<MerchantResponse> responses = allMerchants.stream()
-      .map(merchant -> new MerchantResponse(merchant.getUsername(), merchant.getName(), merchant.getEmail()))
-      .collect(Collectors.toList());
-    return ResponseEntity.ok(responses);
+    return ResponseEntity.ok(allMerchants.stream().map(this::mapper).collect(Collectors.toList()));
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<MerchantResponse> get(@PathVariable("id") UUID id ) {
     try {
       Merchant merchant = merchantService.getById(id);
-      MerchantResponse response = new MerchantResponse(merchant.getUsername(), merchant.getName(), merchant.getEmail());
-      return ResponseEntity.ok(response);
+      return ResponseEntity.ok(mapper(merchant));
     } catch (MerchantNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     }
@@ -61,8 +56,7 @@ public class MerchantController {
   public ResponseEntity<MerchantResponse> delete(@PathVariable("id") UUID id) {
     try {
       Merchant deletedMerchant = merchantService.deleteById(id);
-      MerchantResponse response = new MerchantResponse(deletedMerchant.getUsername(), deletedMerchant.getName(), deletedMerchant.getEmail());
-      return ResponseEntity.ok(response);
+      return ResponseEntity.ok(mapper(deletedMerchant));
     } catch (MerchantNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     } catch (AccessDeniedException e) {
@@ -74,12 +68,15 @@ public class MerchantController {
   public ResponseEntity<Object> update(@PathVariable("id") UUID id, @Valid @RequestBody MerchantRequest request) {
     try {
       Merchant updatedMerchant = merchantService.update(id, request);
-      MerchantResponse response = new MerchantResponse(updatedMerchant.getUsername(), updatedMerchant.getName(), updatedMerchant.getEmail());
-      return ResponseEntity.ok(response);
+      return ResponseEntity.ok(mapper(updatedMerchant));
     } catch (MerchantNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     } catch (AccessDeniedException e) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
     }
+  }
+
+  private MerchantResponse mapper(Merchant merchant) {
+    return new MerchantResponse(merchant.getId(), merchant.getUsername(), merchant.getName(), merchant.getEmail());
   }
 }

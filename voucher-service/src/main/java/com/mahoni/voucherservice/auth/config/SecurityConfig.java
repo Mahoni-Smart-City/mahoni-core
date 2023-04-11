@@ -26,7 +26,7 @@ public class SecurityConfig {
       .csrf()
         .disable()
       .authorizeHttpRequests()
-        .requestMatchers(HttpMethod.GET, "/api/v1/merchants/**")
+        .requestMatchers(HttpMethod.GET, "/api/v1/merchants/**", "/api/v1/vouchers")
           .permitAll()
         .requestMatchers("/api/v1/merchants/**", "/api/v1/vouchers/**")
           .authenticated()

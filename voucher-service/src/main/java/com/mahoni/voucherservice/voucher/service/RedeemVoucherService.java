@@ -46,6 +46,9 @@ public class RedeemVoucherService {
     if (redeemVoucher.isEmpty()) {
       throw new RedeemVoucherNotFoundException(id);
     }
+    if (!(isAllowedMerchantByVoucherId(redeemVoucher.get().getVoucher().getId()) || isAdmin())) {
+      throw new AccessDeniedException("You don’t have permission to access this resource");
+    }
     return redeemVoucher.get();
   }
 
@@ -73,7 +76,9 @@ public class RedeemVoucherService {
       throw new AccessDeniedException("You don’t have permission to access this resource");
     }
     RedeemVoucher updatedRedeemVoucher = redeemVoucher.get();
+    updatedRedeemVoucher.getVoucher().subtractQuantity();
     updatedRedeemVoucher.setVoucher(voucherService.getById(newRedeemVoucher.getVoucherId()));
+    voucherService.getById(newRedeemVoucher.getVoucherId()).addQuantity();
     updatedRedeemVoucher.setRedeemCode(newRedeemVoucher.getRedeemCode());
     updatedRedeemVoucher.setExpiredAt(newRedeemVoucher.getExpiredAt());
     return redeemVoucherRepository.save(updatedRedeemVoucher);
@@ -88,6 +93,7 @@ public class RedeemVoucherService {
       throw new AccessDeniedException("You don't have permission to access this resource");
     }
     redeemVoucherRepository.deleteById(id);
+    redeemVoucher.get().getVoucher().subtractQuantity();
     return redeemVoucher.get();
   }
 
@@ -128,6 +134,7 @@ public class RedeemVoucherService {
         LocalDateTime now = LocalDateTime.now();
         if (redeemVoucher.getExpiredAt().isBefore(now)) {
           redeemVoucher.setStatus(VoucherStatus.EXPIRED);
+          redeemVoucherRepository.save(redeemVoucher);
         }
       }
     }

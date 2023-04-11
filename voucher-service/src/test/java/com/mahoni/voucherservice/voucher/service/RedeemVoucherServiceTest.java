@@ -66,7 +66,10 @@ public class RedeemVoucherServiceTest {
     voucher.setMerchant(merchant);
     voucher.setQuantity(0);
 
-    redeemVoucher = new RedeemVoucher(voucher, "Test", LocalDateTime.now());
+    redeemVoucher = new RedeemVoucher();
+    redeemVoucher.setVoucher(voucher);
+    redeemVoucher.setRedeemCode("Test");
+    redeemVoucher.setExpiredAt(LocalDateTime.now());
     requestCRUD = new RedeemVoucherRequestCRUD(id,"Test", LocalDateTime.now());
     request = new RedeemVoucherRequest(id, id);
 
@@ -119,6 +122,7 @@ public class RedeemVoucherServiceTest {
   @Test
   public void testGivenId_thenReturnRedeemVoucher() {
     when(redeemVoucherRepository.findById(any())).thenReturn(Optional.of(redeemVoucher));
+    when(voucherService.getById(any())).thenReturn(voucher);
     RedeemVoucher savedRedeemVoucher = redeemVoucherService.getById(id);
 
     assertEquals(savedRedeemVoucher, redeemVoucher);
@@ -130,7 +134,21 @@ public class RedeemVoucherServiceTest {
     when(redeemVoucherRepository.findById(any())).thenReturn(Optional.empty());
 
     assertThrows(RedeemVoucherNotFoundException.class, () -> redeemVoucherService.getById(id));
+    assertThrows(RedeemVoucherNotFoundException.class, () -> redeemVoucherService.deleteById(id));
     assertThrows(RedeemVoucherNotFoundException.class, () -> redeemVoucherService.setRedeemed(id));
+  }
+
+  @Test
+  public void testGivenId_thenReturnAccessDenied() {
+    Authentication authentication = mock(Authentication.class);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    when(redeemVoucherRepository.findById(any())).thenReturn(Optional.of(redeemVoucher));
+    when(voucherService.getById(any())).thenReturn(voucher);
+    when(authentication.getName()).thenReturn("Any");
+
+    assertThrows(AccessDeniedException.class, () -> redeemVoucherService.getById(id));
+    assertThrows(AccessDeniedException.class, () -> redeemVoucherService.deleteById(id));
   }
 
   @Test
@@ -239,25 +257,6 @@ public class RedeemVoucherServiceTest {
 
     assertEquals(deletedRedeemVoucher, redeemVoucher);
     verify(redeemVoucherRepository).deleteById(any());
-  }
-
-  @Test
-  public void testGivenIdToBeDeleted_thenThrowRedeemVoucherNotFound() {
-    when(redeemVoucherRepository.findById(any())).thenReturn(Optional.empty());
-
-    assertThrows(RedeemVoucherNotFoundException.class, () -> redeemVoucherService.deleteById(id));
-  }
-
-  @Test
-  public void testGivenIdToBeDeleted_thenThrowAccessDenied() {
-    Authentication authentication = mock(Authentication.class);
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-
-    when(redeemVoucherRepository.findById(any())).thenReturn(Optional.of(redeemVoucher));
-    when(voucherService.getById(any())).thenReturn(voucher);
-    when(authentication.getName()).thenReturn("Any");
-
-    assertThrows(AccessDeniedException.class, () -> redeemVoucherService.deleteById(id));
   }
 
   @Test
