@@ -4,12 +4,28 @@
   "namespace": "com.mahoni.schema",
   "fields": [
     {
+      "name": "eventId",
+      "type": "string"
+    },
+    {
+      "name": "timestamp",
+      "type": "long"
+    },
+    {
       "name": "userId",
       "type": "string"
     },
     {
+      "name": "prevPoint",
+      "type": "int"
+    },
+    {
       "name": "point",
       "type": "int"
+    },
+    {
+      "name": "lastModifiedBy",
+      "type": "string"
     }
   ]
 }

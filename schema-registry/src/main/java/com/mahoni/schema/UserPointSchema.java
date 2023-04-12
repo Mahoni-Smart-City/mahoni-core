@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -6228408638347597742L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"UserPointSchema\",\"namespace\":\"com.mahoni.schema\",\"fields\":[{\"name\":\"userId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"point\",\"type\":\"int\"}]}");
+  private static final long serialVersionUID = 2848930939302557537L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"UserPointSchema\",\"namespace\":\"com.mahoni.schema\",\"fields\":[{\"name\":\"eventId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"userId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"prevPoint\",\"type\":\"int\"},{\"name\":\"point\",\"type\":\"int\"},{\"name\":\"lastModifiedBy\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -71,8 +71,12 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
     return DECODER.decode(b);
   }
 
+   private java.lang.String eventId;
+   private long timestamp;
    private java.lang.String userId;
+   private int prevPoint;
    private int point;
+   private java.lang.String lastModifiedBy;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -83,12 +87,20 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
 
   /**
    * All-args constructor.
+   * @param eventId The new value for eventId
+   * @param timestamp The new value for timestamp
    * @param userId The new value for userId
+   * @param prevPoint The new value for prevPoint
    * @param point The new value for point
+   * @param lastModifiedBy The new value for lastModifiedBy
    */
-  public UserPointSchema(java.lang.String userId, java.lang.Integer point) {
+  public UserPointSchema(java.lang.String eventId, java.lang.Long timestamp, java.lang.String userId, java.lang.Integer prevPoint, java.lang.Integer point, java.lang.String lastModifiedBy) {
+    this.eventId = eventId;
+    this.timestamp = timestamp;
     this.userId = userId;
+    this.prevPoint = prevPoint;
     this.point = point;
+    this.lastModifiedBy = lastModifiedBy;
   }
 
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
@@ -96,8 +108,12 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
     switch (field$) {
-    case 0: return userId;
-    case 1: return point;
+    case 0: return eventId;
+    case 1: return timestamp;
+    case 2: return userId;
+    case 3: return prevPoint;
+    case 4: return point;
+    case 5: return lastModifiedBy;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -106,10 +122,48 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: userId = value$ != null ? value$.toString() : null; break;
-    case 1: point = (java.lang.Integer)value$; break;
+    case 0: eventId = value$ != null ? value$.toString() : null; break;
+    case 1: timestamp = (java.lang.Long)value$; break;
+    case 2: userId = value$ != null ? value$.toString() : null; break;
+    case 3: prevPoint = (java.lang.Integer)value$; break;
+    case 4: point = (java.lang.Integer)value$; break;
+    case 5: lastModifiedBy = value$ != null ? value$.toString() : null; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
+  }
+
+  /**
+   * Gets the value of the 'eventId' field.
+   * @return The value of the 'eventId' field.
+   */
+  public java.lang.String getEventId() {
+    return eventId;
+  }
+
+
+  /**
+   * Sets the value of the 'eventId' field.
+   * @param value the value to set.
+   */
+  public void setEventId(java.lang.String value) {
+    this.eventId = value;
+  }
+
+  /**
+   * Gets the value of the 'timestamp' field.
+   * @return The value of the 'timestamp' field.
+   */
+  public long getTimestamp() {
+    return timestamp;
+  }
+
+
+  /**
+   * Sets the value of the 'timestamp' field.
+   * @param value the value to set.
+   */
+  public void setTimestamp(long value) {
+    this.timestamp = value;
   }
 
   /**
@@ -130,6 +184,23 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
   }
 
   /**
+   * Gets the value of the 'prevPoint' field.
+   * @return The value of the 'prevPoint' field.
+   */
+  public int getPrevPoint() {
+    return prevPoint;
+  }
+
+
+  /**
+   * Sets the value of the 'prevPoint' field.
+   * @param value the value to set.
+   */
+  public void setPrevPoint(int value) {
+    this.prevPoint = value;
+  }
+
+  /**
    * Gets the value of the 'point' field.
    * @return The value of the 'point' field.
    */
@@ -144,6 +215,23 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
    */
   public void setPoint(int value) {
     this.point = value;
+  }
+
+  /**
+   * Gets the value of the 'lastModifiedBy' field.
+   * @return The value of the 'lastModifiedBy' field.
+   */
+  public java.lang.String getLastModifiedBy() {
+    return lastModifiedBy;
+  }
+
+
+  /**
+   * Sets the value of the 'lastModifiedBy' field.
+   * @param value the value to set.
+   */
+  public void setLastModifiedBy(java.lang.String value) {
+    this.lastModifiedBy = value;
   }
 
   /**
@@ -187,8 +275,12 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<UserPointSchema>
     implements org.apache.avro.data.RecordBuilder<UserPointSchema> {
 
+    private java.lang.String eventId;
+    private long timestamp;
     private java.lang.String userId;
+    private int prevPoint;
     private int point;
+    private java.lang.String lastModifiedBy;
 
     /** Creates a new Builder */
     private Builder() {
@@ -201,13 +293,29 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
      */
     private Builder(com.mahoni.schema.UserPointSchema.Builder other) {
       super(other);
-      if (isValidValue(fields()[0], other.userId)) {
-        this.userId = data().deepCopy(fields()[0].schema(), other.userId);
+      if (isValidValue(fields()[0], other.eventId)) {
+        this.eventId = data().deepCopy(fields()[0].schema(), other.eventId);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.point)) {
-        this.point = data().deepCopy(fields()[1].schema(), other.point);
+      if (isValidValue(fields()[1], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[1].schema(), other.timestamp);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
+      }
+      if (isValidValue(fields()[2], other.userId)) {
+        this.userId = data().deepCopy(fields()[2].schema(), other.userId);
+        fieldSetFlags()[2] = other.fieldSetFlags()[2];
+      }
+      if (isValidValue(fields()[3], other.prevPoint)) {
+        this.prevPoint = data().deepCopy(fields()[3].schema(), other.prevPoint);
+        fieldSetFlags()[3] = other.fieldSetFlags()[3];
+      }
+      if (isValidValue(fields()[4], other.point)) {
+        this.point = data().deepCopy(fields()[4].schema(), other.point);
+        fieldSetFlags()[4] = other.fieldSetFlags()[4];
+      }
+      if (isValidValue(fields()[5], other.lastModifiedBy)) {
+        this.lastModifiedBy = data().deepCopy(fields()[5].schema(), other.lastModifiedBy);
+        fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
     }
 
@@ -217,14 +325,109 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
      */
     private Builder(com.mahoni.schema.UserPointSchema other) {
       super(SCHEMA$);
-      if (isValidValue(fields()[0], other.userId)) {
-        this.userId = data().deepCopy(fields()[0].schema(), other.userId);
+      if (isValidValue(fields()[0], other.eventId)) {
+        this.eventId = data().deepCopy(fields()[0].schema(), other.eventId);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.point)) {
-        this.point = data().deepCopy(fields()[1].schema(), other.point);
+      if (isValidValue(fields()[1], other.timestamp)) {
+        this.timestamp = data().deepCopy(fields()[1].schema(), other.timestamp);
         fieldSetFlags()[1] = true;
       }
+      if (isValidValue(fields()[2], other.userId)) {
+        this.userId = data().deepCopy(fields()[2].schema(), other.userId);
+        fieldSetFlags()[2] = true;
+      }
+      if (isValidValue(fields()[3], other.prevPoint)) {
+        this.prevPoint = data().deepCopy(fields()[3].schema(), other.prevPoint);
+        fieldSetFlags()[3] = true;
+      }
+      if (isValidValue(fields()[4], other.point)) {
+        this.point = data().deepCopy(fields()[4].schema(), other.point);
+        fieldSetFlags()[4] = true;
+      }
+      if (isValidValue(fields()[5], other.lastModifiedBy)) {
+        this.lastModifiedBy = data().deepCopy(fields()[5].schema(), other.lastModifiedBy);
+        fieldSetFlags()[5] = true;
+      }
+    }
+
+    /**
+      * Gets the value of the 'eventId' field.
+      * @return The value.
+      */
+    public java.lang.String getEventId() {
+      return eventId;
+    }
+
+
+    /**
+      * Sets the value of the 'eventId' field.
+      * @param value The value of 'eventId'.
+      * @return This builder.
+      */
+    public com.mahoni.schema.UserPointSchema.Builder setEventId(java.lang.String value) {
+      validate(fields()[0], value);
+      this.eventId = value;
+      fieldSetFlags()[0] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'eventId' field has been set.
+      * @return True if the 'eventId' field has been set, false otherwise.
+      */
+    public boolean hasEventId() {
+      return fieldSetFlags()[0];
+    }
+
+
+    /**
+      * Clears the value of the 'eventId' field.
+      * @return This builder.
+      */
+    public com.mahoni.schema.UserPointSchema.Builder clearEventId() {
+      eventId = null;
+      fieldSetFlags()[0] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'timestamp' field.
+      * @return The value.
+      */
+    public long getTimestamp() {
+      return timestamp;
+    }
+
+
+    /**
+      * Sets the value of the 'timestamp' field.
+      * @param value The value of 'timestamp'.
+      * @return This builder.
+      */
+    public com.mahoni.schema.UserPointSchema.Builder setTimestamp(long value) {
+      validate(fields()[1], value);
+      this.timestamp = value;
+      fieldSetFlags()[1] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'timestamp' field has been set.
+      * @return True if the 'timestamp' field has been set, false otherwise.
+      */
+    public boolean hasTimestamp() {
+      return fieldSetFlags()[1];
+    }
+
+
+    /**
+      * Clears the value of the 'timestamp' field.
+      * @return This builder.
+      */
+    public com.mahoni.schema.UserPointSchema.Builder clearTimestamp() {
+      fieldSetFlags()[1] = false;
+      return this;
     }
 
     /**
@@ -242,9 +445,9 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
       * @return This builder.
       */
     public com.mahoni.schema.UserPointSchema.Builder setUserId(java.lang.String value) {
-      validate(fields()[0], value);
+      validate(fields()[2], value);
       this.userId = value;
-      fieldSetFlags()[0] = true;
+      fieldSetFlags()[2] = true;
       return this;
     }
 
@@ -253,7 +456,7 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
       * @return True if the 'userId' field has been set, false otherwise.
       */
     public boolean hasUserId() {
-      return fieldSetFlags()[0];
+      return fieldSetFlags()[2];
     }
 
 
@@ -263,7 +466,46 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
       */
     public com.mahoni.schema.UserPointSchema.Builder clearUserId() {
       userId = null;
-      fieldSetFlags()[0] = false;
+      fieldSetFlags()[2] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'prevPoint' field.
+      * @return The value.
+      */
+    public int getPrevPoint() {
+      return prevPoint;
+    }
+
+
+    /**
+      * Sets the value of the 'prevPoint' field.
+      * @param value The value of 'prevPoint'.
+      * @return This builder.
+      */
+    public com.mahoni.schema.UserPointSchema.Builder setPrevPoint(int value) {
+      validate(fields()[3], value);
+      this.prevPoint = value;
+      fieldSetFlags()[3] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'prevPoint' field has been set.
+      * @return True if the 'prevPoint' field has been set, false otherwise.
+      */
+    public boolean hasPrevPoint() {
+      return fieldSetFlags()[3];
+    }
+
+
+    /**
+      * Clears the value of the 'prevPoint' field.
+      * @return This builder.
+      */
+    public com.mahoni.schema.UserPointSchema.Builder clearPrevPoint() {
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -282,9 +524,9 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
       * @return This builder.
       */
     public com.mahoni.schema.UserPointSchema.Builder setPoint(int value) {
-      validate(fields()[1], value);
+      validate(fields()[4], value);
       this.point = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -293,7 +535,7 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
       * @return True if the 'point' field has been set, false otherwise.
       */
     public boolean hasPoint() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[4];
     }
 
 
@@ -302,7 +544,47 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
       * @return This builder.
       */
     public com.mahoni.schema.UserPointSchema.Builder clearPoint() {
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[4] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'lastModifiedBy' field.
+      * @return The value.
+      */
+    public java.lang.String getLastModifiedBy() {
+      return lastModifiedBy;
+    }
+
+
+    /**
+      * Sets the value of the 'lastModifiedBy' field.
+      * @param value The value of 'lastModifiedBy'.
+      * @return This builder.
+      */
+    public com.mahoni.schema.UserPointSchema.Builder setLastModifiedBy(java.lang.String value) {
+      validate(fields()[5], value);
+      this.lastModifiedBy = value;
+      fieldSetFlags()[5] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'lastModifiedBy' field has been set.
+      * @return True if the 'lastModifiedBy' field has been set, false otherwise.
+      */
+    public boolean hasLastModifiedBy() {
+      return fieldSetFlags()[5];
+    }
+
+
+    /**
+      * Clears the value of the 'lastModifiedBy' field.
+      * @return This builder.
+      */
+    public com.mahoni.schema.UserPointSchema.Builder clearLastModifiedBy() {
+      lastModifiedBy = null;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -311,8 +593,12 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
     public UserPointSchema build() {
       try {
         UserPointSchema record = new UserPointSchema();
-        record.userId = fieldSetFlags()[0] ? this.userId : (java.lang.String) defaultValue(fields()[0]);
-        record.point = fieldSetFlags()[1] ? this.point : (java.lang.Integer) defaultValue(fields()[1]);
+        record.eventId = fieldSetFlags()[0] ? this.eventId : (java.lang.String) defaultValue(fields()[0]);
+        record.timestamp = fieldSetFlags()[1] ? this.timestamp : (java.lang.Long) defaultValue(fields()[1]);
+        record.userId = fieldSetFlags()[2] ? this.userId : (java.lang.String) defaultValue(fields()[2]);
+        record.prevPoint = fieldSetFlags()[3] ? this.prevPoint : (java.lang.Integer) defaultValue(fields()[3]);
+        record.point = fieldSetFlags()[4] ? this.point : (java.lang.Integer) defaultValue(fields()[4]);
+        record.lastModifiedBy = fieldSetFlags()[5] ? this.lastModifiedBy : (java.lang.String) defaultValue(fields()[5]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -345,9 +631,17 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
   @Override public void customEncode(org.apache.avro.io.Encoder out)
     throws java.io.IOException
   {
+    out.writeString(this.eventId);
+
+    out.writeLong(this.timestamp);
+
     out.writeString(this.userId);
 
+    out.writeInt(this.prevPoint);
+
     out.writeInt(this.point);
+
+    out.writeString(this.lastModifiedBy);
 
   }
 
@@ -356,19 +650,43 @@ public class UserPointSchema extends org.apache.avro.specific.SpecificRecordBase
   {
     org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
     if (fieldOrder == null) {
+      this.eventId = in.readString();
+
+      this.timestamp = in.readLong();
+
       this.userId = in.readString();
+
+      this.prevPoint = in.readInt();
 
       this.point = in.readInt();
 
+      this.lastModifiedBy = in.readString();
+
     } else {
-      for (int i = 0; i < 2; i++) {
+      for (int i = 0; i < 6; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
-          this.userId = in.readString();
+          this.eventId = in.readString();
           break;
 
         case 1:
+          this.timestamp = in.readLong();
+          break;
+
+        case 2:
+          this.userId = in.readString();
+          break;
+
+        case 3:
+          this.prevPoint = in.readInt();
+          break;
+
+        case 4:
           this.point = in.readInt();
+          break;
+
+        case 5:
+          this.lastModifiedBy = in.readString();
           break;
 
         default:
