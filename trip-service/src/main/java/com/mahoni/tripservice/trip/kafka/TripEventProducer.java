@@ -1,6 +1,6 @@
 package com.mahoni.tripservice.trip.kafka;
 
-import com.mahoni.schema.TripCompletedSchema;
+import com.mahoni.schema.TripSchema;
 import com.mahoni.tripservice.trip.model.Trip;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +15,14 @@ import java.util.UUID;
 public class TripEventProducer {
 
   @Autowired
-  KafkaTemplate<String, TripCompletedSchema> kafkaTemplate;
+  KafkaTemplate<String, TripSchema> kafkaTemplate;
 
   public void send(Trip trip) {
 
     String id = UUID.randomUUID().toString();
     long now = System.currentTimeMillis();
 
-    TripCompletedSchema event = TripCompletedSchema.newBuilder()
+    TripSchema event = TripSchema.newBuilder()
       .setEventId(id)
       .setTimestamp(now)
       .setTripId(trip.getId().toString())
@@ -36,7 +36,7 @@ public class TripEventProducer {
       .setPoint(trip.getPoint())
       .build();
 
-      kafkaTemplate.send(new ProducerRecord<>(KafkaTopic.TRIP_COMPLETED_TOPIC, id, event));
+      kafkaTemplate.send(new ProducerRecord<>(KafkaTopic.TRIP_TOPIC, id, event));
   }
 
   private long parseTimestamp(LocalDateTime dateTime) {
