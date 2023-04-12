@@ -2,6 +2,7 @@ package com.mahoni.tripservice.trip.kafka;
 
 import com.mahoni.schema.TripSchema;
 import com.mahoni.tripservice.trip.model.Trip;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -12,6 +13,7 @@ import java.time.ZoneId;
 import java.util.UUID;
 
 @Component
+@Slf4j
 public class TripEventProducer {
 
   @Autowired
@@ -36,7 +38,8 @@ public class TripEventProducer {
       .setPoint(trip.getPoint())
       .build();
 
-      kafkaTemplate.send(new ProducerRecord<>(KafkaTopic.TRIP_TOPIC, id, event));
+    log.info("Sending event to " + KafkaTopic.TRIP_TOPIC + " with payload: " + event.toString());
+    kafkaTemplate.send(new ProducerRecord<>(KafkaTopic.TRIP_TOPIC, id, event));
   }
 
   private long parseTimestamp(LocalDateTime dateTime) {

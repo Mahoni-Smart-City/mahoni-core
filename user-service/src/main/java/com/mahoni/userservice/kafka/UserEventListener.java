@@ -10,6 +10,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -23,10 +24,10 @@ public class UserEventListener {
   @Autowired
   UserEventProducer eventProducer;
 
+  @Transactional
   @KafkaListener( topics = "trip-topic", groupId = "user-service-group-id", containerFactory = "kafkaListenerContainerFactory")
   public void consumeTrip(ConsumerRecord<String, TripSchema> record) {
-    System.out.println("Consumed message -> " + record.key());
-    System.out.println("Message payload -> " + record.value());
+    log.info("Received event: " + record.value());
     TripSchema trip = record.value();
     if (trip.getStatus().equals("FINISHED")) {
       log.info("FINISHED TRIP");
@@ -38,16 +39,16 @@ public class UserEventListener {
     }
   }
 
+  @Transactional
   @KafkaListener( topics = "voucher-redeemed-topic", groupId = "user-service-group-id", containerFactory = "kafkaListenerContainerFactory")
   public void consumeVoucherRedeemed(ConsumerRecord<String, VoucherRedeemedSchema> record) {
-    System.out.println("Consumed message -> " + record.key());
-    System.out.println("Message payload -> " + record.value());
+    log.info("Received event: " + record.value());
     VoucherRedeemedSchema voucher = record.value();
     User user = userRepository.findById(UUID.fromString(voucher.getUserId())).orElseThrow(() -> new ResourceNotFoundException(UUID.fromString(voucher.getUserId())));
     if (user.sufficientPoint(voucher.getPoint())) {
       user.subtractPoint(voucher.getPoint());
       userRepository.save(user);
-      eventProducer.send(user, voucher.getPoint(), voucher.getVoucherId());
+      eventProducer.send(user, -voucher.getPoint(), voucher.getVoucherId());
     }
   }
 }

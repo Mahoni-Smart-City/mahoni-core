@@ -62,11 +62,6 @@ public class TripService {
   @Value("${spring.trip.duration-multiplier}")
   Double DURATION_MULTIPLIER;
 
-//  @PostConstruct
-//  public void init() {
-//    this.kafkaStreams = factoryBean.;
-//  }
-
   public List<Trip> getAllByUserId(UUID userId) throws Exception {
     Optional<List<Trip>> trips = tripRepository.findByUserId(userId);
     return trips.orElseGet(ArrayList::new);
@@ -128,7 +123,7 @@ public class TripService {
   }
 
   public void checkAndUpdateStatus(Trip trip) {
-    if (!isOngoing(trip) && trip.getStatus() == TripStatus.ACTIVE.name()) {
+    if (!isOngoing(trip) && trip.getStatus().equals(TripStatus.ACTIVE.name())) {
       trip.setStatus(TripStatus.EXPIRED.name());
       tripEventProducer.send(trip);
       tripRepository.save(trip);
