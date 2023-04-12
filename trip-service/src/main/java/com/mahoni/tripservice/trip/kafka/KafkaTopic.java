@@ -8,12 +8,12 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 public class KafkaTopic {
 
-  static String TRIP_COMPLETED_TOPIC = "trip-completed-topic";
+  static String TRIP_TOPIC = "trip-topic";
 
   @Bean
   public NewTopic tripCompletedTopic() {
     return TopicBuilder
-      .name(TRIP_COMPLETED_TOPIC)
+      .name(TRIP_TOPIC)
       .replicas(3)
       .partitions(3)
       .build();

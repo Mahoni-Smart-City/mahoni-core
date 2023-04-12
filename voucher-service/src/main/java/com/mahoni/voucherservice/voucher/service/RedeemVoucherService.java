@@ -3,16 +3,19 @@ package com.mahoni.voucherservice.voucher.service;
 import com.mahoni.voucherservice.voucher.dto.RedeemVoucherRequest;
 import com.mahoni.voucherservice.voucher.dto.RedeemVoucherRequestCRUD;
 import com.mahoni.voucherservice.voucher.exception.RedeemVoucherNotFoundException;
+import com.mahoni.voucherservice.voucher.kafka.VoucherEventProducer;
 import com.mahoni.voucherservice.voucher.model.RedeemVoucher;
 import com.mahoni.voucherservice.voucher.model.VoucherStatus;
 import com.mahoni.voucherservice.voucher.repository.RedeemVoucherRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,6 +31,12 @@ public class RedeemVoucherService {
 
   @Autowired
   VoucherService voucherService;
+
+  @Autowired
+  VoucherEventProducer voucherEventProducer;
+
+  @Value("${spring.voucher.transaction-failed-duration}")
+  Integer TRANSACTION_DURATION = 10;
 
   public RedeemVoucher create(RedeemVoucherRequestCRUD redeemVoucher) {
     if (!(isAllowedMerchantByVoucherId(redeemVoucher.getVoucherId())|| isAdmin())) {
@@ -97,6 +106,7 @@ public class RedeemVoucherService {
     return redeemVoucher.get();
   }
 
+  @Transactional
   public RedeemVoucher redeem(RedeemVoucherRequest request) {
 
     //TODO: check user point from K-Table
@@ -110,9 +120,10 @@ public class RedeemVoucherService {
 
     RedeemVoucher updatedRedeemVoucher = redeemVoucher.get();
     updatedRedeemVoucher.setUserId(request.getUserId());
-    updatedRedeemVoucher.setStatus(VoucherStatus.ACTIVE);
+    updatedRedeemVoucher.setStatus(VoucherStatus.PENDING);
     updatedRedeemVoucher.setRedeemedAt(LocalDateTime.now());
     updatedRedeemVoucher.getVoucher().subtractQuantity();
+    voucherEventProducer.send(updatedRedeemVoucher);
     return redeemVoucherRepository.save(updatedRedeemVoucher);
   }
 
@@ -134,6 +145,23 @@ public class RedeemVoucherService {
         LocalDateTime now = LocalDateTime.now();
         if (redeemVoucher.getExpiredAt().isBefore(now)) {
           redeemVoucher.setStatus(VoucherStatus.EXPIRED);
+          redeemVoucherRepository.save(redeemVoucher);
+        }
+      }
+    }
+  }
+
+  @Scheduled(cron = "*/15 * * * * *")
+  public void scheduledCheckAndResetPendingStatus() {
+    List<RedeemVoucher> pendingRedeemVoucher = redeemVoucherRepository.findAllByStatus(VoucherStatus.PENDING);
+    if (!pendingRedeemVoucher.isEmpty()) {
+      for (RedeemVoucher redeemVoucher: pendingRedeemVoucher) {
+        LocalDateTime now = LocalDateTime.now();
+        if (redeemVoucher.getRedeemedAt().plusMinutes(TRANSACTION_DURATION).isBefore(now)) {
+          redeemVoucher.setUserId(null);
+          redeemVoucher.setStatus(null);
+          redeemVoucher.setRedeemedAt(null);
+          redeemVoucher.getVoucher().addQuantity();
           redeemVoucherRepository.save(redeemVoucher);
         }
       }

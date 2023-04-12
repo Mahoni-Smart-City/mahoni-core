@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class KafkaTopic {
 
   static String USER_POINT_COMPACTED_TOPIC = "user-point-compacted-topic";
+  static String USER_POINT_TOPIC = "user-point-topic";
 
   @Bean
   public NewTopic userPointCompacted() {
@@ -20,6 +21,15 @@ public class KafkaTopic {
       .replicas(3)
       .partitions(3)
       .compact()
+      .build();
+  }
+
+  @Bean
+  public NewTopic userPoint() {
+    return TopicBuilder
+      .name(USER_POINT_TOPIC)
+      .replicas(3)
+      .partitions(3)
       .build();
   }
 }
