@@ -40,6 +40,9 @@ server:
   port: 8081
   error:
     include-message: ALWAYS
+logging:
+  level:
+    com: INFO
 ---
 postgres.port: 5435
 postgres.host: air-db
