@@ -27,7 +27,7 @@ public class UserEventProducer {
       .setEventId(id)
       .setTimestamp(parseTimestamp(LocalDateTime.now()))
       .setUserId(user.getId().toString())
-      .setPrevPoint(user.getPoint() + point)
+      .setPrevPoint(user.getPoint() - point)
       .setPoint(user.getPoint())
       .setLastModifiedBy(lastModifiedBy)
       .build();
