@@ -75,7 +75,9 @@ public class TripService {
       throw new QRGeneratorNotFoundException();
     }
     if (latestTrip.isEmpty()) {
-      return tripRepository.save(new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name()));
+      Trip newTrip = new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name());
+      tripEventProducer.send(newTrip);
+      return tripRepository.save(newTrip);
     }
 
     Trip trip = latestTrip.get();
