@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class TripSchema extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 2385667166373318406L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"TripSchema\",\"namespace\":\"com.mahoni.schema\",\"fields\":[{\"name\":\"eventId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"tripId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"userId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"scanInPlaceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"scanInTimestamp\",\"type\":\"long\"},{\"name\":\"scanOutPlaceId\",\"type\":[{\"type\":\"string\",\"avro.java.string\":\"String\"},\"null\"]},{\"name\":\"scanOutTimestamp\",\"type\":[\"long\",\"null\"]},{\"name\":\"status\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"aqi\",\"type\":[\"double\",\"null\"]},{\"name\":\"point\",\"type\":[\"int\",\"null\"]}]}");
+  private static final long serialVersionUID = 9223129613145090119L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"TripSchema\",\"namespace\":\"com.mahoni.schema\",\"fields\":[{\"name\":\"eventId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"tripId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"userId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"scanInPlaceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"scanInTimestamp\",\"type\":\"long\"},{\"name\":\"scanOutPlaceId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"scanOutTimestamp\",\"type\":[\"null\",\"long\"]},{\"name\":\"status\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"aqi\",\"type\":[\"null\",\"double\"]},{\"name\":\"point\",\"type\":[\"null\",\"int\"]}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -1005,36 +1005,36 @@ public class TripSchema extends org.apache.avro.specific.SpecificRecordBase impl
     out.writeLong(this.scanInTimestamp);
 
     if (this.scanOutPlaceId == null) {
-      out.writeIndex(1);
+      out.writeIndex(0);
       out.writeNull();
     } else {
-      out.writeIndex(0);
+      out.writeIndex(1);
       out.writeString(this.scanOutPlaceId);
     }
 
     if (this.scanOutTimestamp == null) {
-      out.writeIndex(1);
+      out.writeIndex(0);
       out.writeNull();
     } else {
-      out.writeIndex(0);
+      out.writeIndex(1);
       out.writeLong(this.scanOutTimestamp);
     }
 
     out.writeString(this.status);
 
     if (this.aqi == null) {
-      out.writeIndex(1);
+      out.writeIndex(0);
       out.writeNull();
     } else {
-      out.writeIndex(0);
+      out.writeIndex(1);
       out.writeDouble(this.aqi);
     }
 
     if (this.point == null) {
-      out.writeIndex(1);
+      out.writeIndex(0);
       out.writeNull();
     } else {
-      out.writeIndex(0);
+      out.writeIndex(1);
       out.writeInt(this.point);
     }
 
@@ -1057,14 +1057,14 @@ public class TripSchema extends org.apache.avro.specific.SpecificRecordBase impl
 
       this.scanInTimestamp = in.readLong();
 
-      if (in.readIndex() != 0) {
+      if (in.readIndex() != 1) {
         in.readNull();
         this.scanOutPlaceId = null;
       } else {
         this.scanOutPlaceId = in.readString();
       }
 
-      if (in.readIndex() != 0) {
+      if (in.readIndex() != 1) {
         in.readNull();
         this.scanOutTimestamp = null;
       } else {
@@ -1073,14 +1073,14 @@ public class TripSchema extends org.apache.avro.specific.SpecificRecordBase impl
 
       this.status = in.readString();
 
-      if (in.readIndex() != 0) {
+      if (in.readIndex() != 1) {
         in.readNull();
         this.aqi = null;
       } else {
         this.aqi = in.readDouble();
       }
 
-      if (in.readIndex() != 0) {
+      if (in.readIndex() != 1) {
         in.readNull();
         this.point = null;
       } else {
@@ -1115,7 +1115,7 @@ public class TripSchema extends org.apache.avro.specific.SpecificRecordBase impl
           break;
 
         case 6:
-          if (in.readIndex() != 0) {
+          if (in.readIndex() != 1) {
             in.readNull();
             this.scanOutPlaceId = null;
           } else {
@@ -1124,7 +1124,7 @@ public class TripSchema extends org.apache.avro.specific.SpecificRecordBase impl
           break;
 
         case 7:
-          if (in.readIndex() != 0) {
+          if (in.readIndex() != 1) {
             in.readNull();
             this.scanOutTimestamp = null;
           } else {
@@ -1137,7 +1137,7 @@ public class TripSchema extends org.apache.avro.specific.SpecificRecordBase impl
           break;
 
         case 9:
-          if (in.readIndex() != 0) {
+          if (in.readIndex() != 1) {
             in.readNull();
             this.aqi = null;
           } else {
@@ -1146,7 +1146,7 @@ public class TripSchema extends org.apache.avro.specific.SpecificRecordBase impl
           break;
 
         case 10:
-          if (in.readIndex() != 0) {
+          if (in.readIndex() != 1) {
             in.readNull();
             this.point = null;
           } else {

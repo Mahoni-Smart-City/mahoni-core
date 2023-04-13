@@ -75,9 +75,9 @@ public class TripService {
       throw new QRGeneratorNotFoundException();
     }
     if (latestTrip.isEmpty()) {
-      Trip newTrip = new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name());
+      Trip newTrip = tripRepository.save(new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name()));
       tripEventProducer.send(newTrip);
-      return tripRepository.save(newTrip);
+      return newTrip;
     }
 
     Trip trip = latestTrip.get();
@@ -103,9 +103,9 @@ public class TripService {
     } else {
       // update expired trip and start new trip
       checkAndUpdateStatus(trip);
-      Trip newTrip = new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name());
+      Trip newTrip = tripRepository.save(new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name()));
       tripEventProducer.send(newTrip);
-      return tripRepository.save(newTrip);
+      return newTrip;
     }
   }
 

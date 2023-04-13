@@ -29,11 +29,11 @@
     },
     {
       "name": "scanOutPlaceId",
-      "type": ["string", "null"]
+      "type": ["null", "string"]
     },
     {
       "name": "scanOutTimestamp",
-      "type": ["long", "null"]
+      "type": ["null", "long"]
     },
     {
       "name": "status",
@@ -41,11 +41,11 @@
     },
     {
       "name": "aqi",
-      "type": ["double", "null"]
+      "type": ["null", "double"]
     },
     {
       "name": "point",
-      "type": ["int", "null"]
+      "type": ["null", "int"]
     }
   ]
 }

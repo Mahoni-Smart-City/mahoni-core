@@ -31,11 +31,11 @@ public class TripEventProducer {
       .setUserId(trip.getUserId().toString())
       .setScanInPlaceId(trip.getScanInPlaceId().getId().toString())
       .setScanInTimestamp(parseTimestamp(trip.getScanInAt()))
-      .setScanOutPlaceId(trip.getScanOutPlaceId().getId().toString())
-      .setScanOutTimestamp(parseTimestamp(trip.getScanOutAt()))
+      .setScanOutPlaceId(trip.getScanOutPlaceId() == null ? null : trip.getScanOutPlaceId().getId().toString())
+      .setScanOutTimestamp(trip.getScanOutAt() == null ? null : parseTimestamp(trip.getScanOutAt()))
       .setStatus(trip.getStatus())
-      .setAqi(trip.getAqi())
-      .setPoint(trip.getPoint())
+      .setAqi(trip.getAqi() == null ? null : trip.getAqi())
+      .setPoint(trip.getPoint() == null ? null : trip.getPoint())
       .build();
 
     log.info("Sending event to " + KafkaTopic.TRIP_TOPIC + " with payload: " + event.toString());
