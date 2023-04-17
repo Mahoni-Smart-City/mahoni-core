@@ -1,5 +1,6 @@
 package com.mahoni.voucherservice.voucher.dto;
 
+import com.mahoni.voucherservice.voucher.model.VoucherType;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,10 +17,11 @@ public class VoucherRequest {
   @NotNull
   private String description;
   @NotNull
-  private String code;
+  private VoucherType type;
+  @NotNull
+  private Integer point;
   @NotNull
   private LocalDateTime startAt;
   @NotNull
   private LocalDateTime expiredAt;
-
 }

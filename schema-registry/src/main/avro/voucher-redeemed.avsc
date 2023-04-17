@@ -1,0 +1,39 @@
+{
+  "type": "record",
+  "name": "VoucherRedeemedSchema",
+  "namespace": "com.mahoni.schema",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": "string"
+    },
+    {
+      "name": "timestamp",
+      "type": "long"
+    },
+    {
+      "name": "voucherId",
+      "type": "string"
+    },
+    {
+      "name": "userId",
+      "type": "string"
+    },
+    {
+      "name": "code",
+      "type": "string"
+    },
+    {
+      "name": "point",
+      "type": "int"
+    },
+    {
+      "name": "redeemedAt",
+      "type": "long"
+    },
+    {
+      "name": "expiredAt",
+      "type": "long"
+    }
+  ]
+}

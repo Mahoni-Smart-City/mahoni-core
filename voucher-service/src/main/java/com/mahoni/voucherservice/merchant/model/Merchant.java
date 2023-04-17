@@ -1,13 +1,16 @@
 package com.mahoni.voucherservice.merchant.model;
 
-import com.mahoni.voucherservice.voucher.model.Voucher;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,7 +20,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "merchants")
-public class Merchant {
+public class Merchant implements UserDetails {
 
   @Id
   @GeneratedValue(generator = "UUID")
@@ -26,7 +29,6 @@ public class Merchant {
     strategy = "org.hibernate.id.UUIDGenerator"
   )
   @Column(name = "id", updatable = false, nullable = false)
-  @Getter
   private UUID id;
 
   @Column(unique = true)
@@ -38,13 +40,42 @@ public class Merchant {
   @Column(nullable = false)
   private String email;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "merchant_id", referencedColumnName = "id")
-  private List<Voucher> vouchers;
+  @Column(nullable = false)
+  private String password;
 
-  public Merchant(String username, String name, String email) {
+  @Enumerated(EnumType.ORDINAL)
+  private MerchantRole role;
+
+  public Merchant(String username, String name, String email, String password, MerchantRole role) {
     this.username = username;
     this.name = name;
     this.email = email;
+    this.password = password;
+    this.role = role;
+  }
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority(role.name()));
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
   }
 }

@@ -15,4 +15,6 @@ public class MerchantRequest {
   private String name;
   @NotNull
   private String email;
+  @NotNull
+  private String password;
 }

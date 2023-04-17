@@ -15,16 +15,14 @@ import lombok.Setter;
 public class Location {
   @Id
   private Long id;
-
   @Column
-  private String city;
-
+  private String district;
   @Column(name = "subdistrict")
   private String subDistrict;
-
   @Column
-  private String latitude;
-
+  private String village;
   @Column
   private String longitude;
+  @Column
+  private String latitude;
 }

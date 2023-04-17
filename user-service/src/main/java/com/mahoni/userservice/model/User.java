@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+
+import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
@@ -15,9 +18,10 @@ import lombok.Setter;
 public class User {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Getter
-  private Long id;
+  @GeneratedValue(generator = "UUID")
+  @GenericGenerator( name = "UUID", strategy = "org.hibernate.id.UUIDGenerator" )
+  @Column(name = "id", updatable = false, nullable = false)
+  private UUID id;
 
   @Column(unique = true)
   private String username;
@@ -36,5 +40,19 @@ public class User {
     this.name = name;
     this.email = email;
     this.point = point;
+  }
+
+  public Boolean sufficientPoint(Integer point) {
+    return this.point - point >= 0;
+  }
+
+  public void subtractPoint(Integer point) {
+    if (sufficientPoint(point)) {
+      this.point = this.point - point;
+    }
+  }
+
+  public void addPoint(Integer point) {
+    this.point = this.point + point;
   }
 }

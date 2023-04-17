@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -38,6 +39,15 @@ public class TripController {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     } catch (Exception e) {
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    }
+  }
+
+  @GetMapping("/history/{userId}")
+  public ResponseEntity<List<Trip>> getHistoryByUserId(@PathVariable("userId") UUID userId) {
+    try {
+      return ResponseEntity.ok(tripService.getAllByUserId(userId));
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
   }
 
