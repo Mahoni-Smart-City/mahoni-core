@@ -42,10 +42,10 @@ public class AirSensorServiceTest {
   ArgumentCaptor<AirSensor> airSensorArgumentCaptor;
 
   @Test
-  public void testGivenAirSensorRequest_thenSaveAirSensor() throws Exception {
+  public void testGivenAirSensorRequest_thenSaveAirSensor() {
     Long id = 1L;
     AirSensorRequest request = new AirSensorRequest(id, "Test", id);
-    Location location = new Location(id, "Test", "Test", "Test", "Test");
+    Location location = new Location(id, "Test", "Test", "Test", "Test", "Test");
     AirSensor airSensor = new AirSensor(id, "Test", location);
 
     when(locationRepository.findById(any())).thenReturn(Optional.of(location));
@@ -57,35 +57,31 @@ public class AirSensorServiceTest {
   }
 
   @Test
-  public void testGivenAirSensorRequest_thenThrowAirSensorAlreadyExist() throws Exception {
+  public void testGivenAirSensorRequest_thenThrowAirSensorAlreadyExist() {
     Long id = 1L;
     AirSensorRequest request = new AirSensorRequest(id, "Test", id);
-    Location location = new Location(id, "Test", "Test", "Test", "Test");
+    Location location = new Location(id, "Test", "Test", "Test", "Test", "Test");
     AirSensor airSensor = new AirSensor(id, "Test", location);
 
     when(airSensorRepository.findById(any())).thenReturn(Optional.of(airSensor));
 
-    assertThrows(AirSensorAlreadyExistException.class, () -> {
-      airSensorService.create(request);
-    });
+    assertThrows(AirSensorAlreadyExistException.class, () -> airSensorService.create(request));
   }
 
   @Test
-  public void testGivenAirSensorRequest_thenThrowLocationNotFound() throws Exception {
+  public void testGivenAirSensorRequest_thenThrowLocationNotFound() {
     Long id = 1L;
     AirSensorRequest request = new AirSensorRequest(id, "Test", id);
 
     when(locationRepository.findById(any())).thenReturn(Optional.empty());
 
-    assertThrows(LocationNotFoundException.class, () -> {
-      airSensorService.create(request);
-    });
+    assertThrows(LocationNotFoundException.class, () -> airSensorService.create(request));
   }
 
   @Test
-  public void testGivenId_thenReturnAirSensor() throws Exception {
+  public void testGivenId_thenReturnAirSensor() {
     Long id = 1L;
-    Location location = new Location(id, "Test", "Test", "Test", "Test");
+    Location location = new Location(id, "Test", "Test", "Test", "Test", "Test");
     AirSensor airSensor = new AirSensor(id, "Test", location);
 
     when(airSensorRepository.findById(any())).thenReturn(Optional.of(airSensor));
@@ -96,20 +92,18 @@ public class AirSensorServiceTest {
   }
 
   @Test
-  public void testGivenId_thenReturnAirSensorNotFound() throws Exception {
+  public void testGivenId_thenReturnAirSensorNotFound() {
     Long id = 1L;
 
     when(airSensorRepository.findById(any())).thenReturn(Optional.empty());
 
-    assertThrows(AirSensorNotFoundException.class, () -> {
-      airSensorService.getById(id);
-    });
+    assertThrows(AirSensorNotFoundException.class, () -> airSensorService.getById(id));
   }
 
   @Test
-  public void testGetAll_thenReturnAirSensors() throws Exception {
+  public void testGetAll_thenReturnAirSensors() {
     Long id = 1L;
-    Location location = new Location(id, "Test", "Test", "Test", "Test");
+    Location location = new Location(id, "Test", "Test", "Test", "Test", "Test");
     AirSensor airSensor = new AirSensor(id, "Test", location);
     List<AirSensor> airSensors = new ArrayList<>();
     airSensors.add(airSensor);
@@ -122,9 +116,9 @@ public class AirSensorServiceTest {
   }
 
   @Test
-  public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedAirSensor() throws Exception {
+  public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedAirSensor() {
     Long id = 1L;
-    Location location = new Location(id, "Test", "Test", "Test", "Test");
+    Location location = new Location(id, "Test", "Test", "Test", "Test", "Test");
     AirSensor airSensor = new AirSensor(id, "Test", location);
 
     when(airSensorRepository.findById(any())).thenReturn(Optional.of(airSensor));
@@ -135,21 +129,19 @@ public class AirSensorServiceTest {
   }
 
   @Test
-  public void testGivenIdToBeDeleted_thenThrowAirSensorNotFound() throws Exception {
+  public void testGivenIdToBeDeleted_thenThrowAirSensorNotFound() {
     Long id = 1L;
 
     when(airSensorRepository.findById(any())).thenReturn(Optional.empty());
 
-    assertThrows(AirSensorNotFoundException.class, () -> {
-      airSensorService.deleteById(id);
-    });
+    assertThrows(AirSensorNotFoundException.class, () -> airSensorService.deleteById(id));
   }
 
   @Test
-  public void testGivenIdAndAirSensorRequest_thenUpdateAndReturnUpdatedAirSensor() throws Exception {
+  public void testGivenIdAndAirSensorRequest_thenUpdateAndReturnUpdatedAirSensor() {
     Long id = 1L;
     AirSensorRequest request = new AirSensorRequest(id, "Test2", id);
-    Location location = new Location(id, "Test", "Test", "Test", "Test");
+    Location location = new Location(id, "Test", "Test", "Test", "Test", "Test");
     AirSensor airSensor = new AirSensor(id, "Test", location);
     AirSensor expectedAirSensor = new AirSensor(id, "Test2", location);
 
@@ -164,29 +156,25 @@ public class AirSensorServiceTest {
   }
 
   @Test
-  public void testGivenIdAndAirSensorRequest_thenThrowAirSensorNotFound() throws Exception {
+  public void testGivenIdAndAirSensorRequest_thenThrowAirSensorNotFound() {
     Long id = 1L;
     AirSensorRequest request = new AirSensorRequest(id, "Test", id);
 
     when(airSensorRepository.findById(any())).thenReturn(Optional.empty());
 
-    assertThrows(AirSensorNotFoundException.class, () -> {
-      airSensorService.update(id, request);
-    });
+    assertThrows(AirSensorNotFoundException.class, () -> airSensorService.update(id, request));
   }
 
   @Test
-  public void testGivenIdAndAirSensorRequest_thenThrowLocationNotFound() throws Exception {
+  public void testGivenIdAndAirSensorRequest_thenThrowLocationNotFound() {
     Long id = 1L;
     AirSensorRequest request = new AirSensorRequest(id, "Test", id);
-    Location location = new Location(id, "Test", "Test", "Test", "Test");
+    Location location = new Location(id, "Test", "Test", "Test", "Test", "Test");
     AirSensor airSensor = new AirSensor(id, "Test", location);
 
     when(airSensorRepository.findById(any())).thenReturn(Optional.of(airSensor));
     when(locationRepository.findById(any())).thenReturn(Optional.empty());
 
-    assertThrows(LocationNotFoundException.class, () -> {
-      airSensorService.update(id, request);
-    });
+    assertThrows(LocationNotFoundException.class, () -> airSensorService.update(id, request));
   }
 }
