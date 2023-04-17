@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -61,7 +62,7 @@ class UserServiceTest {
 
   @Test
   public void testGivenId_thenReturnUser() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
     User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
 
     when(userRepository.findById(any())).thenReturn(Optional.of(user));
@@ -73,7 +74,7 @@ class UserServiceTest {
 
   @Test
   public void testGivenId_thenThrowResourceNotFound() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
 
     when(userRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -97,7 +98,7 @@ class UserServiceTest {
 
   @Test
   public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedUser() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
     User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
 
     when(userRepository.findById(any())).thenReturn(Optional.of(user));
@@ -109,7 +110,7 @@ class UserServiceTest {
 
   @Test
   public void testGivenIdToBeDeleted_thenThrowResourceNotFound() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
 
     when(userRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -120,7 +121,7 @@ class UserServiceTest {
 
   @Test
   public void testGivenIdAndUserRequest_thenUpdateAndReturnUpdatedUser() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
     UserRequest request = new UserRequest("Test2", "Test", "Test@mail.com" );
     User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
     User expectedUser = new User("Test2", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
@@ -136,7 +137,7 @@ class UserServiceTest {
 
   @Test
   public void testGivenIdAndUserRequest_thenThrowResourceNotFound() throws Exception {
-    Long id = 1L;
+    UUID id = UUID.randomUUID();
     UserRequest request = new UserRequest("Test2", "Test", "Test@mail.com" );
 
     when(userRepository.findById(any())).thenReturn(Optional.empty());

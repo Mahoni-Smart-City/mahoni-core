@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -39,7 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> get(@PathVariable("id") Long id ) {
+    public ResponseEntity<User> get(@PathVariable("id") UUID id ) {
       try {
         User user = userService.getById(id);
         return ResponseEntity.ok(user);
@@ -49,7 +50,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<User> delete(@PathVariable("id") UUID id) {
       try {
         User deletedUser = userService.deleteById(id);
         return ResponseEntity.ok(deletedUser);
@@ -59,7 +60,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable("id") Long id, @Valid @RequestBody UserRequest request) {
+    public ResponseEntity<Object> update(@PathVariable("id") UUID id, @Valid @RequestBody UserRequest request) {
       try {
         User updatedUser = userService.update(id, request);
         return ResponseEntity.ok(updatedUser);

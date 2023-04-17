@@ -6,7 +6,8 @@ import com.mahoni.tripservice.qrgenerator.model.QRGeneratorNode;
 import com.mahoni.tripservice.qrgenerator.repository.QRGeneratorRepository;
 import com.mahoni.tripservice.qrgenerator.service.QRGeneratorService;
 import com.mahoni.tripservice.trip.dto.TripRequest;
-import com.mahoni.tripservice.trip.dto.TripStatus;
+import com.mahoni.tripservice.trip.model.TransactionStatus;
+import com.mahoni.tripservice.trip.model.TripStatus;
 import com.mahoni.tripservice.trip.kafka.TripEventProducer;
 import com.mahoni.tripservice.trip.model.Trip;
 import com.mahoni.tripservice.trip.repository.TripRepository;
@@ -19,7 +20,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -62,11 +62,6 @@ public class TripService {
   @Value("${spring.trip.duration-multiplier}")
   Double DURATION_MULTIPLIER;
 
-//  @PostConstruct
-//  public void init() {
-//    this.kafkaStreams = factoryBean.;
-//  }
-
   public List<Trip> getAllByUserId(UUID userId) throws Exception {
     Optional<List<Trip>> trips = tripRepository.findByUserId(userId);
     return trips.orElseGet(ArrayList::new);
@@ -80,7 +75,9 @@ public class TripService {
       throw new QRGeneratorNotFoundException();
     }
     if (latestTrip.isEmpty()) {
-      return tripRepository.save(new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name()));
+      Trip newTrip = tripRepository.save(new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name()));
+      tripEventProducer.send(newTrip);
+      return newTrip;
     }
 
     Trip trip = latestTrip.get();
@@ -89,6 +86,7 @@ public class TripService {
       trip.setStatus(TripStatus.FINISHED.name());
       trip.setScanOutPlaceId(qrGenerator.get());
       trip.setScanOutAt(LocalDateTime.now());
+      trip.setTransactionStatus(TransactionStatus.PENDING.name());
 
       // calculate point
       QRGenerator scanInPlace = trip.getScanInPlaceId();
@@ -105,7 +103,9 @@ public class TripService {
     } else {
       // update expired trip and start new trip
       checkAndUpdateStatus(trip);
-      return tripRepository.save(new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name()));
+      Trip newTrip = tripRepository.save(new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name()));
+      tripEventProducer.send(newTrip);
+      return newTrip;
     }
   }
 
@@ -125,8 +125,10 @@ public class TripService {
   }
 
   public void checkAndUpdateStatus(Trip trip) {
-    if (!isOngoing(trip) && trip.getStatus() == TripStatus.ACTIVE.name()) {
+    if (!isOngoing(trip) && trip.getStatus().equals(TripStatus.ACTIVE.name())) {
       trip.setStatus(TripStatus.EXPIRED.name());
+      tripEventProducer.send(trip);
+      tripRepository.save(trip);
     }
   }
 
@@ -139,7 +141,7 @@ public class TripService {
     // TODO: Update when can get value from KTable
     double aqi = 0;
     for (QRGeneratorNode node: nodes) {
-      QRGenerator qrGenerator = qrGeneratorRepository.findById(node.getQrGeneratorId()).orElseThrow();
+      Optional<QRGenerator> qrGenerator = qrGeneratorRepository.findById(node.getQrGeneratorId());
     //    int aqi1 = getAqi(qrGenerator.getSensorId1()); // get from KTable
     //    int aqi2 = Integer.MIN_VALUE;
     //    if (qrGenerator.getSensorId2() != null) {

@@ -41,6 +41,9 @@ server:
   port: 8080
   error:
     include-message: ALWAYS
+logging:
+  level:
+    com: INFO
 ---
 postgres.port: 5432
 postgres.host: user-db

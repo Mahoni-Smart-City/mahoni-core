@@ -23,6 +23,8 @@ spring:
       properties:
         schema.registry.url: http://localhost:8081
         specific.avro.reader: true
+  voucher:
+    transaction-failed-duration: 10
   security:
     token.secret: 576E5A7234753778214125442A472D4B6150645367566B58703273357638792F
 management:
@@ -42,6 +44,9 @@ server:
   port: 8082
   error:
     include-message: ALWAYS
+logging:
+  level:
+    com: INFO
 ---
 postgres.port: 5434
 postgres.host: voucher-db

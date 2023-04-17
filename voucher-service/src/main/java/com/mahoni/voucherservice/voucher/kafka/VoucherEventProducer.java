@@ -2,6 +2,7 @@ package com.mahoni.voucherservice.voucher.kafka;
 
 import com.mahoni.schema.VoucherRedeemedSchema;
 import com.mahoni.voucherservice.voucher.model.RedeemVoucher;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -12,6 +13,7 @@ import java.time.ZoneId;
 import java.util.UUID;
 
 @Component
+@Slf4j
 public class VoucherEventProducer {
 
   @Autowired
@@ -25,7 +27,7 @@ public class VoucherEventProducer {
     VoucherRedeemedSchema event = VoucherRedeemedSchema.newBuilder()
       .setEventId(id)
       .setTimestamp(now)
-      .setVoucherId(redeemVoucher.getVoucher().getId().toString())
+      .setVoucherId(redeemVoucher.getId().toString())
       .setUserId(redeemVoucher.getUserId().toString())
       .setCode(redeemVoucher.getRedeemCode())
       .setPoint(redeemVoucher.getVoucher().getPoint())
@@ -33,6 +35,7 @@ public class VoucherEventProducer {
       .setExpiredAt(parseTimestamp(redeemVoucher.getExpiredAt()))
       .build();
 
+    log.info("Sending event to " + KafkaTopic.VOUCHER_REDEEMED_TOPIC + " with payload: " + event.toString());
     kafkaTemplate.send(new ProducerRecord<>(KafkaTopic.VOUCHER_REDEEMED_TOPIC, id, event));
   }
 

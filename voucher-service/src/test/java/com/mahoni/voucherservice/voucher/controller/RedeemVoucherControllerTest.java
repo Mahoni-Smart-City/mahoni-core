@@ -78,7 +78,10 @@ public class RedeemVoucherControllerTest {
   }
 
   @Test
-  public void testPost_thenReturnRedeemVoucherResponse() throws Exception {
+  public void testPostPendingVoucher_thenReturnRedeemVoucherResponseWithHiddenCode() throws Exception {
+    redeemVoucher.setStatus(VoucherStatus.PENDING);
+    response.setRedeemCode("");
+    response.setStatus(VoucherStatus.PENDING);
     when(redeemVoucherService.redeem(any())).thenReturn(redeemVoucher);
 
     MvcResult result = this.mockMvc.perform(post("/api/v1/redeem")
@@ -104,7 +107,10 @@ public class RedeemVoucherControllerTest {
   }
 
   @Test
-  public void testSetRedeemed_thenReturnRedeemVoucherResponse() throws Exception {
+  public void testSetRedeemedPendingVoucher_thenReturnRedeemVoucherResponseWithHiddenCode() throws Exception {
+    redeemVoucher.setStatus(VoucherStatus.PENDING);
+    response.setRedeemCode("");
+    response.setStatus(VoucherStatus.PENDING);
     when(redeemVoucherService.setRedeemed(any())).thenReturn(redeemVoucher);
 
     MvcResult result = this.mockMvc.perform(post("/api/v1/redeem/{id}", UUID.randomUUID()))
@@ -125,9 +131,12 @@ public class RedeemVoucherControllerTest {
   }
 
   @Test
-  public void testGetAllByUserId_thenReturnRedeemVoucherResponses() throws Exception {
+  public void testGetAllByUserId_thenReturnRedeemVoucherResponsesWithHiddenCode() throws Exception {
     List<RedeemVoucher> redeemVouchers = new ArrayList<>();
     List<RedeemVoucherResponse> responses = new ArrayList<>();
+
+    redeemVouchers.add(redeemVoucher);
+    responses.add(mapper(redeemVoucher));
 
     when(redeemVoucherService.getAllByUserId(any())).thenReturn(redeemVouchers);
 
@@ -137,5 +146,37 @@ public class RedeemVoucherControllerTest {
 
     assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(responses));
     verify(redeemVoucherService).getAllByUserId(any());
+  }
+
+  @Test
+  public void testGetAllByUserId_thenReturnRedeemVoucherResponses() throws Exception {
+    List<RedeemVoucher> redeemVouchers = new ArrayList<>();
+    List<RedeemVoucherResponse> responses = new ArrayList<>();
+
+    redeemVoucher.setStatus(VoucherStatus.PENDING);
+    redeemVouchers.add(redeemVoucher);
+    responses.add(mapper(redeemVoucher));
+
+    when(redeemVoucherService.getAllByUserId(any())).thenReturn(redeemVouchers);
+
+    MvcResult result = this.mockMvc.perform(get("/api/v1/redeem/user/{id}", UUID.randomUUID()))
+      .andExpect(status().isOk())
+      .andReturn();
+
+    assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(responses));
+    verify(redeemVoucherService).getAllByUserId(any());
+  }
+
+  private RedeemVoucherResponse mapper(RedeemVoucher redeemVoucher) {
+    String code = redeemVoucher.getStatus() == VoucherStatus.PENDING ? "" : redeemVoucher.getRedeemCode();
+    return new RedeemVoucherResponse(
+      redeemVoucher.getId(),
+      redeemVoucher.getVoucher().getId(),
+      redeemVoucher.getUserId(),
+      code,
+      redeemVoucher.getStatus(),
+      redeemVoucher.getRedeemedAt(),
+      redeemVoucher.getExpiredAt()
+    );
   }
 }

@@ -4,6 +4,7 @@ import com.mahoni.voucherservice.voucher.dto.RedeemVoucherRequest;
 import com.mahoni.voucherservice.voucher.dto.RedeemVoucherResponse;
 import com.mahoni.voucherservice.voucher.exception.RedeemVoucherNotFoundException;
 import com.mahoni.voucherservice.voucher.model.RedeemVoucher;
+import com.mahoni.voucherservice.voucher.model.VoucherStatus;
 import com.mahoni.voucherservice.voucher.service.RedeemVoucherService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,11 +51,12 @@ public class RedeemVoucherController {
   }
 
   private RedeemVoucherResponse mapper(RedeemVoucher redeemVoucher) {
+    String code = redeemVoucher.getStatus() == VoucherStatus.PENDING ? "" : redeemVoucher.getRedeemCode();
     return new RedeemVoucherResponse(
       redeemVoucher.getId(),
       redeemVoucher.getVoucher().getId(),
       redeemVoucher.getUserId(),
-      redeemVoucher.getRedeemCode(),
+      code,
       redeemVoucher.getStatus(),
       redeemVoucher.getRedeemedAt(),
       redeemVoucher.getExpiredAt()

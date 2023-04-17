@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "TripCompletedSchema",
+  "name": "TripSchema",
   "namespace": "com.mahoni.schema",
   "fields": [
     {
@@ -29,11 +29,11 @@
     },
     {
       "name": "scanOutPlaceId",
-      "type": "string"
+      "type": ["null", "string"]
     },
     {
       "name": "scanOutTimestamp",
-      "type": "long"
+      "type": ["null", "long"]
     },
     {
       "name": "status",
@@ -41,11 +41,11 @@
     },
     {
       "name": "aqi",
-      "type": "double"
+      "type": ["null", "double"]
     },
     {
       "name": "point",
-      "type": "int"
+      "type": ["null", "int"]
     }
   ]
 }

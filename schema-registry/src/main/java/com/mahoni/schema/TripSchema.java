@@ -13,24 +13,24 @@ import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
-public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 6692620562234914536L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"TripCompletedSchema\",\"namespace\":\"com.mahoni.schema\",\"fields\":[{\"name\":\"eventId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"tripId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"userId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"scanInPlaceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"scanInTimestamp\",\"type\":\"long\"},{\"name\":\"scanOutPlaceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"scanOutTimestamp\",\"type\":\"long\"},{\"name\":\"status\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"aqi\",\"type\":\"double\"},{\"name\":\"point\",\"type\":\"int\"}]}");
+public class TripSchema extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
+  private static final long serialVersionUID = 9223129613145090119L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"TripSchema\",\"namespace\":\"com.mahoni.schema\",\"fields\":[{\"name\":\"eventId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"tripId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"userId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"scanInPlaceId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"scanInTimestamp\",\"type\":\"long\"},{\"name\":\"scanOutPlaceId\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}]},{\"name\":\"scanOutTimestamp\",\"type\":[\"null\",\"long\"]},{\"name\":\"status\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"aqi\",\"type\":[\"null\",\"double\"]},{\"name\":\"point\",\"type\":[\"null\",\"int\"]}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
 
-  private static final BinaryMessageEncoder<TripCompletedSchema> ENCODER =
-      new BinaryMessageEncoder<TripCompletedSchema>(MODEL$, SCHEMA$);
+  private static final BinaryMessageEncoder<TripSchema> ENCODER =
+      new BinaryMessageEncoder<TripSchema>(MODEL$, SCHEMA$);
 
-  private static final BinaryMessageDecoder<TripCompletedSchema> DECODER =
-      new BinaryMessageDecoder<TripCompletedSchema>(MODEL$, SCHEMA$);
+  private static final BinaryMessageDecoder<TripSchema> DECODER =
+      new BinaryMessageDecoder<TripSchema>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
    * @return the message encoder used by this class
    */
-  public static BinaryMessageEncoder<TripCompletedSchema> getEncoder() {
+  public static BinaryMessageEncoder<TripSchema> getEncoder() {
     return ENCODER;
   }
 
@@ -38,7 +38,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
    * Return the BinaryMessageDecoder instance used by this class.
    * @return the message decoder used by this class
    */
-  public static BinaryMessageDecoder<TripCompletedSchema> getDecoder() {
+  public static BinaryMessageDecoder<TripSchema> getDecoder() {
     return DECODER;
   }
 
@@ -47,12 +47,12 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
-  public static BinaryMessageDecoder<TripCompletedSchema> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<TripCompletedSchema>(MODEL$, SCHEMA$, resolver);
+  public static BinaryMessageDecoder<TripSchema> createDecoder(SchemaStore resolver) {
+    return new BinaryMessageDecoder<TripSchema>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
-   * Serializes this TripCompletedSchema to a ByteBuffer.
+   * Serializes this TripSchema to a ByteBuffer.
    * @return a buffer holding the serialized data for this instance
    * @throws java.io.IOException if this instance could not be serialized
    */
@@ -61,12 +61,12 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
   }
 
   /**
-   * Deserializes a TripCompletedSchema from a ByteBuffer.
+   * Deserializes a TripSchema from a ByteBuffer.
    * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a TripCompletedSchema instance decoded from the given buffer
+   * @return a TripSchema instance decoded from the given buffer
    * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
    */
-  public static TripCompletedSchema fromByteBuffer(
+  public static TripSchema fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
@@ -78,17 +78,17 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
    private java.lang.String scanInPlaceId;
    private long scanInTimestamp;
    private java.lang.String scanOutPlaceId;
-   private long scanOutTimestamp;
+   private java.lang.Long scanOutTimestamp;
    private java.lang.String status;
-   private double aqi;
-   private int point;
+   private java.lang.Double aqi;
+   private java.lang.Integer point;
 
   /**
    * Default constructor.  Note that this does not initialize fields
    * to their default values from the schema.  If that is desired then
    * one should use <code>newBuilder()</code>.
    */
-  public TripCompletedSchema() {}
+  public TripSchema() {}
 
   /**
    * All-args constructor.
@@ -104,7 +104,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
    * @param aqi The new value for aqi
    * @param point The new value for point
    */
-  public TripCompletedSchema(java.lang.String eventId, java.lang.Long timestamp, java.lang.String tripId, java.lang.String userId, java.lang.String scanInPlaceId, java.lang.Long scanInTimestamp, java.lang.String scanOutPlaceId, java.lang.Long scanOutTimestamp, java.lang.String status, java.lang.Double aqi, java.lang.Integer point) {
+  public TripSchema(java.lang.String eventId, java.lang.Long timestamp, java.lang.String tripId, java.lang.String userId, java.lang.String scanInPlaceId, java.lang.Long scanInTimestamp, java.lang.String scanOutPlaceId, java.lang.Long scanOutTimestamp, java.lang.String status, java.lang.Double aqi, java.lang.Integer point) {
     this.eventId = eventId;
     this.timestamp = timestamp;
     this.tripId = tripId;
@@ -280,7 +280,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
    * Gets the value of the 'scanOutTimestamp' field.
    * @return The value of the 'scanOutTimestamp' field.
    */
-  public long getScanOutTimestamp() {
+  public java.lang.Long getScanOutTimestamp() {
     return scanOutTimestamp;
   }
 
@@ -289,7 +289,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
    * Sets the value of the 'scanOutTimestamp' field.
    * @param value the value to set.
    */
-  public void setScanOutTimestamp(long value) {
+  public void setScanOutTimestamp(java.lang.Long value) {
     this.scanOutTimestamp = value;
   }
 
@@ -314,7 +314,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
    * Gets the value of the 'aqi' field.
    * @return The value of the 'aqi' field.
    */
-  public double getAqi() {
+  public java.lang.Double getAqi() {
     return aqi;
   }
 
@@ -323,7 +323,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
    * Sets the value of the 'aqi' field.
    * @param value the value to set.
    */
-  public void setAqi(double value) {
+  public void setAqi(java.lang.Double value) {
     this.aqi = value;
   }
 
@@ -331,7 +331,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
    * Gets the value of the 'point' field.
    * @return The value of the 'point' field.
    */
-  public int getPoint() {
+  public java.lang.Integer getPoint() {
     return point;
   }
 
@@ -340,50 +340,50 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
    * Sets the value of the 'point' field.
    * @param value the value to set.
    */
-  public void setPoint(int value) {
+  public void setPoint(java.lang.Integer value) {
     this.point = value;
   }
 
   /**
-   * Creates a new TripCompletedSchema RecordBuilder.
-   * @return A new TripCompletedSchema RecordBuilder
+   * Creates a new TripSchema RecordBuilder.
+   * @return A new TripSchema RecordBuilder
    */
-  public static com.mahoni.schema.TripCompletedSchema.Builder newBuilder() {
-    return new com.mahoni.schema.TripCompletedSchema.Builder();
+  public static com.mahoni.schema.TripSchema.Builder newBuilder() {
+    return new com.mahoni.schema.TripSchema.Builder();
   }
 
   /**
-   * Creates a new TripCompletedSchema RecordBuilder by copying an existing Builder.
+   * Creates a new TripSchema RecordBuilder by copying an existing Builder.
    * @param other The existing builder to copy.
-   * @return A new TripCompletedSchema RecordBuilder
+   * @return A new TripSchema RecordBuilder
    */
-  public static com.mahoni.schema.TripCompletedSchema.Builder newBuilder(com.mahoni.schema.TripCompletedSchema.Builder other) {
+  public static com.mahoni.schema.TripSchema.Builder newBuilder(com.mahoni.schema.TripSchema.Builder other) {
     if (other == null) {
-      return new com.mahoni.schema.TripCompletedSchema.Builder();
+      return new com.mahoni.schema.TripSchema.Builder();
     } else {
-      return new com.mahoni.schema.TripCompletedSchema.Builder(other);
+      return new com.mahoni.schema.TripSchema.Builder(other);
     }
   }
 
   /**
-   * Creates a new TripCompletedSchema RecordBuilder by copying an existing TripCompletedSchema instance.
+   * Creates a new TripSchema RecordBuilder by copying an existing TripSchema instance.
    * @param other The existing instance to copy.
-   * @return A new TripCompletedSchema RecordBuilder
+   * @return A new TripSchema RecordBuilder
    */
-  public static com.mahoni.schema.TripCompletedSchema.Builder newBuilder(com.mahoni.schema.TripCompletedSchema other) {
+  public static com.mahoni.schema.TripSchema.Builder newBuilder(com.mahoni.schema.TripSchema other) {
     if (other == null) {
-      return new com.mahoni.schema.TripCompletedSchema.Builder();
+      return new com.mahoni.schema.TripSchema.Builder();
     } else {
-      return new com.mahoni.schema.TripCompletedSchema.Builder(other);
+      return new com.mahoni.schema.TripSchema.Builder(other);
     }
   }
 
   /**
-   * RecordBuilder for TripCompletedSchema instances.
+   * RecordBuilder for TripSchema instances.
    */
   @org.apache.avro.specific.AvroGenerated
-  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<TripCompletedSchema>
-    implements org.apache.avro.data.RecordBuilder<TripCompletedSchema> {
+  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<TripSchema>
+    implements org.apache.avro.data.RecordBuilder<TripSchema> {
 
     private java.lang.String eventId;
     private long timestamp;
@@ -392,10 +392,10 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
     private java.lang.String scanInPlaceId;
     private long scanInTimestamp;
     private java.lang.String scanOutPlaceId;
-    private long scanOutTimestamp;
+    private java.lang.Long scanOutTimestamp;
     private java.lang.String status;
-    private double aqi;
-    private int point;
+    private java.lang.Double aqi;
+    private java.lang.Integer point;
 
     /** Creates a new Builder */
     private Builder() {
@@ -406,7 +406,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.mahoni.schema.TripCompletedSchema.Builder other) {
+    private Builder(com.mahoni.schema.TripSchema.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.eventId)) {
         this.eventId = data().deepCopy(fields()[0].schema(), other.eventId);
@@ -455,10 +455,10 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
     }
 
     /**
-     * Creates a Builder by copying an existing TripCompletedSchema instance
+     * Creates a Builder by copying an existing TripSchema instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.mahoni.schema.TripCompletedSchema other) {
+    private Builder(com.mahoni.schema.TripSchema other) {
       super(SCHEMA$);
       if (isValidValue(fields()[0], other.eventId)) {
         this.eventId = data().deepCopy(fields()[0].schema(), other.eventId);
@@ -520,7 +520,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'eventId'.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder setEventId(java.lang.String value) {
+    public com.mahoni.schema.TripSchema.Builder setEventId(java.lang.String value) {
       validate(fields()[0], value);
       this.eventId = value;
       fieldSetFlags()[0] = true;
@@ -540,7 +540,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * Clears the value of the 'eventId' field.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder clearEventId() {
+    public com.mahoni.schema.TripSchema.Builder clearEventId() {
       eventId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -560,7 +560,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder setTimestamp(long value) {
+    public com.mahoni.schema.TripSchema.Builder setTimestamp(long value) {
       validate(fields()[1], value);
       this.timestamp = value;
       fieldSetFlags()[1] = true;
@@ -580,7 +580,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * Clears the value of the 'timestamp' field.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder clearTimestamp() {
+    public com.mahoni.schema.TripSchema.Builder clearTimestamp() {
       fieldSetFlags()[1] = false;
       return this;
     }
@@ -599,7 +599,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'tripId'.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder setTripId(java.lang.String value) {
+    public com.mahoni.schema.TripSchema.Builder setTripId(java.lang.String value) {
       validate(fields()[2], value);
       this.tripId = value;
       fieldSetFlags()[2] = true;
@@ -619,7 +619,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * Clears the value of the 'tripId' field.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder clearTripId() {
+    public com.mahoni.schema.TripSchema.Builder clearTripId() {
       tripId = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -639,7 +639,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'userId'.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder setUserId(java.lang.String value) {
+    public com.mahoni.schema.TripSchema.Builder setUserId(java.lang.String value) {
       validate(fields()[3], value);
       this.userId = value;
       fieldSetFlags()[3] = true;
@@ -659,7 +659,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * Clears the value of the 'userId' field.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder clearUserId() {
+    public com.mahoni.schema.TripSchema.Builder clearUserId() {
       userId = null;
       fieldSetFlags()[3] = false;
       return this;
@@ -679,7 +679,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'scanInPlaceId'.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder setScanInPlaceId(java.lang.String value) {
+    public com.mahoni.schema.TripSchema.Builder setScanInPlaceId(java.lang.String value) {
       validate(fields()[4], value);
       this.scanInPlaceId = value;
       fieldSetFlags()[4] = true;
@@ -699,7 +699,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * Clears the value of the 'scanInPlaceId' field.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder clearScanInPlaceId() {
+    public com.mahoni.schema.TripSchema.Builder clearScanInPlaceId() {
       scanInPlaceId = null;
       fieldSetFlags()[4] = false;
       return this;
@@ -719,7 +719,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'scanInTimestamp'.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder setScanInTimestamp(long value) {
+    public com.mahoni.schema.TripSchema.Builder setScanInTimestamp(long value) {
       validate(fields()[5], value);
       this.scanInTimestamp = value;
       fieldSetFlags()[5] = true;
@@ -739,7 +739,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * Clears the value of the 'scanInTimestamp' field.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder clearScanInTimestamp() {
+    public com.mahoni.schema.TripSchema.Builder clearScanInTimestamp() {
       fieldSetFlags()[5] = false;
       return this;
     }
@@ -758,7 +758,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'scanOutPlaceId'.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder setScanOutPlaceId(java.lang.String value) {
+    public com.mahoni.schema.TripSchema.Builder setScanOutPlaceId(java.lang.String value) {
       validate(fields()[6], value);
       this.scanOutPlaceId = value;
       fieldSetFlags()[6] = true;
@@ -778,7 +778,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * Clears the value of the 'scanOutPlaceId' field.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder clearScanOutPlaceId() {
+    public com.mahoni.schema.TripSchema.Builder clearScanOutPlaceId() {
       scanOutPlaceId = null;
       fieldSetFlags()[6] = false;
       return this;
@@ -788,7 +788,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * Gets the value of the 'scanOutTimestamp' field.
       * @return The value.
       */
-    public long getScanOutTimestamp() {
+    public java.lang.Long getScanOutTimestamp() {
       return scanOutTimestamp;
     }
 
@@ -798,7 +798,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'scanOutTimestamp'.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder setScanOutTimestamp(long value) {
+    public com.mahoni.schema.TripSchema.Builder setScanOutTimestamp(java.lang.Long value) {
       validate(fields()[7], value);
       this.scanOutTimestamp = value;
       fieldSetFlags()[7] = true;
@@ -818,7 +818,8 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * Clears the value of the 'scanOutTimestamp' field.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder clearScanOutTimestamp() {
+    public com.mahoni.schema.TripSchema.Builder clearScanOutTimestamp() {
+      scanOutTimestamp = null;
       fieldSetFlags()[7] = false;
       return this;
     }
@@ -837,7 +838,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'status'.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder setStatus(java.lang.String value) {
+    public com.mahoni.schema.TripSchema.Builder setStatus(java.lang.String value) {
       validate(fields()[8], value);
       this.status = value;
       fieldSetFlags()[8] = true;
@@ -857,7 +858,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * Clears the value of the 'status' field.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder clearStatus() {
+    public com.mahoni.schema.TripSchema.Builder clearStatus() {
       status = null;
       fieldSetFlags()[8] = false;
       return this;
@@ -867,7 +868,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * Gets the value of the 'aqi' field.
       * @return The value.
       */
-    public double getAqi() {
+    public java.lang.Double getAqi() {
       return aqi;
     }
 
@@ -877,7 +878,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'aqi'.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder setAqi(double value) {
+    public com.mahoni.schema.TripSchema.Builder setAqi(java.lang.Double value) {
       validate(fields()[9], value);
       this.aqi = value;
       fieldSetFlags()[9] = true;
@@ -897,7 +898,8 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * Clears the value of the 'aqi' field.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder clearAqi() {
+    public com.mahoni.schema.TripSchema.Builder clearAqi() {
+      aqi = null;
       fieldSetFlags()[9] = false;
       return this;
     }
@@ -906,7 +908,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * Gets the value of the 'point' field.
       * @return The value.
       */
-    public int getPoint() {
+    public java.lang.Integer getPoint() {
       return point;
     }
 
@@ -916,7 +918,7 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * @param value The value of 'point'.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder setPoint(int value) {
+    public com.mahoni.schema.TripSchema.Builder setPoint(java.lang.Integer value) {
       validate(fields()[10], value);
       this.point = value;
       fieldSetFlags()[10] = true;
@@ -936,16 +938,17 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
       * Clears the value of the 'point' field.
       * @return This builder.
       */
-    public com.mahoni.schema.TripCompletedSchema.Builder clearPoint() {
+    public com.mahoni.schema.TripSchema.Builder clearPoint() {
+      point = null;
       fieldSetFlags()[10] = false;
       return this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public TripCompletedSchema build() {
+    public TripSchema build() {
       try {
-        TripCompletedSchema record = new TripCompletedSchema();
+        TripSchema record = new TripSchema();
         record.eventId = fieldSetFlags()[0] ? this.eventId : (java.lang.String) defaultValue(fields()[0]);
         record.timestamp = fieldSetFlags()[1] ? this.timestamp : (java.lang.Long) defaultValue(fields()[1]);
         record.tripId = fieldSetFlags()[2] ? this.tripId : (java.lang.String) defaultValue(fields()[2]);
@@ -967,8 +970,8 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
   }
 
   @SuppressWarnings("unchecked")
-  private static final org.apache.avro.io.DatumWriter<TripCompletedSchema>
-    WRITER$ = (org.apache.avro.io.DatumWriter<TripCompletedSchema>)MODEL$.createDatumWriter(SCHEMA$);
+  private static final org.apache.avro.io.DatumWriter<TripSchema>
+    WRITER$ = (org.apache.avro.io.DatumWriter<TripSchema>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
@@ -976,8 +979,8 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
   }
 
   @SuppressWarnings("unchecked")
-  private static final org.apache.avro.io.DatumReader<TripCompletedSchema>
-    READER$ = (org.apache.avro.io.DatumReader<TripCompletedSchema>)MODEL$.createDatumReader(SCHEMA$);
+  private static final org.apache.avro.io.DatumReader<TripSchema>
+    READER$ = (org.apache.avro.io.DatumReader<TripSchema>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {
@@ -1001,15 +1004,39 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
 
     out.writeLong(this.scanInTimestamp);
 
-    out.writeString(this.scanOutPlaceId);
+    if (this.scanOutPlaceId == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.scanOutPlaceId);
+    }
 
-    out.writeLong(this.scanOutTimestamp);
+    if (this.scanOutTimestamp == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeLong(this.scanOutTimestamp);
+    }
 
     out.writeString(this.status);
 
-    out.writeDouble(this.aqi);
+    if (this.aqi == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeDouble(this.aqi);
+    }
 
-    out.writeInt(this.point);
+    if (this.point == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeInt(this.point);
+    }
 
   }
 
@@ -1030,15 +1057,35 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
 
       this.scanInTimestamp = in.readLong();
 
-      this.scanOutPlaceId = in.readString();
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.scanOutPlaceId = null;
+      } else {
+        this.scanOutPlaceId = in.readString();
+      }
 
-      this.scanOutTimestamp = in.readLong();
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.scanOutTimestamp = null;
+      } else {
+        this.scanOutTimestamp = in.readLong();
+      }
 
       this.status = in.readString();
 
-      this.aqi = in.readDouble();
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.aqi = null;
+      } else {
+        this.aqi = in.readDouble();
+      }
 
-      this.point = in.readInt();
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.point = null;
+      } else {
+        this.point = in.readInt();
+      }
 
     } else {
       for (int i = 0; i < 11; i++) {
@@ -1068,11 +1115,21 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
           break;
 
         case 6:
-          this.scanOutPlaceId = in.readString();
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.scanOutPlaceId = null;
+          } else {
+            this.scanOutPlaceId = in.readString();
+          }
           break;
 
         case 7:
-          this.scanOutTimestamp = in.readLong();
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.scanOutTimestamp = null;
+          } else {
+            this.scanOutTimestamp = in.readLong();
+          }
           break;
 
         case 8:
@@ -1080,11 +1137,21 @@ public class TripCompletedSchema extends org.apache.avro.specific.SpecificRecord
           break;
 
         case 9:
-          this.aqi = in.readDouble();
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.aqi = null;
+          } else {
+            this.aqi = in.readDouble();
+          }
           break;
 
         case 10:
-          this.point = in.readInt();
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.point = null;
+          } else {
+            this.point = in.readInt();
+          }
           break;
 
         default:
