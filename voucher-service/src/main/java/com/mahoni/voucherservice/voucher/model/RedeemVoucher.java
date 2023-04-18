@@ -25,7 +25,6 @@ public class RedeemVoucher {
     strategy = "org.hibernate.id.UUIDGenerator"
   )
   @Column(name = "id", updatable = false, nullable = false)
-  @Getter
   private UUID id;
 
   @ManyToOne

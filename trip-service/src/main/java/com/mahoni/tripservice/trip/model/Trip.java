@@ -54,6 +54,9 @@ public class Trip {
   @Column
   private Integer point;
 
+  @Column(name = "transaction_status")
+  private String transactionStatus;
+
   public Trip(UUID userId, QRGenerator scanInPlaceId, LocalDateTime scanInAt, String status) {
     this.userId = userId;
     this.scanInPlaceId = scanInPlaceId;

@@ -26,7 +26,6 @@ public class Voucher {
     strategy = "org.hibernate.id.UUIDGenerator"
   )
   @Column(name = "id", updatable = false, nullable = false)
-  @Getter
   private UUID id;
 
   @Column(nullable = false)

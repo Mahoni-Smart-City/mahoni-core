@@ -51,7 +51,7 @@ public class AirSensorController {
   @DeleteMapping("/{id}")
   public ResponseEntity<AirSensor> delete(@PathVariable("id") Long id) {
     try {
-      AirSensor airSensor = airSensorService.getById(id);
+      AirSensor airSensor = airSensorService.deleteById(id);
       return ResponseEntity.ok(airSensor);
     } catch (AirSensorNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

@@ -9,7 +9,6 @@ import com.mahoni.voucherservice.merchant.repository.MerchantRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -62,34 +61,38 @@ public class MerchantService {
   }
 
   public Merchant deleteById(UUID id) {
-    Optional<Merchant> merchant = merchantRepository.findById(id);
-    if (merchant.isEmpty()) {
-      throw new MerchantNotFoundException(id);
-    }
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    if (!(merchant.get().getUsername().equals(auth.getName()) || auth.getAuthorities().stream()
-      .anyMatch(r -> r.getAuthority().equals("ADMIN")))) {
-      throw new AccessDeniedException("You don’t have permission to access this resource");
-    }
+    Merchant merchant = authorizedFindMerchantById(id);
     merchantRepository.deleteById(id);
-    return merchant.get();
+    return merchant;
   }
 
   public Merchant update(UUID id, MerchantRequest newMerchant) {
-    Optional<Merchant> merchant = merchantRepository.findById(id);
-    if (merchant.isEmpty()) {
-      throw new MerchantNotFoundException(id);
-    }
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    if (!(merchant.get().getUsername().equals(auth.getName()) || auth.getAuthorities().stream()
-      .anyMatch(r -> r.getAuthority().equals("ADMIN")))) {
-      throw new AccessDeniedException("You don’t have permission to access this resource");
-    }
-    Merchant updatedMerchant = merchant.get();
+    Merchant updatedMerchant = authorizedFindMerchantById(id);
     updatedMerchant.setUsername(newMerchant.getUsername());
     updatedMerchant.setEmail(newMerchant.getEmail());
     updatedMerchant.setName(newMerchant.getName());
     updatedMerchant.setPassword(passwordEncoder.encode(newMerchant.getPassword()));
     return merchantRepository.save(updatedMerchant);
+  }
+
+  private boolean isAdmin() {
+    return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ADMIN"));
+  }
+
+  private boolean isAllowedMerchant(Merchant merchant) {
+    return SecurityContextHolder.getContext().getAuthentication().getName().equals(
+      merchant.getUsername()
+    );
+  }
+
+  private Merchant authorizedFindMerchantById(UUID id) {
+    Optional<Merchant> merchant = merchantRepository.findById(id);
+    if (merchant.isEmpty()) {
+      throw new MerchantNotFoundException(id);
+    }
+    if (!(isAllowedMerchant(merchant.get()) || isAdmin())) {
+      throw new AccessDeniedException("You don’t have permission to access this resource");
+    }
+    return merchant.get();
   }
 }

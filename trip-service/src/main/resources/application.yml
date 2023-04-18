@@ -16,6 +16,28 @@ spring:
   kafka:
     bootstrap.servers: localhost:9092
     schema.registry.url: http://localhost:8081
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: http://localhost:8081
+    consumer:
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        schema.registry.url: http://localhost:8081
+        specific.avro.reader: true
+    streams:
+      application-id: trip-streams
+      group-id: trip-streams-group-id
+      default-key-serde: org.apache.kafka.common.serialization.Serdes
+      default-value-serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+      properties:
+        state.dir: ./data/trip-service/store
+        schema.registry.url: http://localhost:8081
+
   security:
     qr-token:
       lifespan: 30
@@ -41,6 +63,9 @@ server:
   port: 8085
   error:
     include-message: ALWAYS
+logging:
+  level:
+    com: INFO
 ---
 postgres.port: 5433
 postgres.host: trip-db
@@ -52,3 +77,16 @@ spring:
   kafka:
     bootstrap.servers: "PLAINTEXT://kafka:29092"
     schema.registry.url: http://kafka-schema-registry:8081
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: http://kafka-schema-registry:8081
+    consumer:
+      bootstrap-servers: "PLAINTEXT://kafka:29092"
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        schema.registry.url: http://kafka-schema-registry:8081
+        specific.avro.reader: true

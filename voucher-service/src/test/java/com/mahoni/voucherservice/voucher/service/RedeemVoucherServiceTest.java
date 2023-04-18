@@ -5,6 +5,7 @@ import com.mahoni.voucherservice.merchant.model.MerchantRole;
 import com.mahoni.voucherservice.voucher.dto.RedeemVoucherRequest;
 import com.mahoni.voucherservice.voucher.dto.RedeemVoucherRequestCRUD;
 import com.mahoni.voucherservice.voucher.exception.RedeemVoucherNotFoundException;
+import com.mahoni.voucherservice.voucher.kafka.VoucherEventProducer;
 import com.mahoni.voucherservice.voucher.model.RedeemVoucher;
 import com.mahoni.voucherservice.voucher.model.Voucher;
 import com.mahoni.voucherservice.voucher.model.VoucherStatus;
@@ -28,8 +29,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -41,6 +41,9 @@ public class RedeemVoucherServiceTest {
 
   @Mock
   VoucherService voucherService;
+
+  @Mock
+  VoucherEventProducer voucherEventProducer;
 
   @InjectMocks
   RedeemVoucherService redeemVoucherService;
@@ -66,7 +69,10 @@ public class RedeemVoucherServiceTest {
     voucher.setMerchant(merchant);
     voucher.setQuantity(0);
 
-    redeemVoucher = new RedeemVoucher(voucher, "Test", LocalDateTime.now());
+    redeemVoucher = new RedeemVoucher();
+    redeemVoucher.setVoucher(voucher);
+    redeemVoucher.setRedeemCode("Test");
+    redeemVoucher.setExpiredAt(LocalDateTime.now());
     requestCRUD = new RedeemVoucherRequestCRUD(id,"Test", LocalDateTime.now());
     request = new RedeemVoucherRequest(id, id);
 
@@ -119,6 +125,7 @@ public class RedeemVoucherServiceTest {
   @Test
   public void testGivenId_thenReturnRedeemVoucher() {
     when(redeemVoucherRepository.findById(any())).thenReturn(Optional.of(redeemVoucher));
+    when(voucherService.getById(any())).thenReturn(voucher);
     RedeemVoucher savedRedeemVoucher = redeemVoucherService.getById(id);
 
     assertEquals(savedRedeemVoucher, redeemVoucher);
@@ -130,7 +137,21 @@ public class RedeemVoucherServiceTest {
     when(redeemVoucherRepository.findById(any())).thenReturn(Optional.empty());
 
     assertThrows(RedeemVoucherNotFoundException.class, () -> redeemVoucherService.getById(id));
+    assertThrows(RedeemVoucherNotFoundException.class, () -> redeemVoucherService.deleteById(id));
     assertThrows(RedeemVoucherNotFoundException.class, () -> redeemVoucherService.setRedeemed(id));
+  }
+
+  @Test
+  public void testGivenId_thenReturnAccessDenied() {
+    Authentication authentication = mock(Authentication.class);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    when(redeemVoucherRepository.findById(any())).thenReturn(Optional.of(redeemVoucher));
+    when(voucherService.getById(any())).thenReturn(voucher);
+    when(authentication.getName()).thenReturn("Any");
+
+    assertThrows(AccessDeniedException.class, () -> redeemVoucherService.getById(id));
+    assertThrows(AccessDeniedException.class, () -> redeemVoucherService.deleteById(id));
   }
 
   @Test
@@ -242,28 +263,9 @@ public class RedeemVoucherServiceTest {
   }
 
   @Test
-  public void testGivenIdToBeDeleted_thenThrowRedeemVoucherNotFound() {
-    when(redeemVoucherRepository.findById(any())).thenReturn(Optional.empty());
-
-    assertThrows(RedeemVoucherNotFoundException.class, () -> redeemVoucherService.deleteById(id));
-  }
-
-  @Test
-  public void testGivenIdToBeDeleted_thenThrowAccessDenied() {
-    Authentication authentication = mock(Authentication.class);
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-
-    when(redeemVoucherRepository.findById(any())).thenReturn(Optional.of(redeemVoucher));
-    when(voucherService.getById(any())).thenReturn(voucher);
-    when(authentication.getName()).thenReturn("Any");
-
-    assertThrows(AccessDeniedException.class, () -> redeemVoucherService.deleteById(id));
-  }
-
-  @Test
-  public void testGivenId_thenRedeemVoucher() {
+  public void testGivenId_thenRedeemVoucherWithPendingStatus() {
     RedeemVoucher expectedRedeemVoucher = new RedeemVoucher(voucher, "Test", LocalDateTime.now());
-    expectedRedeemVoucher.setStatus(VoucherStatus.ACTIVE);
+    expectedRedeemVoucher.setStatus(VoucherStatus.PENDING);
 
     when(redeemVoucherRepository.findAvailableRedeemVoucherByVoucherId(any())).thenReturn(Optional.of(redeemVoucher));
     when(redeemVoucherRepository.save(any())).thenReturn(expectedRedeemVoucher);
@@ -271,6 +273,7 @@ public class RedeemVoucherServiceTest {
 
     assertEquals(updatedRedeemVoucher, expectedRedeemVoucher);
     verify(redeemVoucherRepository).save(redeemVoucherArgumentCaptor.capture());
+    verify(voucherEventProducer).send(any());
     assertEquals(redeemVoucherArgumentCaptor.getValue().getStatus(), expectedRedeemVoucher.getStatus());
   }
 
@@ -306,5 +309,21 @@ public class RedeemVoucherServiceTest {
     redeemVoucherService.scheduledCheckAndUpdateStatus();
 
     assertEquals(redeemVoucher.getStatus(), VoucherStatus.EXPIRED);
+  }
+
+  @Test
+  public void testScheduledCheckPending_thenResetExpiredPendingStatus() {
+    List<RedeemVoucher> redeemVouchers = new ArrayList<>();
+    redeemVoucher.setStatus(VoucherStatus.PENDING);
+    redeemVoucher.setRedeemedAt(LocalDateTime.now().minusMinutes(10));
+    redeemVouchers.add(redeemVoucher);
+
+    redeemVoucherRepository.save(redeemVoucher);
+    when(redeemVoucherRepository.findAllByStatus(VoucherStatus.PENDING)).thenReturn(redeemVouchers);
+    redeemVoucherService.scheduledCheckAndResetPendingStatus();
+
+    assertNull(redeemVoucher.getStatus());
+    assertNull(redeemVoucher.getUserId());
+    assertNull(redeemVoucher.getRedeemedAt());
   }
 }

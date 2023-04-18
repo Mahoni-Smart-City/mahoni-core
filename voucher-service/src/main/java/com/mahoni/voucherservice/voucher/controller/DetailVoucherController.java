@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -44,6 +45,8 @@ public class DetailVoucherController {
       return ResponseEntity.ok(redeemVoucher);
     } catch (RedeemVoucherNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+    } catch (AccessDeniedException e) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
     }
   }
 
@@ -54,6 +57,8 @@ public class DetailVoucherController {
       return ResponseEntity.ok(updatedRedeemVoucher);
     } catch (RedeemVoucherNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+    } catch (AccessDeniedException e) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
     }
   }
 
@@ -64,6 +69,8 @@ public class DetailVoucherController {
       return ResponseEntity.ok(deletedRedeemVoucher);
     } catch (RedeemVoucherNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+    } catch (AccessDeniedException e) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
     }
   }
 }

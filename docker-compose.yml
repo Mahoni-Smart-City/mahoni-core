@@ -28,7 +28,6 @@ services:
       - ./kafka/data/kafka-1:/var/lib/kafka/data
     depends_on:
       - zookeeper
-    user : root
 
   kafka-2:
     restart: always

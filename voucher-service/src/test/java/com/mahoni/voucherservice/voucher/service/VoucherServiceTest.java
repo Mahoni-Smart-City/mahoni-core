@@ -61,6 +61,14 @@ public class VoucherServiceTest {
     SecurityContextHolder.getContext().setAuthentication(auth);
   }
 
+  void setAdmin() {
+    Merchant admin = new Merchant();
+    admin.setRole(MerchantRole.ADMIN);
+    admin.setUsername("Admin");
+    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(admin, null, admin.getAuthorities());
+    SecurityContextHolder.getContext().setAuthentication(auth);
+  }
+
   @Test
   public void testGivenVoucherRequest_thenSaveVoucher() {
     when(merchantService.getByUsername(any())).thenReturn(merchant);
@@ -68,6 +76,15 @@ public class VoucherServiceTest {
     Voucher savedVoucher = voucherService.create(request);
 
     assertEquals(savedVoucher, voucher);
+    assertEquals(savedVoucher.getId(), voucher.getId());
+    assertEquals(savedVoucher.getName(), voucher.getName());
+    assertEquals(savedVoucher.getDescription(), voucher.getDescription());
+    assertEquals(savedVoucher.getType(), voucher.getType());
+    assertEquals(savedVoucher.getPoint(), voucher.getPoint());
+    assertEquals(savedVoucher.getStartAt(), voucher.getStartAt());
+    assertEquals(savedVoucher.getExpiredAt(), voucher.getExpiredAt());
+    assertEquals(savedVoucher.getMerchant(), voucher.getMerchant());
+    assertEquals(savedVoucher.getQuantity(), voucher.getQuantity());
     verify(voucherRepository).save(any());
   }
 
@@ -110,10 +127,7 @@ public class VoucherServiceTest {
 
   @Test
   public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedVoucherAdminRole() {
-    merchant.setRole(MerchantRole.ADMIN);
-    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(merchant, null, merchant.getAuthorities());
-    SecurityContextHolder.getContext().setAuthentication(auth);
-
+    setAdmin();
     when(voucherRepository.findById(any())).thenReturn(Optional.of(voucher));
     Voucher deletedVoucher = voucherService.deleteById(id);
 
@@ -134,6 +148,7 @@ public class VoucherServiceTest {
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
     when(voucherRepository.findById(any())).thenReturn(Optional.of(voucher));
+    when(authentication.getName()).thenReturn("Any");
 
     assertThrows(AccessDeniedException.class, () -> voucherService.deleteById(id));
   }
@@ -154,9 +169,7 @@ public class VoucherServiceTest {
 
   @Test
   public void testGivenIdAndVoucherRequest_thenUpdateAndReturnUpdatedVoucherAdminRole() {
-    merchant.setRole(MerchantRole.ADMIN);
-    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(merchant, null, merchant.getAuthorities());
-    SecurityContextHolder.getContext().setAuthentication(auth);
+    setAdmin();
     request = new VoucherRequest("Test2", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now());
     Voucher expectedVoucher = new Voucher("Test2", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now(), merchant);
 
@@ -182,6 +195,7 @@ public class VoucherServiceTest {
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
     when(voucherRepository.findById(any())).thenReturn(Optional.of(voucher));
+    when(authentication.getName()).thenReturn("Any");
 
     assertThrows(AccessDeniedException.class, () -> voucherService.update(id, request));
   }

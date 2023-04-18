@@ -10,7 +10,20 @@ spring:
       ddl-auto: update
   kafka:
     bootstrap.servers: localhost:9092
-    schema.registry.url: http://localhost:8081
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: http://localhost:8081
+    consumer:
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        schema.registry.url: http://localhost:8081
+        specific.avro.reader: true
+
 management:
   endpoints:
     web:
@@ -28,6 +41,9 @@ server:
   port: 8088
   error:
     include-message: ALWAYS
+logging:
+  level:
+    com: INFO
 ---
 postgres.port: 5432
 postgres.host: user-db
@@ -38,4 +54,16 @@ spring:
     driver-class-name: org.postgresql.Driver
   kafka:
     bootstrap.servers: "PLAINTEXT://kafka:29092"
-    schema.registry.url: http://kafka-schema-registry:8081
+    producer:
+      bootstrap-servers: "PLAINTEXT://kafka:29092"
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: http://kafka-schema-registry:8081
+    consumer:
+      bootstrap-servers: "PLAINTEXT://kafka:29092"
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        schema.registry.url: http://kafka-schema-registry:8081
+        specific.avro.reader: true

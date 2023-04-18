@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -32,7 +33,7 @@ public class UserService {
     return userRepository.save(new User(user.getUsername(), user.getName(), user.getEmail(), DEFAULT_USER_POINT));
   }
 
-  public User getById(Long id) {
+  public User getById(UUID id) {
     Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {
       throw new ResourceNotFoundException(id);
@@ -45,7 +46,7 @@ public class UserService {
   }
 
   @Transactional
-  public User deleteById(Long id) {
+  public User deleteById(UUID id) {
     Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {
       throw new ResourceNotFoundException(id);
@@ -55,7 +56,7 @@ public class UserService {
   }
 
   @Transactional
-  public User update(Long id, UserRequest newUser) {
+  public User update(UUID id, UserRequest newUser) {
     Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {
       throw new ResourceNotFoundException(id);
