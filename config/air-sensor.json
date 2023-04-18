@@ -1,0 +1,12 @@
+{
+  "name": "cassandra-source",
+  "config":
+  {
+    "connector.class": "io.confluent.connect.cassandra.CassandraSinkConnector",
+    "tasks.max": "3",
+    "connect.cassandra.kcql" : "UPSERT INTO air_sensor SELECT postgres.public.air_sensors",
+    "connect.cassandra.port" : "9042",
+    "connect.cassandra.contact.points" : "localhost",
+    "connect.cassandra.key.space" : "air_quality"
+  }
+}

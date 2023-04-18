@@ -1,5 +1,6 @@
 package com.mahoni.userservice.service;
 
+import com.mahoni.schema.AirQualityRawSchema;
 import com.mahoni.userservice.dto.UserRequest;
 import com.mahoni.userservice.exception.ResourceAlreadyExistException;
 import com.mahoni.userservice.exception.ResourceNotFoundException;
@@ -7,6 +8,7 @@ import com.mahoni.userservice.model.User;
 import com.mahoni.userservice.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,5 +65,10 @@ public class UserService {
     updatedUser.setEmail(newUser.getEmail());
     updatedUser.setName(newUser.getName());
     return userRepository.save(updatedUser);
+  }
+
+  @KafkaListener(topics = "air-quality-raw-topic")
+  public void test(AirQualityRawSchema airQualityRawSchema){
+    System.out.println(airQualityRawSchema.getAqi());
   }
 }

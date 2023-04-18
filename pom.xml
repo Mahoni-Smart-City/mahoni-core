@@ -34,6 +34,7 @@
         <module>voucher-service</module>
         <module>air-quality-service</module>
         <module>cassandra-sink</module>
+        <module>change-data-capture</module>
     </modules>
 
     <dependencyManagement>
