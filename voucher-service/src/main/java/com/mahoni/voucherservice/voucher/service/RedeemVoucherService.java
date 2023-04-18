@@ -1,9 +1,12 @@
 package com.mahoni.voucherservice.voucher.service;
 
+import com.mahoni.schema.UserPointTableSchema;
 import com.mahoni.voucherservice.voucher.dto.RedeemVoucherRequest;
 import com.mahoni.voucherservice.voucher.dto.RedeemVoucherRequestCRUD;
+import com.mahoni.voucherservice.voucher.exception.InsufficientUserPointException;
 import com.mahoni.voucherservice.voucher.exception.RedeemVoucherNotFoundException;
 import com.mahoni.voucherservice.voucher.kafka.VoucherEventProducer;
+import com.mahoni.voucherservice.voucher.kafka.VoucherServiceStream;
 import com.mahoni.voucherservice.voucher.model.RedeemVoucher;
 import com.mahoni.voucherservice.voucher.model.VoucherStatus;
 import com.mahoni.voucherservice.voucher.repository.RedeemVoucherRepository;
@@ -34,6 +37,9 @@ public class RedeemVoucherService {
 
   @Autowired
   VoucherEventProducer voucherEventProducer;
+
+  @Autowired
+  VoucherServiceStream voucherServiceStream;
 
   @Value("${spring.voucher.transaction-failed-duration}")
   Integer TRANSACTION_DURATION = 10;
@@ -108,17 +114,19 @@ public class RedeemVoucherService {
 
   @Transactional
   public RedeemVoucher redeem(RedeemVoucherRequest request) {
-
-    //TODO: check user point from K-Table
-
     Optional<RedeemVoucher> redeemVoucher = redeemVoucherRepository.findAvailableRedeemVoucherByVoucherId(request.getVoucherId());
     if (redeemVoucher.isEmpty()) {
       throw new RedeemVoucherNotFoundException(request.getVoucherId());
     }
-
-    //TODO: send event redeemed
-
     RedeemVoucher updatedRedeemVoucher = redeemVoucher.get();
+
+    // Check if point is sufficient
+    UserPointTableSchema userPoint = voucherServiceStream.get(request.getUserId().toString());
+    log.info("USER POINT " + userPoint.getPoint());
+    if (userPoint.getPoint() < updatedRedeemVoucher.getVoucher().getPoint()) {
+      throw new InsufficientUserPointException();
+    }
+
     updatedRedeemVoucher.setUserId(request.getUserId());
     updatedRedeemVoucher.setStatus(VoucherStatus.PENDING);
     updatedRedeemVoucher.setRedeemedAt(LocalDateTime.now());

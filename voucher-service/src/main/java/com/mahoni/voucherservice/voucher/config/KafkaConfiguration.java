@@ -1,8 +1,7 @@
-package com.mahoni.airqualityservice.config;
+package com.mahoni.voucherservice.voucher.config;
 
-import com.mahoni.airqualityservice.kafka.KafkaTopic;
-import com.mahoni.schema.AirQualityProcessedSchema;
 import com.mahoni.schema.UserPointSchema;
+import com.mahoni.schema.UserPointTableSchema;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
@@ -36,32 +35,33 @@ public class KafkaConfiguration {
   private String schemaRegistryUrl;
   private static final Serde<String> stringSerde = Serdes.String();
   private static final SpecificAvroSerde<UserPointSchema> avroSerde =  new SpecificAvroSerde<>();
+  public static final String USER_POINT_COMPACTED_TOPIC = "user-point-compacted-topic";
 
   @Bean(name = KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME)
   public KafkaStreamsConfiguration kafkaStreamsConfiguration() {
     Map<String, Object> props = new HashMap<>();
-    props.put(APPLICATION_ID_CONFIG, "air-quality-streams");
-    props.put(GROUP_ID_CONFIG, "air-quality-streams-group-id");
+    props.put(APPLICATION_ID_CONFIG, "voucher-streams");
+    props.put(GROUP_ID_CONFIG, "voucher-streams-group-id");
     props.put(BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
     props.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
     props.put(DEFAULT_VALUE_SERDE_CLASS_CONFIG, SpecificAvroSerde.class);
     props.put(SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
-    props.put(STATE_DIR_CONFIG, "./data/air-quality-service/store");
+    props.put(STATE_DIR_CONFIG, "./data/voucher-service/store");
 
     return new KafkaStreamsConfiguration(props);
   }
 
   @Autowired
   @Bean
-  public KStream<String, AirQualityProcessedSchema> buildPipeline(StreamsBuilder streamsBuilder) {
+  public KStream<String, UserPointTableSchema> buildPipelineUserPoint(StreamsBuilder streamsBuilder) {
     Map<String, Object> props = new HashMap<>();
     props.put(SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
     Serde<String> stringSerde = Serdes.String();
     stringSerde.configure(props, true);
-    SpecificAvroSerde<AirQualityProcessedSchema> avroSerde = new SpecificAvroSerde<>();
+    SpecificAvroSerde<UserPointTableSchema> avroSerde = new SpecificAvroSerde<>();
     avroSerde.configure(props, false);
 
     return streamsBuilder
-      .stream(KafkaTopic.AIR_QUALITY_PROCESSED, Consumed.with(stringSerde, avroSerde));
+      .stream(USER_POINT_COMPACTED_TOPIC, Consumed.with(stringSerde, avroSerde));
   }
 }

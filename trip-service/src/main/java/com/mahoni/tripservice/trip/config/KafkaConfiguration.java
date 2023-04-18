@@ -1,6 +1,6 @@
 package com.mahoni.tripservice.trip.config;
 
-import com.mahoni.schema.AirQualityProcessedSchema;
+import com.mahoni.schema.AirQualityTableSchema;
 import com.mahoni.schema.UserPointSchema;
 import com.mahoni.schema.UserPointTableSchema;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
@@ -37,7 +37,7 @@ public class KafkaConfiguration {
   private static final Serde<String> stringSerde = Serdes.String();
   private static final SpecificAvroSerde<UserPointSchema> avroSerde =  new SpecificAvroSerde<>();
   public static final String USER_POINT_COMPACTED_TOPIC = "user-point-compacted-topic";
-  public static final String AIR_QUALITY_PROCESSED_TOPIC = "air-quality-processed";
+  public static final String AIR_QUALITY_COMPACTED_TOPIC = "air-quality-compacted";
 
   @Bean(name = KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME)
   public KafkaStreamsConfiguration kafkaStreamsConfiguration() {
@@ -69,15 +69,15 @@ public class KafkaConfiguration {
 
   @Autowired
   @Bean
-  public KStream<String, AirQualityProcessedSchema> buildPipelineAirQuality(StreamsBuilder streamsBuilder) {
+  public KStream<String, AirQualityTableSchema> buildPipelineAirQuality(StreamsBuilder streamsBuilder) {
     Map<String, Object> props = new HashMap<>();
     props.put(SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
     Serde<String> stringSerde = Serdes.String();
     stringSerde.configure(props, true);
-    SpecificAvroSerde<AirQualityProcessedSchema> avroSerde = new SpecificAvroSerde<>();
+    SpecificAvroSerde<AirQualityTableSchema> avroSerde = new SpecificAvroSerde<>();
     avroSerde.configure(props, false);
 
     return streamsBuilder
-      .stream(AIR_QUALITY_PROCESSED_TOPIC, Consumed.with(stringSerde, avroSerde));
+      .stream(AIR_QUALITY_COMPACTED_TOPIC, Consumed.with(stringSerde, avroSerde));
   }
 }

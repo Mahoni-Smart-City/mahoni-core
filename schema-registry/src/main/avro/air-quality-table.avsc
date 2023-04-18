@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "AirQualityTableSchema",
+  "namespace": "com.mahoni.schema",
+  "fields": [
+    {
+      "name": "sensorId",
+      "type": "string"
+    },
+    {
+      "name": "aqi",
+      "type": "double"
+    }
+  ]
+}

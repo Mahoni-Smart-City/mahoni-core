@@ -18,6 +18,8 @@ public class KafkaTopic {
   public static String TRIP_TOPIC = "trip-topic";
   public static String AIR_QUALITY_RAW = "air-quality-raw";
   public static String AIR_QUALITY_PROCESSED = "air-quality-processed";
+  public static String AIR_QUALITY_COMPACTED = "air-quality-compacted";
+
 
   @Bean
   public NewTopic userPointCompacted() {
@@ -62,7 +64,6 @@ public class KafkaTopic {
       .name(AIR_QUALITY_RAW)
       .replicas(3)
       .partitions(3)
-      .compact()
       .build();
   }
 
@@ -70,6 +71,15 @@ public class KafkaTopic {
   public NewTopic airQualityProcessed() {
     return TopicBuilder
       .name(AIR_QUALITY_PROCESSED)
+      .replicas(3)
+      .partitions(3)
+      .build();
+  }
+
+  @Bean
+  public NewTopic airQualityCompacted() {
+    return TopicBuilder
+      .name(AIR_QUALITY_COMPACTED)
       .replicas(3)
       .partitions(3)
       .compact()
