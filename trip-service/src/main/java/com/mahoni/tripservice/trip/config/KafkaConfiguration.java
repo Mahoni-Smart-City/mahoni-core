@@ -2,7 +2,6 @@ package com.mahoni.tripservice.trip.config;
 
 import com.mahoni.schema.AirQualityTableSchema;
 import com.mahoni.schema.UserPointSchema;
-import com.mahoni.schema.UserPointTableSchema;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
@@ -51,20 +50,6 @@ public class KafkaConfiguration {
     props.put(STATE_DIR_CONFIG, "./data/trip-service/store");
 
     return new KafkaStreamsConfiguration(props);
-  }
-
-  @Autowired
-  @Bean
-  public KStream<String, UserPointTableSchema> buildPipelineUserPoint(StreamsBuilder streamsBuilder) {
-    Map<String, Object> props = new HashMap<>();
-    props.put(SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
-    Serde<String> stringSerde = Serdes.String();
-    stringSerde.configure(props, true);
-    SpecificAvroSerde<UserPointTableSchema> avroSerde = new SpecificAvroSerde<>();
-    avroSerde.configure(props, false);
-
-    return streamsBuilder
-      .stream(USER_POINT_COMPACTED_TOPIC, Consumed.with(stringSerde, avroSerde));
   }
 
   @Autowired
