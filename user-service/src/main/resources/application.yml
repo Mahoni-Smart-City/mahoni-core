@@ -10,6 +10,7 @@ spring:
       ddl-auto: update
   kafka:
     bootstrap.servers: localhost:9092
+    schema.registry.url: http://localhost:8081
     producer:
       bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -23,7 +24,6 @@ spring:
       properties:
         schema.registry.url: http://localhost:8081
         specific.avro.reader: true
-
 management:
   endpoints:
     web:

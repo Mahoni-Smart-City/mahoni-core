@@ -1,7 +1,6 @@
-package com.mahoni.tripservice.trip.kafka;
+package com.mahoni.voucherservice.voucher.kafka;
 
-import com.mahoni.schema.AirQualityTableSchema;
-import lombok.extern.slf4j.Slf4j;
+import com.mahoni.schema.UserPointTableSchema;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StoreQueryParameters;
 import org.apache.kafka.streams.kstream.KStream;
@@ -14,22 +13,20 @@ import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 import org.springframework.stereotype.Component;
 
 @Component
-@Slf4j
-public class TripServiceStream {
+public class VoucherServiceStream {
   @Autowired
   StreamsBuilderFactoryBean factoryBean;
 
   @Autowired
-  public KTable<String, AirQualityTableSchema> airQualityKtable(KStream<String, AirQualityTableSchema> kStream) {
-    return kStream.toTable(Materialized.as("air-quality-state-store"));
+  public KTable<String, UserPointTableSchema> kTable(KStream<String, UserPointTableSchema> kStream) {
+    return kStream.toTable(Materialized.as("user-point-state-store"));
   }
 
-  public AirQualityTableSchema getAirQuality(String id) {
-    log.info("GET AIR QUALITY" + id);
+  public UserPointTableSchema get(String id) {
     KafkaStreams kafkaStreams =  factoryBean.getKafkaStreams();
     assert kafkaStreams != null;
-    ReadOnlyKeyValueStore<String, AirQualityTableSchema> amounts = kafkaStreams
-      .store(StoreQueryParameters.fromNameAndType("air-quality-state-store", QueryableStoreTypes.keyValueStore()));
+    ReadOnlyKeyValueStore<String, UserPointTableSchema> amounts = kafkaStreams
+      .store(StoreQueryParameters.fromNameAndType("user-point-state-store", QueryableStoreTypes.keyValueStore()));
     return amounts.get(id);
   }
- }
+}

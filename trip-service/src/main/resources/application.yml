@@ -29,15 +29,6 @@ spring:
       properties:
         schema.registry.url: http://localhost:8081
         specific.avro.reader: true
-    streams:
-      application-id: trip-streams
-      group-id: trip-streams-group-id
-      default-key-serde: org.apache.kafka.common.serialization.Serdes
-      default-value-serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-      properties:
-        state.dir: ./data/trip-service/store
-        schema.registry.url: http://localhost:8081
-
   security:
     qr-token:
       lifespan: 30

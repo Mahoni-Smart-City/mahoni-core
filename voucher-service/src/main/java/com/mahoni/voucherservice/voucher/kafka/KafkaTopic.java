@@ -12,12 +12,12 @@ public class KafkaTopic {
 
   static String VOUCHER_REDEEMED_TOPIC = "voucher-redeemed-topic";
 
-  @Bean
-  public NewTopic voucherRedeemedTopic() {
-    return TopicBuilder
-      .name(VOUCHER_REDEEMED_TOPIC)
-      .replicas(3)
-      .partitions(3)
-      .build();
-  }
+//  @Bean
+//  public NewTopic voucherRedeemedTopic() {
+//    return TopicBuilder
+//      .name(VOUCHER_REDEEMED_TOPIC)
+//      .replicas(3)
+//      .partitions(3)
+//      .build();
+//  }
 }
