@@ -1,0 +1,108 @@
+version: "3.3"
+
+services:
+  zookeeper:
+    restart: always
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    image: confluentinc/cp-zookeeper:latest
+    ports:
+      - "2181:2181/tcp"
+    volumes:
+      - ./zookeeper/data:/data
+      - ./zookeeper/data/datalog:/datalog
+
+  kafka:
+    restart: always
+    environment:
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9092:9092"
+    volumes:
+      - ./kafka/data/kafka-1:/var/lib/kafka/data
+    depends_on:
+      - zookeeper
+
+  kafka-2:
+    restart: always
+    environment:
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-2:29092,PLAINTEXT_HOST://localhost:9093
+      KAFKA_BROKER_ID: 2
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./kafka/data/kafka-2:/var/lib/kafka/data
+    depends_on:
+      - zookeeper
+
+  kafka-3:
+    restart: always
+    environment:
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-3:29092,PLAINTEXT_HOST://localhost:9094
+      KAFKA_BROKER_ID: 3
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9094:9094"
+    volumes:
+      - ./kafka/data/kafka-3:/var/lib/kafka/data
+    depends_on:
+      - zookeeper
+
+
+  kafka-schema-registry:
+    restart: always
+    image: confluentinc/cp-schema-registry:5.4.0
+    hostname: kafka-schema-registry
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:29092,PLAINTEXT://kafka-2:29092,PLAINTEXT://kafka-3:29092
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
+      SCHEMA_REGISTRY_HOST_NAME: kafka-schema-registry
+      SCHEMA_REGISTRY_LISTENERS: http://kafka-schema-registry:8081
+    depends_on:
+      - zookeeper
+      - kafka
+
+#  debezium:
+#    restart: always
+#    image: debezium/connect:1.9
+#    environment:
+#      BOOTSTRAP_SERVERS: kafka:29092
+#      GROUP_ID: 1
+#      CONFIG_STORAGE_TOPIC: connect_configs
+#      OFFSET_STORAGE_TOPIC: connect_offsets
+#      KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
+#      VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+#      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
+#      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
+#    depends_on:
+#      - kafka
+#      - kafka-schema-registry
+#    ports:
+#      - "8083:8083"
+
+  # Utility
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    ports:
+      - "9080:8080"
+    restart: always
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: PLAINTEXT://kafka:29092
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://kafka-schema-registry:8081/
