@@ -7,7 +7,9 @@ import com.mahoni.tripservice.qrgenerator.model.QRGeneratorNode;
 import com.mahoni.tripservice.qrgenerator.repository.QRGeneratorRepository;
 import com.mahoni.tripservice.qrgenerator.service.QRGeneratorService;
 import com.mahoni.tripservice.trip.dto.TripRequest;
-import com.mahoni.tripservice.trip.dto.TripStatus;
+import com.mahoni.tripservice.trip.kafka.TripEventProducer;
+import com.mahoni.tripservice.trip.kafka.TripServiceStream;
+import com.mahoni.tripservice.trip.model.TripStatus;
 import com.mahoni.tripservice.trip.model.Trip;
 import com.mahoni.tripservice.trip.repository.TripRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,6 +46,12 @@ public class TripServiceTest {
 
   @Mock
   QRGeneratorService qrGeneratorService;
+
+  @Mock
+  TripServiceStream tripServiceStream;
+
+  @Mock
+  TripEventProducer tripEventProducer;
 
   @Captor
   ArgumentCaptor<Trip> tripArgumentCaptor;
@@ -94,7 +102,7 @@ public class TripServiceTest {
     UUID id = UUID.randomUUID();
     QRGenerator qrGenerator = new QRGenerator("Test", "Test", id, id);
     LocalDateTime time = LocalDateTime.now().minusDays(1);
-    Trip trip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.ACTIVE.name(), 1.0, 0);
+    Trip trip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.ACTIVE.name(), 1.0, 0, null);
     TripRequest tripRequest = new TripRequest("Test", id, id);
 
     when(tripRepository.findLatestActiveTripByUserId(any())).thenReturn(Optional.of(trip));
@@ -113,7 +121,7 @@ public class TripServiceTest {
     qrGeneratorNodes.add(new QRGeneratorNode());
     LocalDateTime time = LocalDateTime.now();
     Trip trip = new Trip(id, qrGenerator, time, TripStatus.ACTIVE.name());
-    Trip expectedTrip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.FINISHED.name(), 1.0, 1);
+    Trip expectedTrip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.FINISHED.name(), 1.0, 1, null);
     TripRequest tripRequest = new TripRequest("Test", id, id);
 
     when(tripRepository.findLatestActiveTripByUserId(any())).thenReturn(Optional.of(trip));
