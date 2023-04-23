@@ -17,6 +17,7 @@ import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
 import org.springframework.kafka.config.KafkaStreamsConfiguration;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG;
@@ -28,7 +29,7 @@ import static org.apache.kafka.streams.StreamsConfig.*;
 public class KafkaConfiguration {
 
   @Value("${spring.kafka.bootstrap.servers}")
-  private String bootstrapAddress;
+  private List<String> bootstrapAddress;
   @Value("${spring.kafka.schema.registry.url}")
   private String schemaRegistryUrl;
   private static final Serde<String> stringSerde = Serdes.String();
