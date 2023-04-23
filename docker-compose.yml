@@ -113,14 +113,14 @@ services:
     ports:
       - "5435:5435/tcp"
 
-  #  user-service:
-  #    environment:
-  #      SPRING_PROFILES_ACTIVE: docker
-  #    image: zsaschz/user-service:1.0-SNAPSHOT
-  #    depends_on:
-  #      - user-db
-  #    ports:
-  #      - "8080:8080"
+#  user-service:
+#    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+#    image: zsaschz/user-service:1.0-SNAPSHOT
+#    depends_on:
+#      - user-db
+#    ports:
+#      - "8080:8080"
 
 
   kafka-schema-registry:
@@ -142,14 +142,14 @@ services:
     restart: always
     image: debezium/connect:1.9
     environment:
-      BOOTSTRAP_SERVERS: kafka:29092
+      BOOTSTRAP_SERVERS: 34.101.138.220:9092
       GROUP_ID: 1
       CONFIG_STORAGE_TOPIC: connect_configs
       OFFSET_STORAGE_TOPIC: connect_offsets
       KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
       VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
-      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
-      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://34.101.138.220:8081
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://34.101.138.220:8081
     depends_on:
       - kafka
       - kafka-schema-registry
@@ -165,8 +165,8 @@ services:
     restart: always
     environment:
       KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: PLAINTEXT://kafka:29092
-      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://kafka-schema-registry:8081/
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 34.101.138.220:9092
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://34.101.138.220:8081
 
   cassandra-db:
     image: cassandra:latest
