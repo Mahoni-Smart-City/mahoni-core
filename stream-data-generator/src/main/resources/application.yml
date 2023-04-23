@@ -1,7 +1,7 @@
 RANDOMIZE_STREAM_DATA: true
 ENABLE_STREAM: true
 server:
-  port : 8083
+  port : 8093
 spring:
   datasource:
     url: jdbc:h2:file:./data/streamgenerator
