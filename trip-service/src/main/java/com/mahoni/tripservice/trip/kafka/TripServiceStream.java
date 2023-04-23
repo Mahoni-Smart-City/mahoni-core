@@ -1,46 +1,35 @@
 package com.mahoni.tripservice.trip.kafka;
 
-import com.mahoni.schema.UserPointSchema;
-import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
-import org.apache.kafka.common.serialization.Serde;
-import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.kstream.Consumed;
+import com.mahoni.schema.AirQualityTableSchema;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.StoreQueryParameters;
+import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
+import org.apache.kafka.streams.state.QueryableStoreTypes;
+import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class TripServiceStream {
-
-  public static final String USER_POINT_COMPACTED_TOPIC = "user-point-compacted-topic";
-  public static final String USER_POINT_TOPIC = "user-point-topic";
-  private static final Serde<String> stringSerde = Serdes.String();
-  private static final SpecificAvroSerde<UserPointSchema> avroSerde =  new SpecificAvroSerde<>();
-  @Value("${spring.kafka.schema.registry.url}")
-  private String schemaRegistryUrl;
-
-  @Bean
   @Autowired
-  public KTable<String, UserPointSchema> buildPipeline(StreamsBuilder streamsBuilder) {
-//    Map<String, Object> serdeConfig = new HashMap<>();
-//    serdeConfig.put(SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
-//
-//    Serde<String> stringSerde = Serdes.String();
-//    stringSerde.configure(serdeConfig, true);
-//    SpecificAvroSerde<UserPointSchema> avroSerde =  new SpecificAvroSerde<>();
-//    avroSerde.configure(serdeConfig, false);
-//
-//    StreamsBuilder streamsBuilder = new StreamsBuilder();
-    return streamsBuilder
-      .stream(USER_POINT_TOPIC, Consumed.with(stringSerde, avroSerde))
-      .toTable();
+  StreamsBuilderFactoryBean factoryBean;
 
-
-//    return streamsBuilder
-//      .table(USER_POINT_TOPIC, Materialized.as("user-point-store"));
+  @Autowired
+  public KTable<String, AirQualityTableSchema> airQualityKtable(KStream<String, AirQualityTableSchema> kStream) {
+    return kStream.toTable(Materialized.as("air-quality-state-store"));
   }
-}
+
+  public AirQualityTableSchema getAirQuality(String id) {
+    log.info("GET AIR QUALITY" + id);
+    KafkaStreams kafkaStreams =  factoryBean.getKafkaStreams();
+    assert kafkaStreams != null;
+    ReadOnlyKeyValueStore<String, AirQualityTableSchema> amounts = kafkaStreams
+      .store(StoreQueryParameters.fromNameAndType("air-quality-state-store", QueryableStoreTypes.keyValueStore()));
+    return amounts.get(id);
+  }
+ }

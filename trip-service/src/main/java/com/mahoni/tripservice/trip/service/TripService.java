@@ -1,11 +1,13 @@
 package com.mahoni.tripservice.trip.service;
 
+import com.mahoni.schema.AirQualityTableSchema;
 import com.mahoni.tripservice.qrgenerator.exception.QRGeneratorNotFoundException;
 import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
 import com.mahoni.tripservice.qrgenerator.model.QRGeneratorNode;
 import com.mahoni.tripservice.qrgenerator.repository.QRGeneratorRepository;
 import com.mahoni.tripservice.qrgenerator.service.QRGeneratorService;
 import com.mahoni.tripservice.trip.dto.TripRequest;
+import com.mahoni.tripservice.trip.kafka.TripServiceStream;
 import com.mahoni.tripservice.trip.model.TransactionStatus;
 import com.mahoni.tripservice.trip.model.TripStatus;
 import com.mahoni.tripservice.trip.kafka.TripEventProducer;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,9 +49,7 @@ public class TripService {
   TripEventProducer tripEventProducer;
 
   @Autowired
-  StreamsBuilderFactoryBean factoryBean;
-
-  KafkaStreams kafkaStreams;
+  TripServiceStream tripServiceStream;
 
   @Value("${spring.trip.expired-duration}")
   Integer EXPIRED_DURATION;
@@ -138,22 +139,31 @@ public class TripService {
   }
 
   private double maxAqi(List<QRGeneratorNode> nodes) {
-    // TODO: Update when can get value from KTable
     double aqi = 0;
     for (QRGeneratorNode node: nodes) {
       Optional<QRGenerator> qrGenerator = qrGeneratorRepository.findById(node.getQrGeneratorId());
-    //    int aqi1 = getAqi(qrGenerator.getSensorId1()); // get from KTable
-    //    int aqi2 = Integer.MIN_VALUE;
-    //    if (qrGenerator.getSensorId2() != null) {
-    //      aqi2 = getAqi(qrGenerator.getSensorId2()); // get from KTable
-    //    }
-    //    int maxAqi = max(aqi1, aqi2);
-      double maxAqi = Math.abs(Math.random());
-      if (aqi <= maxAqi) {
-        aqi = maxAqi;
+      if (qrGenerator.isPresent()) {
+        QRGenerator qrGenerator1 = qrGenerator.get();
+        double aqi1 = storedAqi(qrGenerator1.getSensorId1().toString()); // get from KTable
+        double aqi2 = Integer.MIN_VALUE;
+        if (qrGenerator1.getSensorId2() != null) {
+          aqi2 = storedAqi(qrGenerator1.getSensorId2().toString()); // get from KTable
+        }
+        double maxAqi = max(aqi1, aqi2);
+        if (aqi <= maxAqi) {
+          aqi = maxAqi;
+        }
       }
     }
     return aqi;
+  }
+
+  private double storedAqi(String sensorId) {
+    LocalDateTime datetime = LocalDateTime.now();
+    LocalDateTime rounded = datetime.minusMinutes(datetime.getMinute()).minusSeconds(datetime.getSecond());
+    Long timestamp = rounded.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(rounded)) * 1000L;
+    AirQualityTableSchema aqi = tripServiceStream.getAirQuality(timestamp + ":" + sensorId);
+    return aqi != null ? aqi.getAqi() : 0;
   }
 
   private boolean isOngoing(Trip trip) {

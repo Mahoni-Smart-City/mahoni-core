@@ -10,6 +10,7 @@ spring:
       ddl-auto: update
   kafka:
     bootstrap.servers: localhost:9092
+    schema.registry.url: http://localhost:8081
     producer:
       bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -37,7 +38,7 @@ management:
     prometheus:
       enabled: true
 server:
-  port: 8089
+  port: 8086
   error:
     include-message: ALWAYS
 logging:
