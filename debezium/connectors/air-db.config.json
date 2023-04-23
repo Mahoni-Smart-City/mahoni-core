@@ -3,16 +3,16 @@
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
     "plugin.name": "pgoutput",
-    "database.hostname": "air-db",
-    "database.port": "5435",
-    "database.user": "test123",
-    "database.password": "test123",
+    "database.hostname": "34.101.116.112",
+    "database.port": "5432",
+    "database.user": "postgres",
+    "database.password": "mahonitest123",
     "database.dbname": "mahoni",
     "database.server.name": "postgres",
     "key.converter": "io.confluent.connect.avro.AvroConverter",
     "value.converter": "io.confluent.connect.avro.AvroConverter",
     "publication.autocreate.mode": "all_tables",
-    "key.converter.schema.registry.url": "http://35.219.10.24:8081",
-    "value.converter.schema.registry.url": "http://35.219.10.24:8081"
+    "key.converter.schema.registry.url": "http://kafka-schema-registry:8081",
+    "value.converter.schema.registry.url": "http://kafka-schema-registry:8081"
   }
 }

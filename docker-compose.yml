@@ -138,18 +138,36 @@ services:
       - zookeeper
       - kafka
 
+#  debezium:
+#    restart: always
+#    image: debezium/connect:1.9
+#    environment:
+#      BOOTSTRAP_SERVERS: 35.219.10.24:9092,35.219.10.24:9093,35.219.10.24:9094
+#      GROUP_ID: 1
+#      CONFIG_STORAGE_TOPIC: connect_configs
+#      OFFSET_STORAGE_TOPIC: connect_offsets
+#      KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
+#      VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+#      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://35.219.10.24:8081
+#      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://35.219.10.24:8081
+#    depends_on:
+#      - kafka
+#      - kafka-schema-registry
+#    ports:
+#      - "8083:8083"
+
   debezium:
     restart: always
     image: debezium/connect:1.9
     environment:
-      BOOTSTRAP_SERVERS: 35.219.10.24:9092
+      BOOTSTRAP_SERVERS: PLAINTEXT://kafka:29092,PLAINTEXT://kafka-2:29092,PLAINTEXT://kafka-3:29092
       GROUP_ID: 1
       CONFIG_STORAGE_TOPIC: connect_configs
       OFFSET_STORAGE_TOPIC: connect_offsets
       KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
       VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
-      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://35.219.10.24:8081
-      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://35.219.10.24:8081
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
     depends_on:
       - kafka
       - kafka-schema-registry
@@ -165,5 +183,5 @@ services:
     restart: always
     environment:
       KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 35.219.10.24:9092
-      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://35.219.10.24:8081
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: PLAINTEXT://kafka:29092,PLAINTEXT://kafka-2:29092,PLAINTEXT://kafka-3:29092
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://kafka-schema-registry:8081/

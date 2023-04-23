@@ -1,5 +1,4 @@
 #!/bin/bash
-
 DESTINATION='localhost:8083/connectors'
 for FILENAME in debezium/connectors/*.json; do
   echo "Registering connector from config file $FILENAME..."
