@@ -85,12 +85,15 @@ spring:
 postgres:
   port: 5432
   host: user-db
+  database: mahoni
+  user: mahonitest123
+  password: mahonitest123
 server:
   port: 8080
 spring:
   config.activate.on-profile: cloud
   datasource:
-    url: jdbc:postgresql://${postgres.host:localhost}:${postgres.port}/mahoni?user=test123&password=test123
+    url: jdbc:postgresql://${postgres.host:localhost}:${postgres.port}/${postgres.database}?user=${postgres.user}&password=${postgres.password}
     driver-class-name: org.postgresql.Driver
   kafka:
     bootstrap.servers: 35.219.10.24:9092,35.219.10.24:9093,35.219.10.24:9094
