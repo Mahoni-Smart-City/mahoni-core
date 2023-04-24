@@ -1,4 +1,6 @@
 FROM openjdk:17-alpine
+RUN apk upgrade --no-cache && \
+apk add --no-cache libstdc++
 
 CMD ["java", "-jar", "/usr/share/mahoni/mahoni.jar"]
 
