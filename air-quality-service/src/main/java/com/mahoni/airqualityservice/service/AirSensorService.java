@@ -4,14 +4,18 @@ import com.mahoni.airqualityservice.dto.AirSensorRequest;
 import com.mahoni.airqualityservice.exception.AirSensorAlreadyExistException;
 import com.mahoni.airqualityservice.exception.AirSensorNotFoundException;
 import com.mahoni.airqualityservice.exception.LocationNotFoundException;
+import com.mahoni.airqualityservice.kafka.AirQualityServiceStream;
 import com.mahoni.airqualityservice.model.AirSensor;
 import com.mahoni.airqualityservice.model.Location;
 import com.mahoni.airqualityservice.repository.AirSensorRepository;
 import com.mahoni.airqualityservice.repository.LocationRepository;
+import com.mahoni.schema.AirQualityProcessedSchema;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +28,9 @@ public class AirSensorService {
 
   @Autowired
   LocationRepository locationRepository;
+
+  @Autowired
+  AirQualityServiceStream airQualityServiceStream;
 
   public AirSensor create(AirSensorRequest airSensor) {
     Optional<Location> location = locationRepository.findById(airSensor.getIdLocation());
@@ -75,5 +82,12 @@ public class AirSensorService {
     updatedAirSensor.setNameLocation(newAirSensor.getNameLocation());
     updatedAirSensor.setLocation(location.get());
     return airSensorRepository.save(updatedAirSensor);
+  }
+
+  public AirQualityProcessedSchema getAqi(Long sensorId) {
+    LocalDateTime datetime = LocalDateTime.now();
+    LocalDateTime rounded = datetime.minusMinutes(datetime.getMinute()).minusSeconds(datetime.getSecond());
+    Long timestamp = rounded.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(rounded)) * 1000L;
+    return airQualityServiceStream.get(timestamp + ":" + sensorId.toString());
   }
 }

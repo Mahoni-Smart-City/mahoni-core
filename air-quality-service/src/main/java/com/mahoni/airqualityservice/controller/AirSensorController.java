@@ -1,9 +1,11 @@
 package com.mahoni.airqualityservice.controller;
 
+import com.mahoni.airqualityservice.dto.AirQualityResponse;
 import com.mahoni.airqualityservice.dto.AirSensorRequest;
 import com.mahoni.airqualityservice.exception.AirSensorNotFoundException;
 import com.mahoni.airqualityservice.model.AirSensor;
 import com.mahoni.airqualityservice.service.AirSensorService;
+import com.mahoni.schema.AirQualityProcessedSchema;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,5 +68,27 @@ public class AirSensorController {
     } catch (AirSensorNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     }
+  }
+
+  @GetMapping("/{id}/aqi")
+  public ResponseEntity<AirQualityResponse> getAqi(@PathVariable("id") Long id) {
+    try {
+      AirQualityResponse response = mapper(airSensorService.getAqi(id));
+      return ResponseEntity.ok(response);
+    } catch (AirSensorNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+  }
+
+  private AirQualityResponse mapper(AirQualityProcessedSchema schema) {
+    return new AirQualityResponse(
+      Long.parseLong(schema.getEventId()),
+      schema.getSensorId(),
+      schema.getTimestamp(),
+      schema.getAqi(),
+      schema.getNo2(),
+      schema.getPm10(),
+      schema.getPm25()
+    );
   }
 }
