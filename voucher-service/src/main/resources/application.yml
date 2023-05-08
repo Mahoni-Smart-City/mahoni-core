@@ -9,20 +9,20 @@ spring:
     hibernate:
       ddl-auto: update
   kafka:
-    bootstrap.servers: 35.219.10.24:9092
-    schema.registry.url: http://35.219.10.24:8081
+    bootstrap.servers: 34.129.184.97:9092
+    schema.registry.url: http://34.129.184.97:8081
     producer:
-      bootstrap-servers: 35.219.10.24:9092
+      bootstrap-servers: 34.129.184.97:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       properties:
-        schema.registry.url: http://35.219.10.24:8081
+        schema.registry.url: http://34.129.184.97:8081
     consumer:
-      bootstrap-servers: 35.219.10.24:9092
+      bootstrap-servers: 34.129.184.97:9092
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
       properties:
-        schema.registry.url: http://35.219.10.24:8081
+        schema.registry.url: http://34.129.184.97:8081
         specific.avro.reader: true
   voucher:
     transaction-failed-duration: 10
@@ -87,8 +87,8 @@ spring:
     url: jdbc:postgresql://${postgres.host:localhost}:${postgres.port}/${postgres.database}?user=${postgres.user}&password=${postgres.password}
     driver-class-name: org.postgresql.Driver
   kafka:
-    bootstrap.servers: 35.219.10.24:9092,35.219.10.24:9093,35.219.10.24:9094
-    schema.registry.url: http://35.219.10.24:8081
+    bootstrap.servers: 34.129.184.97:9092,34.129.184.97:9093,34.129.184.97:9094
+    schema.registry.url: http://34.129.184.97:8081
     producer:
       bootstrap-servers: ${spring.kafka.bootstrap.servers}
       key-serializer: org.apache.kafka.common.serialization.StringSerializer

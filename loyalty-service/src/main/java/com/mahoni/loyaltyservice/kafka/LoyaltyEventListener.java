@@ -18,7 +18,6 @@ public class LoyaltyEventListener {
   @Autowired
   LoyaltyService loyaltyService;
 
-  @Transactional
   @KafkaListener( topics = "user-point-topic", groupId = "loyalty-service-group-id", containerFactory = "kafkaListenerContainerFactory")
   public void consumeTrip(ConsumerRecord<String, UserPointSchema> record) {
     log.info("Received event: " + record.value());

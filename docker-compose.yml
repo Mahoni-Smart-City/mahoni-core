@@ -142,14 +142,14 @@ services:
 #    restart: always
 #    image: debezium/connect:1.9
 #    environment:
-#      BOOTSTRAP_SERVERS: 35.219.10.24:9092,35.219.10.24:9093,35.219.10.24:9094
+#      BOOTSTRAP_SERVERS: 34.129.184.97:9092,34.129.184.97:9093,34.129.184.97:9094
 #      GROUP_ID: 1
 #      CONFIG_STORAGE_TOPIC: connect_configs
 #      OFFSET_STORAGE_TOPIC: connect_offsets
 #      KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
 #      VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
-#      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://35.219.10.24:8081
-#      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://35.219.10.24:8081
+#      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://34.129.184.97:8081
+#      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://34.129.184.97:8081
 #    depends_on:
 #      - kafka
 #      - kafka-schema-registry
