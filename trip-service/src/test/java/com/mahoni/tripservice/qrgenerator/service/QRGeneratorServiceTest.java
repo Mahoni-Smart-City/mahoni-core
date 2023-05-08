@@ -154,6 +154,7 @@ public class QRGeneratorServiceTest {
     UUID id1 = UUID.randomUUID();
     UUID id2 = UUID.randomUUID();
     QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.HALTE, id1, id2);
+
     when(qrGeneratorRepository.findById(any())).thenReturn(Optional.empty());
 
     assertThrows(QRGeneratorNotFoundException.class, () -> qrGeneratorService.updateById(id, request));

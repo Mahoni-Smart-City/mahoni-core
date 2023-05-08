@@ -17,6 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(TripController.class)
 public class TripControllerTest {
+
   @Autowired
   private MockMvc mockMvc;
 
@@ -97,6 +100,20 @@ public class TripControllerTest {
         .content(objectMapper.writeValueAsString(request)))
       .andExpect(status().isInternalServerError())
       .andReturn();
+  }
+
+  @Test
+  public void testGetHistoryByUserId_thenReturnTrips() throws Exception {
+    List<Trip> trips = new ArrayList<>();
+
+    when(tripService.getAllByUserId(any())).thenReturn(trips);
+
+    MvcResult result = this.mockMvc.perform(get("/api/v1/trips/history/{userId}", UUID.randomUUID()))
+      .andExpect(status().isOk())
+      .andReturn();
+
+    assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(trips));
+    verify(tripService).getAllByUserId(any());
   }
 
   @Test

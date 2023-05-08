@@ -47,8 +47,11 @@ public class VoucherServiceTest {
   ArgumentCaptor<Voucher> voucherArgumentCaptor;
 
   private Merchant merchant;
+
   private VoucherRequest request;
+
   private Voucher voucher;
+
   private UUID id;
 
   @BeforeEach
@@ -128,6 +131,7 @@ public class VoucherServiceTest {
   @Test
   public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedVoucherAdminRole() {
     setAdmin();
+
     when(voucherRepository.findById(any())).thenReturn(Optional.of(voucher));
     Voucher deletedVoucher = voucherService.deleteById(id);
 

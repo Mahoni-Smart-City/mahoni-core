@@ -3,7 +3,6 @@ package com.mahoni.tripservice.trip.kafka;
 import com.mahoni.schema.UserPointSchema;
 import com.mahoni.tripservice.trip.model.TransactionStatus;
 import com.mahoni.tripservice.trip.model.Trip;
-import com.mahoni.tripservice.trip.model.TripStatus;
 import com.mahoni.tripservice.trip.repository.TripRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

@@ -43,6 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(JwtTokenUtil.class)
 @WebMvcTest(DetailVoucherController.class)
 public class DetailVoucherControllerTest {
+
   @Autowired
   private MockMvc mockMvc;
 
@@ -56,7 +57,9 @@ public class DetailVoucherControllerTest {
   private RedeemVoucherService redeemVoucherService;
 
   private Merchant merchant;
+
   private RedeemVoucher redeemVoucher;
+
   private RedeemVoucherRequestCRUD request;
 
   @BeforeEach

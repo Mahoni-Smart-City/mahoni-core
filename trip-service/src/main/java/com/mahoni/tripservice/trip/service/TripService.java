@@ -14,10 +14,8 @@ import com.mahoni.tripservice.trip.kafka.TripEventProducer;
 import com.mahoni.tripservice.trip.model.Trip;
 import com.mahoni.tripservice.trip.repository.TripRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.streams.KafkaStreams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,13 +61,13 @@ public class TripService {
   @Value("${spring.trip.duration-multiplier}")
   Double DURATION_MULTIPLIER;
 
-  public List<Trip> getAllByUserId(UUID userId) throws Exception {
+  public List<Trip> getAllByUserId(UUID userId) {
     Optional<List<Trip>> trips = tripRepository.findByUserId(userId);
     return trips.orElseGet(ArrayList::new);
   }
 
   @Transactional
-  public Trip scanTrip(TripRequest tripRequest) throws Exception {
+  public Trip scanTrip(TripRequest tripRequest) {
     Optional<Trip> latestTrip = tripRepository.findLatestActiveTripByUserId(tripRequest.getUserId());
     Optional<QRGenerator> qrGenerator = qrGeneratorRepository.findById(tripRequest.getScanPlaceId());
     if (qrGenerator.isEmpty()) {

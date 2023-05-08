@@ -180,15 +180,23 @@ public class AirSensorControllerTest {
       .setPm10(1.0)
       .setPm25(1.0)
       .build();
-    AirQualityResponse response = new AirQualityResponse(id, "TestId", timestamp, 1.0, 1.0, 1.0, 1.0);
-
+    AirQualityResponse response1 = new AirQualityResponse(id, "TestId", timestamp, 1.0, 1.0, 1.0, 1.0);
+    AirQualityResponse response2 = new AirQualityResponse();
+    response2.setEventId(id);
+    response2.setSensorId("TestId");
+    response2.setTimestamp(timestamp);
+    response2.setAqi(1.0);
+    response2.setNo2(1.0);
+    response2.setPm25(1.0);
+    response2.setPm10(1.0);
     when(airSensorService.getAqi(any())).thenReturn(schema);
 
     MvcResult result = this.mockMvc.perform(get("/api/v1/air-sensors/{id}/aqi", id))
       .andExpect(status().isOk())
       .andReturn();
 
-    assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(response));
+    assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(response1));
+    assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(response2));
     verify(airSensorService).getAqi(any());
   }
 

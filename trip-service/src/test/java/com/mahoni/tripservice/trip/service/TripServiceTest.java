@@ -7,7 +7,10 @@ import com.mahoni.tripservice.qrgenerator.model.QRGeneratorNode;
 import com.mahoni.tripservice.qrgenerator.repository.QRGeneratorRepository;
 import com.mahoni.tripservice.qrgenerator.service.QRGeneratorService;
 import com.mahoni.tripservice.trip.dto.TripRequest;
-import com.mahoni.tripservice.trip.dto.TripStatus;
+import com.mahoni.tripservice.trip.kafka.TripEventProducer;
+import com.mahoni.tripservice.trip.kafka.TripServiceStream;
+import com.mahoni.tripservice.trip.model.TripStatus;
+import com.mahoni.tripservice.trip.model.TransactionStatus;
 import com.mahoni.tripservice.trip.model.Trip;
 import com.mahoni.tripservice.trip.repository.TripRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +36,7 @@ import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 public class TripServiceTest {
+
   @InjectMocks
   TripService tripService;
 
@@ -44,6 +48,12 @@ public class TripServiceTest {
 
   @Mock
   QRGeneratorService qrGeneratorService;
+
+  @Mock
+  TripEventProducer tripEventProducer;
+
+  @Mock
+  TripServiceStream tripServiceStream;
 
   @Captor
   ArgumentCaptor<Trip> tripArgumentCaptor;
@@ -57,7 +67,7 @@ public class TripServiceTest {
   }
 
   @Test
-  public void testGetAllByUserId_thenReturnTrips() throws Exception {
+  public void testGetAllByUserId_thenReturnTrips() {
     UUID id = UUID.randomUUID();
     Trip trip = new Trip();
     trip.setId(id);
@@ -79,7 +89,7 @@ public class TripServiceTest {
   }
 
   @Test
-  public void testGetAllByUserId_thenReturnEmptyList() throws Exception {
+  public void testGetAllByUserId_thenReturnEmptyList() {
     UUID id = UUID.randomUUID();
     List<Trip> trips = new ArrayList<>();
 
@@ -90,11 +100,11 @@ public class TripServiceTest {
   }
 
   @Test
-  public void testScanIn_thenReturnTrip() throws Exception {
+  public void testScanIn_thenReturnTrip() {
     UUID id = UUID.randomUUID();
     QRGenerator qrGenerator = new QRGenerator("Test", "Test", id, id);
     LocalDateTime time = LocalDateTime.now().minusDays(1);
-    Trip trip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.ACTIVE.name(), 1.0, 0);
+    Trip trip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.ACTIVE.name(), 1.0, 0, TransactionStatus.PENDING.name());
     TripRequest tripRequest = new TripRequest("Test", id, id);
 
     when(tripRepository.findLatestActiveTripByUserId(any())).thenReturn(Optional.of(trip));
@@ -106,14 +116,14 @@ public class TripServiceTest {
   }
 
   @Test
-  public void testScanOut_thenReturnTrip() throws Exception {
+  public void testScanOut_thenReturnTrip() {
     UUID id = UUID.randomUUID();
     QRGenerator qrGenerator = new QRGenerator("Test", "Test", id, id);
     List<QRGeneratorNode> qrGeneratorNodes = new ArrayList<>();
     qrGeneratorNodes.add(new QRGeneratorNode());
     LocalDateTime time = LocalDateTime.now();
     Trip trip = new Trip(id, qrGenerator, time, TripStatus.ACTIVE.name());
-    Trip expectedTrip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.FINISHED.name(), 1.0, 1);
+    Trip expectedTrip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.FINISHED.name(), 1.0, 1, TransactionStatus.PENDING.name());
     TripRequest tripRequest = new TripRequest("Test", id, id);
 
     when(tripRepository.findLatestActiveTripByUserId(any())).thenReturn(Optional.of(trip));
@@ -129,7 +139,7 @@ public class TripServiceTest {
   }
 
   @Test
-  public void testScanTrip_thenReturnNewTrip() throws Exception {
+  public void testScanTrip_thenReturnNewTrip() {
     Trip trip = new Trip(UUID.randomUUID(), new QRGenerator(), LocalDateTime.now(), TripStatus.ACTIVE.name());
     QRGenerator qrGenerator = new QRGenerator("Test", "Test", UUID.randomUUID(), UUID.randomUUID());
     TripRequest tripRequest = new TripRequest("Test", UUID.randomUUID(), UUID.randomUUID());

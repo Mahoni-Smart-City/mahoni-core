@@ -18,7 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -36,7 +37,7 @@ class UserServiceTest {
   ArgumentCaptor<User> userArgumentCaptor;
 
   @Test
-  public void testGivenUserRequest_thenSaveUser() throws Exception {
+  public void testGivenUserRequest_thenSaveUser() {
     UserRequest request = new UserRequest("Test", "Test", "Test@mail.com" );
     User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
 
@@ -49,19 +50,17 @@ class UserServiceTest {
   }
 
   @Test
-  public void testGivenUserRequest_thenThrowResourceAlreadyExist() throws Exception {
+  public void testGivenUserRequest_thenThrowResourceAlreadyExist() {
     UserRequest request = new UserRequest("Test", "Test", "Test@mail.com" );
     User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
 
     when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
 
-    assertThrows(ResourceAlreadyExistException.class, () -> {
-      userService.create(request);
-    });
+    assertThrows(ResourceAlreadyExistException.class, () -> userService.create(request));
   }
 
   @Test
-  public void testGivenId_thenReturnUser() throws Exception {
+  public void testGivenId_thenReturnUser() {
     UUID id = UUID.randomUUID();
     User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
 
@@ -73,18 +72,16 @@ class UserServiceTest {
   }
 
   @Test
-  public void testGivenId_thenThrowResourceNotFound() throws Exception {
+  public void testGivenId_thenThrowResourceNotFound() {
     UUID id = UUID.randomUUID();
 
     when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-    assertThrows(ResourceNotFoundException.class, () -> {
-      userService.getById(id);
-    });
+    assertThrows(ResourceNotFoundException.class, () -> userService.getById(id));
   }
 
   @Test
-  public void testGetAll_thenReturnUsers() throws Exception {
+  public void testGetAll_thenReturnUsers() {
     User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
     List<User> users = new ArrayList<>();
     users.add(user);
@@ -97,7 +94,7 @@ class UserServiceTest {
   }
 
   @Test
-  public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedUser() throws Exception {
+  public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedUser() {
     UUID id = UUID.randomUUID();
     User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
 
@@ -109,18 +106,16 @@ class UserServiceTest {
   }
 
   @Test
-  public void testGivenIdToBeDeleted_thenThrowResourceNotFound() throws Exception {
+  public void testGivenIdToBeDeleted_thenThrowResourceNotFound() {
     UUID id = UUID.randomUUID();
 
     when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-    assertThrows(ResourceNotFoundException.class, () -> {
-      userService.deleteById(id);
-    });
+    assertThrows(ResourceNotFoundException.class, () -> userService.deleteById(id));
   }
 
   @Test
-  public void testGivenIdAndUserRequest_thenUpdateAndReturnUpdatedUser() throws Exception {
+  public void testGivenIdAndUserRequest_thenUpdateAndReturnUpdatedUser() {
     UUID id = UUID.randomUUID();
     UserRequest request = new UserRequest("Test2", "Test", "Test@mail.com" );
     User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
@@ -136,14 +131,12 @@ class UserServiceTest {
   }
 
   @Test
-  public void testGivenIdAndUserRequest_thenThrowResourceNotFound() throws Exception {
+  public void testGivenIdAndUserRequest_thenThrowResourceNotFound() {
     UUID id = UUID.randomUUID();
     UserRequest request = new UserRequest("Test2", "Test", "Test@mail.com" );
 
     when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-    assertThrows(ResourceNotFoundException.class, () -> {
-      userService.update(id, request);
-    });
+    assertThrows(ResourceNotFoundException.class, () -> userService.update(id, request));
   }
 }

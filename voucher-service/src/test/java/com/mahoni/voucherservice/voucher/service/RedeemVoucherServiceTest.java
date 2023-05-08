@@ -1,11 +1,14 @@
 package com.mahoni.voucherservice.voucher.service;
 
+import com.mahoni.schema.UserPointTableSchema;
 import com.mahoni.voucherservice.merchant.model.Merchant;
 import com.mahoni.voucherservice.merchant.model.MerchantRole;
 import com.mahoni.voucherservice.voucher.dto.RedeemVoucherRequest;
 import com.mahoni.voucherservice.voucher.dto.RedeemVoucherRequestCRUD;
+import com.mahoni.voucherservice.voucher.exception.InsufficientUserPointException;
 import com.mahoni.voucherservice.voucher.exception.RedeemVoucherNotFoundException;
 import com.mahoni.voucherservice.voucher.kafka.VoucherEventProducer;
+import com.mahoni.voucherservice.voucher.kafka.VoucherServiceStream;
 import com.mahoni.voucherservice.voucher.model.RedeemVoucher;
 import com.mahoni.voucherservice.voucher.model.Voucher;
 import com.mahoni.voucherservice.voucher.model.VoucherStatus;
@@ -45,6 +48,9 @@ public class RedeemVoucherServiceTest {
   @Mock
   VoucherEventProducer voucherEventProducer;
 
+  @Mock
+  VoucherServiceStream voucherServiceStream;
+
   @InjectMocks
   RedeemVoucherService redeemVoucherService;
 
@@ -52,9 +58,13 @@ public class RedeemVoucherServiceTest {
   ArgumentCaptor<RedeemVoucher> redeemVoucherArgumentCaptor;
 
   private UUID id;
+
   private Voucher voucher;
+
   private RedeemVoucher redeemVoucher;
+
   private RedeemVoucherRequestCRUD requestCRUD;
+
   private RedeemVoucherRequest request;
 
   @BeforeEach
@@ -68,6 +78,7 @@ public class RedeemVoucherServiceTest {
     voucher.setId(id);
     voucher.setMerchant(merchant);
     voucher.setQuantity(0);
+    voucher.setPoint(1);
 
     redeemVoucher = new RedeemVoucher();
     redeemVoucher.setVoucher(voucher);
@@ -266,8 +277,11 @@ public class RedeemVoucherServiceTest {
   public void testGivenId_thenRedeemVoucherWithPendingStatus() {
     RedeemVoucher expectedRedeemVoucher = new RedeemVoucher(voucher, "Test", LocalDateTime.now());
     expectedRedeemVoucher.setStatus(VoucherStatus.PENDING);
+    UserPointTableSchema userPointTableSchema = new UserPointTableSchema();
+    userPointTableSchema.setPoint(2);
 
     when(redeemVoucherRepository.findAvailableRedeemVoucherByVoucherId(any())).thenReturn(Optional.of(redeemVoucher));
+    when(voucherServiceStream.get(any())).thenReturn(userPointTableSchema);
     when(redeemVoucherRepository.save(any())).thenReturn(expectedRedeemVoucher);
     RedeemVoucher updatedRedeemVoucher = redeemVoucherService.redeem(request);
 
@@ -275,6 +289,17 @@ public class RedeemVoucherServiceTest {
     verify(redeemVoucherRepository).save(redeemVoucherArgumentCaptor.capture());
     verify(voucherEventProducer).send(any());
     assertEquals(redeemVoucherArgumentCaptor.getValue().getStatus(), expectedRedeemVoucher.getStatus());
+  }
+
+  @Test
+  public void testGivenId_thenThrowInsufficientUserPointException() {
+    UserPointTableSchema userPointTableSchema = new UserPointTableSchema();
+    userPointTableSchema.setPoint(0);
+
+    when(redeemVoucherRepository.findAvailableRedeemVoucherByVoucherId(any())).thenReturn(Optional.of(redeemVoucher));
+    when(voucherServiceStream.get(any())).thenReturn(userPointTableSchema);
+
+    assertThrows(InsufficientUserPointException.class, () -> redeemVoucherService.redeem(request));
   }
 
   @Test
