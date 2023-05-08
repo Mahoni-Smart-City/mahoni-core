@@ -1,5 +1,6 @@
 package com.mahoni.tripservice.trip.service;
 
+import com.mahoni.schema.AirQualityProcessedSchema;
 import com.mahoni.schema.AirQualityTableSchema;
 import com.mahoni.tripservice.qrgenerator.exception.QRGeneratorNotFoundException;
 import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
@@ -158,9 +159,7 @@ public class TripService {
 
   private double storedAqi(String sensorId) {
     LocalDateTime datetime = LocalDateTime.now();
-    LocalDateTime rounded = datetime.minusMinutes(datetime.getMinute()).minusSeconds(datetime.getSecond());
-    Long timestamp = rounded.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(rounded)) * 1000L;
-    AirQualityTableSchema aqi = tripServiceStream.getAirQuality(timestamp + ":" + sensorId);
+    AirQualityProcessedSchema aqi = tripServiceStream.getAirQuality(datetime.getDayOfWeek() + ":" + datetime.getHour() + ":" + sensorId);
     return aqi != null ? aqi.getAqi() : 0;
   }
 

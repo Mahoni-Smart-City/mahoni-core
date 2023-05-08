@@ -1,5 +1,6 @@
 package com.mahoni.tripservice.trip.config;
 
+import com.mahoni.schema.AirQualityProcessedSchema;
 import com.mahoni.schema.AirQualityTableSchema;
 import com.mahoni.schema.UserPointSchema;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
@@ -54,12 +55,12 @@ public class KafkaConfiguration {
 
   @Autowired
   @Bean
-  public KStream<String, AirQualityTableSchema> buildPipelineAirQuality(StreamsBuilder streamsBuilder) {
+  public KStream<String, AirQualityProcessedSchema> buildPipelineAirQuality(StreamsBuilder streamsBuilder) {
     Map<String, Object> props = new HashMap<>();
     props.put(SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
     Serde<String> stringSerde = Serdes.String();
     stringSerde.configure(props, true);
-    SpecificAvroSerde<AirQualityTableSchema> avroSerde = new SpecificAvroSerde<>();
+    SpecificAvroSerde<AirQualityProcessedSchema> avroSerde = new SpecificAvroSerde<>();
     avroSerde.configure(props, false);
 
     return streamsBuilder
