@@ -85,9 +85,6 @@ public class AirSensorService {
   }
 
   public AirQualityProcessedSchema getAqi(Long sensorId) {
-    LocalDateTime datetime = LocalDateTime.now();
-    LocalDateTime rounded = datetime.minusMinutes(datetime.getMinute()).minusSeconds(datetime.getSecond());
-    Long timestamp = rounded.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(rounded)) * 1000L;
-    return airQualityServiceStream.get(timestamp + ":" + sensorId.toString());
+    return airQualityServiceStream.get(AirQualityServiceStream.parseTableKey(sensorId));
   }
 }
