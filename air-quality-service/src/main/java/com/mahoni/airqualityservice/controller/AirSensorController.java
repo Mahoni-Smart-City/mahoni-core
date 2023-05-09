@@ -14,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/air-sensors")
@@ -78,6 +80,16 @@ public class AirSensorController {
     } catch (AirSensorNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     }
+  }
+
+  @GetMapping("/{id}/history")
+  public ResponseEntity<Map<String, AirQualityResponse>> getList(@PathVariable("id") Long id) {
+      Map<String, AirQualityProcessedSchema> history = airSensorService.history(id);
+      Map<String, AirQualityResponse> response = new HashMap<>();
+      for (Map.Entry<String, AirQualityProcessedSchema> entrySet : history.entrySet()) {
+        response.put(entrySet.getKey(), mapper(entrySet.getValue()));
+      }
+      return ResponseEntity.ok(response);
   }
 
   private AirQualityResponse mapper(AirQualityProcessedSchema schema) {

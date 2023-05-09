@@ -14,10 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -82,6 +82,21 @@ public class AirSensorService {
     updatedAirSensor.setNameLocation(newAirSensor.getNameLocation());
     updatedAirSensor.setLocation(location.get());
     return airSensorRepository.save(updatedAirSensor);
+  }
+
+  public HashMap<String, AirQualityProcessedSchema> history(Long sensorId) {
+    List<String> keys = new LinkedList<>();
+    for (DayOfWeek day: DayOfWeek.values()) {
+      for (int i = 0; i < 24 ; i++) {
+        keys.add(day.name() + ":" + i + sensorId);
+      }
+    }
+
+    HashMap<String, AirQualityProcessedSchema> history = new HashMap<>();
+    for (String key: keys) {
+      history.put(key, airQualityServiceStream.get(key));
+    }
+    return history;
   }
 
   public AirQualityProcessedSchema getAqi(Long sensorId) {
