@@ -24,8 +24,8 @@ public class QRGeneratorRepositoryTest {
 
   @Test
   public void testFindAll() {
-    testEntityManager.persist(new QRGenerator("Test", QRGeneratorType.HALTE.name(), UUID.randomUUID()));
-    testEntityManager.persist(new QRGenerator("Test", QRGeneratorType.STASIUN.name(), UUID.randomUUID()));
+    testEntityManager.persist(new QRGenerator("Test", QRGeneratorType.MRT.name(), UUID.randomUUID()));
+    testEntityManager.persist(new QRGenerator("Test", QRGeneratorType.JAKLINGKO.name(), UUID.randomUUID()));
 
     List<QRGenerator> qrGenerators = qrGeneratorRepository.findAll();
 

@@ -46,8 +46,8 @@ public class QRGeneratorControllerTest {
   @Test
   public void testPost_thenReturnNewQrGenerator() throws Exception {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.HALTE.name(), id, id);
-    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.HALTE, id, id);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER.name(), id, id);
+    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.COMMUTER, id, id);
 
     when(qrGeneratorService.create(any())).thenReturn(qrGenerator);
 
@@ -64,7 +64,7 @@ public class QRGeneratorControllerTest {
   @Test
   public void testPost_thenThrowRuntimeException() throws Exception {
     UUID id = UUID.randomUUID();
-    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.HALTE, id, id);
+    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.COMMUTER, id, id);
 
     when(qrGeneratorService.create(any())).thenThrow(RuntimeException.class);
 
@@ -92,7 +92,7 @@ public class QRGeneratorControllerTest {
   @Test
   public void testGetById_thenReturnQrGenerator() throws Exception {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.HALTE.name(), id);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER.name(), id);
 
     when(qrGeneratorService.getById(any())).thenReturn(qrGenerator);
 
@@ -116,7 +116,7 @@ public class QRGeneratorControllerTest {
   @Test
   public void testDelete_thenReturnDeletedQrGenerator() throws Exception {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.HALTE.name(), id);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER.name(), id);
 
     when(qrGeneratorService.deleteById(any())).thenReturn(qrGenerator);
 
@@ -143,10 +143,10 @@ public class QRGeneratorControllerTest {
     QRGenerator qrGenerator = new QRGenerator();
     qrGenerator.setId(id);
     qrGenerator.setLocation("Test");
-    qrGenerator.setType(QRGeneratorType.STASIUN.name());
+    qrGenerator.setType(QRGeneratorType.TRANSJAKARTA.name());
     qrGenerator.setSensorId1(id);
     qrGenerator.setSensorId2(id);
-    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.STASIUN, id, id);
+    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.TRANSJAKARTA, id, id);
 
     when(qrGeneratorService.updateById(any(), any())).thenReturn(qrGenerator);
 
@@ -163,7 +163,7 @@ public class QRGeneratorControllerTest {
   @Test
   public void testUpdate_thenThrowQRGeneratorNotFound() throws Exception {
     UUID id = UUID.randomUUID();
-    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.STASIUN, id, id);
+    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.TRANSJAKARTA, id, id);
 
     when(qrGeneratorService.updateById(any(), any())).thenThrow(QRGeneratorNotFoundException.class);
 

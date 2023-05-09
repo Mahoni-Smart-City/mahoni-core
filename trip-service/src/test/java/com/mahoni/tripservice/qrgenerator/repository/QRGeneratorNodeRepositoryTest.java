@@ -40,9 +40,9 @@ public class QRGeneratorNodeRepositoryTest {
   }
 
   static final String TEST_DATA = ""
-    + " CREATE (a:QRGeneratorNode { qrGeneratorId: '8cc71d34-08dd-43d0-aa66-3206de9f2f65', location: 'Bogor', type: 'STASIUN'})"
-    + " CREATE (b:QRGeneratorNode { qrGeneratorId: '9675ef3b-4a48-4316-96fb-90da047170c7', location: 'Cilebut', type: 'STASIUN'})"
-    + " CREATE (c:QRGeneratorNode { qrGeneratorId: '06368f2c-1190-4143-836e-0da7b6611d93', location: 'Bojong', type: 'STASIUN'})"
+    + " CREATE (a:QRGeneratorNode { qrGeneratorId: '8cc71d34-08dd-43d0-aa66-3206de9f2f65', location: 'Bogor', type: 'COMMUTER'})"
+    + " CREATE (b:QRGeneratorNode { qrGeneratorId: '9675ef3b-4a48-4316-96fb-90da047170c7', location: 'Cilebut', type: 'COMMUTER'})"
+    + " CREATE (c:QRGeneratorNode { qrGeneratorId: '06368f2c-1190-4143-836e-0da7b6611d93', location: 'Bojong', type: 'COMMUTER'})"
     + " CREATE"
     + " (a)-[:OUTGOING_NODE]->(b),"
     + " (a)<-[:INCOMING_NODE]-(b),"

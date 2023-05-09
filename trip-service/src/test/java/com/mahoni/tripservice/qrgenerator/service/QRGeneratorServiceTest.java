@@ -63,8 +63,8 @@ public class QRGeneratorServiceTest {
   public void testGivenQrGeneratorRequest_thenSaveQrGenerator() {
     UUID id1 = UUID.randomUUID();
     UUID id2 = UUID.randomUUID();
-    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.HALTE, id1, id2);
-    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.HALTE.name(), id1, id2);
+    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.COMMUTER, id1, id2);
+    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER.name(), id1, id2);
 
     when(qrGeneratorRepository.save(any())).thenReturn(qrGenerator);
     QRGenerator savedQrGenerator = qrGeneratorService.create(request);
@@ -76,7 +76,7 @@ public class QRGeneratorServiceTest {
   @Test
   public void testGivenId_thenReturnQrGenerator() {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator(id, "Test", QRGeneratorType.HALTE.name(), UUID.randomUUID(), UUID.randomUUID());
+    QRGenerator qrGenerator = new QRGenerator(id, "Test", QRGeneratorType.COMMUTER.name(), UUID.randomUUID(), UUID.randomUUID());
 
     when(qrGeneratorRepository.findById(any())).thenReturn(Optional.of(qrGenerator));
     QRGenerator savedQrGenerator = qrGeneratorService.getById(id);
@@ -97,7 +97,7 @@ public class QRGeneratorServiceTest {
 
   @Test
   public void testGetAll_thenReturnQrGenerators() {
-    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.HALTE.name(), UUID.randomUUID(), UUID.randomUUID());
+    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER.name(), UUID.randomUUID(), UUID.randomUUID());
     List<QRGenerator> qrGenerators = new ArrayList<>();
     qrGenerators.add(qrGenerator);
 
@@ -111,7 +111,7 @@ public class QRGeneratorServiceTest {
   @Test
   public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedQrGenerator() {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.HALTE.name(), UUID.randomUUID(), UUID.randomUUID());
+    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER.name(), UUID.randomUUID(), UUID.randomUUID());
 
     when(qrGeneratorRepository.findById(any())).thenReturn(Optional.of(qrGenerator));
     QRGenerator deletedQrGenerator = qrGeneratorService.deleteById(id);
@@ -134,9 +134,9 @@ public class QRGeneratorServiceTest {
     UUID id = UUID.randomUUID();
     UUID id1 = UUID.randomUUID();
     UUID id2 = UUID.randomUUID();
-    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.HALTE, id1, id2);
-    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.HALTE.name(), UUID.randomUUID(), UUID.randomUUID());
-    QRGenerator expectedQrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.HALTE.name(), id1, id2);
+    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.COMMUTER, id1, id2);
+    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER.name(), UUID.randomUUID(), UUID.randomUUID());
+    QRGenerator expectedQrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER.name(), id1, id2);
 
     when(qrGeneratorRepository.findById(any())).thenReturn(Optional.of(qrGenerator));
     when(qrGeneratorRepository.save(any())).thenReturn(expectedQrGenerator);
@@ -153,7 +153,7 @@ public class QRGeneratorServiceTest {
     UUID id = UUID.randomUUID();
     UUID id1 = UUID.randomUUID();
     UUID id2 = UUID.randomUUID();
-    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.HALTE, id1, id2);
+    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.COMMUTER, id1, id2);
 
     when(qrGeneratorRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -163,7 +163,7 @@ public class QRGeneratorServiceTest {
   @Test
   public void testGivenId_thenReturnQrToken() throws Exception {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.HALTE.name(), UUID.randomUUID(), UUID.randomUUID());
+    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER.name(), UUID.randomUUID(), UUID.randomUUID());
     String token = "Test";
 
     when(qrGeneratorRepository.findById(any())).thenReturn(Optional.of(qrGenerator));
@@ -201,7 +201,7 @@ public class QRGeneratorServiceTest {
     qrGeneratorNode.setId(1L);
     qrGeneratorNode.setQrGeneratorId(id);
     qrGeneratorNode.setLocation("Test");
-    qrGeneratorNode.setType(QRGeneratorType.HALTE.name());
+    qrGeneratorNode.setType(QRGeneratorType.COMMUTER.name());
     List<QRGeneratorNode> qrGeneratorNodes = new ArrayList<>();
     qrGeneratorNodes.add(qrGeneratorNode);
 
@@ -215,8 +215,8 @@ public class QRGeneratorServiceTest {
   @Test
   public void testGivenIdNode1AndIdNode2_thenReturnQrGeneratorNodes() {
     UUID id = UUID.randomUUID();
-    QRGeneratorNode qrGeneratorNode1 = new QRGeneratorNode(1L, id, "Test", QRGeneratorType.HALTE.name());
-    QRGeneratorNode qrGeneratorNode2 = new QRGeneratorNode(1L, id, "Test", QRGeneratorType.HALTE.name());
+    QRGeneratorNode qrGeneratorNode1 = new QRGeneratorNode(1L, id, "Test", QRGeneratorType.COMMUTER.name());
+    QRGeneratorNode qrGeneratorNode2 = new QRGeneratorNode(1L, id, "Test", QRGeneratorType.COMMUTER.name());
     List<QRGeneratorNode> qrGeneratorNodes = new ArrayList<>();
     qrGeneratorNodes.add(qrGeneratorNode1);
     qrGeneratorNodes.add(qrGeneratorNode2);
