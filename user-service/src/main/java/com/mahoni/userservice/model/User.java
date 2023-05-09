@@ -33,12 +33,21 @@ public class User {
   private String email;
 
   @Column
+  @Enumerated(EnumType.ORDINAL)
+  private Sex sex;
+
+  @Column(name = "yob")
+  private Integer yearOfBirth;
+
+  @Column
   private Integer point;
 
-  public User(String username, String name, String email, Integer point) {
+  public User(String username, String name, String email, Sex sex, Integer yearOfBirth, Integer point) {
     this.username = username;
     this.name = name;
     this.email = email;
+    this.sex = sex;
+    this.yearOfBirth = yearOfBirth;
     this.point = point;
   }
 

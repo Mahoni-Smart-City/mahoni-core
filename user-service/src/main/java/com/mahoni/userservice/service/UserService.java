@@ -26,7 +26,7 @@ public class UserService {
     if (userRepository.findByUsername(user.getUsername()).isPresent()) {
       throw  new ResourceAlreadyExistException(user.getUsername());
     }
-    return userRepository.save(new User(user.getUsername(), user.getName(), user.getEmail(), DEFAULT_USER_POINT));
+    return userRepository.save(new User(user.getUsername(), user.getName(), user.getEmail(), user.getSex(), user.getYearOfBirth(), DEFAULT_USER_POINT));
   }
 
   public User getById(UUID id) {
@@ -59,6 +59,8 @@ public class UserService {
     updatedUser.setUsername(newUser.getUsername());
     updatedUser.setEmail(newUser.getEmail());
     updatedUser.setName(newUser.getName());
+    updatedUser.setSex(newUser.getSex());
+    updatedUser.setYearOfBirth(newUser.getYearOfBirth());
     return userRepository.save(updatedUser);
   }
 }

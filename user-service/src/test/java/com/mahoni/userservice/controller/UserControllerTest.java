@@ -3,6 +3,7 @@ package com.mahoni.userservice.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mahoni.userservice.dto.UserRequest;
 import com.mahoni.userservice.exception.ResourceNotFoundException;
+import com.mahoni.userservice.model.Sex;
 import com.mahoni.userservice.model.User;
 import com.mahoni.userservice.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -46,11 +47,15 @@ public class UserControllerTest {
     user.setUsername("Test");
     user.setName("Test");
     user.setEmail("test@mail.com");
+    user.setSex(Sex.NOT_KNOWN);
+    user.setYearOfBirth(2000);
     user.setPoint(0);
     UserRequest request = new UserRequest();
     request.setUsername("Test");
     request.setName("Test");
     request.setEmail("test@mail.com");
+    request.setSex(Sex.NOT_KNOWN);
+    request.setYearOfBirth(2000);
 
     when(userService.create(any())).thenReturn(user);
 
@@ -66,7 +71,7 @@ public class UserControllerTest {
 
   @Test
   public void testPost_thenThrowRuntimeException() throws Exception {
-    UserRequest request = new UserRequest("Test", "Test", "test@mail.com");
+    UserRequest request = new UserRequest("Test", "Test", "test@mail.com", Sex.NOT_KNOWN, 2000);
 
     when(userService.create(any())).thenThrow(RuntimeException.class);
 
@@ -93,7 +98,7 @@ public class UserControllerTest {
 
   @Test
   public void testGetById_thenReturnUser() throws Exception {
-    User user = new User(UUID.randomUUID(), "Test", "Test", "Test@mail.com", 0);
+    User user = new User(UUID.randomUUID(), "Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, 0);
     when(userService.getById(any())).thenReturn(user);
 
     MvcResult result = this.mockMvc.perform(get("/api/v1/users/{id}", UUID.randomUUID()))
@@ -115,7 +120,7 @@ public class UserControllerTest {
 
   @Test
   public void testDelete_thenReturnUser() throws Exception {
-    User user = new User("Test", "Test", "Test@mail.com", 0);
+    User user = new User("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, 0);
 
     when(userService.deleteById(any())).thenReturn(user);
 
@@ -138,8 +143,8 @@ public class UserControllerTest {
 
   @Test
   public void testUpdate_thenReturnUser() throws Exception {
-    User user = new User("Test", "Test", "Test@mail.com", 0);
-    UserRequest request = new UserRequest("Test", "Test", "test@mail.com");
+    User user = new User("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, 0);
+    UserRequest request = new UserRequest("Test", "Test", "test@mail.com", Sex.NOT_KNOWN, 2000);
 
     when(userService.update(any(), any())).thenReturn(user);
 
@@ -155,7 +160,7 @@ public class UserControllerTest {
 
   @Test
   public void testUpdate_thenThrowUserNotFound() throws Exception {
-    UserRequest request = new UserRequest("Test", "Test", "test@mail.com");
+    UserRequest request = new UserRequest("Test", "Test", "test@mail.com", Sex.NOT_KNOWN, 2000);
 
     when(userService.update(any(), any())).thenThrow(ResourceNotFoundException.class);
 

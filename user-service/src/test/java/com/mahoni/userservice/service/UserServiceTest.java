@@ -3,6 +3,7 @@ package com.mahoni.userservice.service;
 import com.mahoni.userservice.dto.UserRequest;
 import com.mahoni.userservice.exception.ResourceAlreadyExistException;
 import com.mahoni.userservice.exception.ResourceNotFoundException;
+import com.mahoni.userservice.model.Sex;
 import com.mahoni.userservice.model.User;
 import com.mahoni.userservice.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -38,8 +39,8 @@ class UserServiceTest {
 
   @Test
   public void testGivenUserRequest_thenSaveUser() {
-    UserRequest request = new UserRequest("Test", "Test", "Test@mail.com" );
-    User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
+    UserRequest request = new UserRequest("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000);
+    User user = new User("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, userService.DEFAULT_USER_POINT);
 
     when(userRepository.findByUsername(any())).thenReturn(Optional.empty());
     when(userRepository.save(any())).thenReturn(user);
@@ -51,8 +52,8 @@ class UserServiceTest {
 
   @Test
   public void testGivenUserRequest_thenThrowResourceAlreadyExist() {
-    UserRequest request = new UserRequest("Test", "Test", "Test@mail.com" );
-    User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
+    UserRequest request = new UserRequest("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000);
+    User user = new User("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, userService.DEFAULT_USER_POINT);
 
     when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
 
@@ -62,7 +63,7 @@ class UserServiceTest {
   @Test
   public void testGivenId_thenReturnUser() {
     UUID id = UUID.randomUUID();
-    User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
+    User user = new User("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, userService.DEFAULT_USER_POINT);
 
     when(userRepository.findById(any())).thenReturn(Optional.of(user));
     User savedUser = userService.getById(id);
@@ -82,7 +83,7 @@ class UserServiceTest {
 
   @Test
   public void testGetAll_thenReturnUsers() {
-    User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
+    User user = new User("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, userService.DEFAULT_USER_POINT);
     List<User> users = new ArrayList<>();
     users.add(user);
 
@@ -96,7 +97,7 @@ class UserServiceTest {
   @Test
   public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedUser() {
     UUID id = UUID.randomUUID();
-    User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
+    User user = new User("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, userService.DEFAULT_USER_POINT);
 
     when(userRepository.findById(any())).thenReturn(Optional.of(user));
     User deletedUser = userService.deleteById(id);
@@ -117,9 +118,9 @@ class UserServiceTest {
   @Test
   public void testGivenIdAndUserRequest_thenUpdateAndReturnUpdatedUser() {
     UUID id = UUID.randomUUID();
-    UserRequest request = new UserRequest("Test2", "Test", "Test@mail.com" );
-    User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
-    User expectedUser = new User("Test2", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
+    UserRequest request = new UserRequest("Test2", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000);
+    User user = new User("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, userService.DEFAULT_USER_POINT);
+    User expectedUser = new User("Test2", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, userService.DEFAULT_USER_POINT);
 
     when(userRepository.findById(any())).thenReturn(Optional.of(user));
     when(userRepository.save(any())).thenReturn(expectedUser);
@@ -133,7 +134,7 @@ class UserServiceTest {
   @Test
   public void testGivenIdAndUserRequest_thenThrowResourceNotFound() {
     UUID id = UUID.randomUUID();
-    UserRequest request = new UserRequest("Test2", "Test", "Test@mail.com" );
+    UserRequest request = new UserRequest("Test2", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000);
 
     when(userRepository.findById(any())).thenReturn(Optional.empty());
 

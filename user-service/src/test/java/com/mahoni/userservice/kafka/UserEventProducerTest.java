@@ -2,6 +2,7 @@ package com.mahoni.userservice.kafka;
 
 import com.mahoni.schema.UserPointSchema;
 import com.mahoni.userservice.mock.CustomKafkaAvroDeserializer;
+import com.mahoni.userservice.model.Sex;
 import com.mahoni.userservice.model.User;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -67,7 +68,7 @@ public class UserEventProducerTest {
 
   @Test
   public void givenEmbeddedKafkaBroker_whenSendEvent_thenMessageSent() throws InterruptedException {
-    User user = new User(UUID.randomUUID(), "Test", "Test", "Test@mail.com", 0);
+    User user = new User(UUID.randomUUID(), "Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, 0);
 
     userEventProducer.send(user, 0, UUID.randomUUID().toString());
 

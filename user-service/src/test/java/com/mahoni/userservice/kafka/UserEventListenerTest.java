@@ -2,6 +2,7 @@ package com.mahoni.userservice.kafka;
 
 import com.mahoni.schema.TripSchema;
 import com.mahoni.schema.VoucherRedeemedSchema;
+import com.mahoni.userservice.model.Sex;
 import com.mahoni.userservice.model.User;
 import com.mahoni.userservice.repository.UserRepository;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -66,7 +67,7 @@ public class UserEventListenerTest {
       .setAqi(5.0)
       .setPoint(0)
       .build();
-    User user = new User(UUID.randomUUID(), "Test", "Test", "Test@mail.com", 0);
+    User user = new User(UUID.randomUUID(), "Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, 0);
 
     when(userRepository.findById(any())).thenReturn(Optional.of(user));
     when(userRepository.save(any())).thenReturn(user);
@@ -90,7 +91,7 @@ public class UserEventListenerTest {
       .setRedeemedAt(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
       .setExpiredAt(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
       .build();
-    User user = new User(UUID.randomUUID(), "Test", "Test", "Test@mail.com", 5);
+    User user = new User(UUID.randomUUID(), "Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, 5);
 
     when(userRepository.findById(any())).thenReturn(Optional.of(user));
     when(userRepository.save(any())).thenReturn(user);
