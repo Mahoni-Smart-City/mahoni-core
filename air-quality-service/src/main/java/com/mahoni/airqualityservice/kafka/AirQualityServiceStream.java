@@ -15,6 +15,12 @@ import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.TimeZone;
+
 @Component
 public class AirQualityServiceStream {
 
@@ -27,10 +33,7 @@ public class AirQualityServiceStream {
   @Autowired
   public KTable<String, AirQualityProcessedSchema> kTable(KStream<String, AirQualityProcessedSchema> kStream) {
     KGroupedStream<String, AirQualityProcessedSchema> groupedAirQuality = kStream
-      .map((s, airQualityProcessedSchema) -> {
-        String key = airQualityProcessedSchema.getTimestamp() + ":" + airQualityProcessedSchema.getSensorId();
-        return KeyValue.pair(key, airQualityProcessedSchema);
-      })
+      .map((s, airQualityProcessedSchema) -> KeyValue.pair(AirQualityServiceStream.parseTableKey(airQualityProcessedSchema), airQualityProcessedSchema))
       .groupByKey();
 
     KTable<String, AirQualityProcessedSchema> airQualityTable = groupedAirQuality
@@ -51,5 +54,19 @@ public class AirQualityServiceStream {
     ReadOnlyKeyValueStore<String, AirQualityProcessedSchema> amounts = kafkaStreams
       .store(StoreQueryParameters.fromNameAndType("air-quality-state-store", QueryableStoreTypes.keyValueStore()));
     return amounts.get(id);
+  }
+
+  public static String  parseTableKey(AirQualityProcessedSchema airQualityProcessedSchema) {
+    LocalDateTime timestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(airQualityProcessedSchema.getTimestamp()), TimeZone.getDefault().toZoneId());
+    return timestamp.getDayOfWeek().name() + ":" + timestamp.getHour() + ":" + airQualityProcessedSchema.getSensorId();
+  }
+
+  public static String  parseTableKey(Long sensorId) {
+    LocalDateTime datetime = LocalDateTime.now();
+    return datetime.getDayOfWeek().name() + ":" + datetime.getHour() + ":" + sensorId;
+  }
+
+  public static String  parseTableKey(AirQualityProcessedSchema airQualityProcessedSchema, LocalDateTime timestamp) {
+    return timestamp.getDayOfWeek().name() + ":" + timestamp.getHour() + ":" + airQualityProcessedSchema.getSensorId();
   }
 }
