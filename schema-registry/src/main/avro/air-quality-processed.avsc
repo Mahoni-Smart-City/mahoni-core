@@ -9,7 +9,7 @@
     },
     {
       "name": "sensorId",
-      "type": "string"
+      "type": "long"
     },
     {
       "name": "timestamp",
@@ -20,7 +20,27 @@
       "type": "double"
     },
     {
+      "name": "category",
+      "type": "string"
+    },
+    {
+      "name": "co",
+      "type": "double"
+    },
+    {
+      "name": "no",
+      "type": "double"
+    },
+    {
       "name": "no2",
+      "type": "double"
+    },
+    {
+      "name": "o3",
+      "type": "double"
+    },
+    {
+      "name": "so2",
       "type": "double"
     },
     {
@@ -30,6 +50,42 @@
     {
       "name": "pm10",
       "type": "double"
+    },
+    {
+      "name": "pm1",
+      "type": "double"
+    },
+    {
+      "name": "nh3",
+      "type": "double"
+    },
+    {
+      "name": "pressure",
+      "type": "double"
+    },
+    {
+      "name": "humidity",
+      "type": "double"
+    },
+    {
+      "name": "temperature",
+      "type": "double"
+    },
+    {
+      "name": "nameLocation",
+      "type": "string"
+    },
+    {
+      "name": "idLocation",
+      "type": "long"
+    },
+    {
+      "name": "subdistrict",
+      "type": "string"
+    },
+    {
+      "name": "district",
+      "type": "string"
     }
   ]
 }

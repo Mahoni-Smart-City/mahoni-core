@@ -10,8 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.DayOfWeek;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,10 +30,7 @@ public class AirQualityService {
   AirQualityServiceStream airQualityServiceStream;
 
   public AirQualityProcessedSchema getAqi(Long sensorId) {
-    LocalDateTime datetime = LocalDateTime.now();
-    LocalDateTime rounded = datetime.minusMinutes(datetime.getMinute()).minusSeconds(datetime.getSecond());
-    Long timestamp = rounded.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(rounded)) * 1000L;
-    return airQualityServiceStream.get(timestamp + ":" + sensorId.toString());
+    return airQualityServiceStream.get(AirQualityServiceStream.parseTableKey(sensorId));
   }
 
   public List<AirQualityProcessedSchema> getAqiByLocation(String location) {
@@ -41,5 +39,20 @@ public class AirQualityService {
       throw new AirSensorNotFoundException();
     }
     return airSensors.get().stream().map(AirSensor::getId).map(this::getAqi).collect(Collectors.toList());
+  }
+
+  public HashMap<String, AirQualityProcessedSchema> history(Long sensorId) {
+    List<String> keys = new LinkedList<>();
+    for (DayOfWeek day: DayOfWeek.values()) {
+      for (int i = 0; i < 24 ; i++) {
+        keys.add(day.name() + ":" + i + ":" + sensorId);
+      }
+    }
+
+    HashMap<String, AirQualityProcessedSchema> history = new HashMap<>();
+    for (String key: keys) {
+      history.put(key, airQualityServiceStream.get(key));
+    }
+    return history;
   }
 }

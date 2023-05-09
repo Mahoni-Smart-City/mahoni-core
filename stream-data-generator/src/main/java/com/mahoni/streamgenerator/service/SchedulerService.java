@@ -184,6 +184,7 @@ public class SchedulerService {
             .setNh3(data.getNh3())
             .setPressure(data.getPressure())
             .setHumidity(data.getHumidity())
+            .setTemperature(data.getTemperature())
             .build();
 
         return new ProducerRecord<>(TOPIC, id, event);
