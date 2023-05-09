@@ -1,13 +1,11 @@
 package com.mahoni.airqualityservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mahoni.airqualityservice.dto.AirQualityResponse;
 import com.mahoni.airqualityservice.dto.AirSensorRequest;
 import com.mahoni.airqualityservice.exception.AirSensorNotFoundException;
 import com.mahoni.airqualityservice.model.AirSensor;
 import com.mahoni.airqualityservice.model.Location;
 import com.mahoni.airqualityservice.service.AirSensorService;
-import com.mahoni.schema.AirQualityProcessedSchema;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,8 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -161,50 +157,6 @@ public class AirSensorControllerTest {
     this.mockMvc.perform(put("/api/v1/air-sensors/{id}", 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(request)))
-      .andExpect(status().isNotFound())
-      .andReturn();
-  }
-
-  @Test
-  public void testGetAqi_thenReturnAirQuality() throws Exception {
-    Long id = 1L;
-    LocalDateTime datetime = LocalDateTime.now();
-    LocalDateTime rounded = datetime.minusMinutes(datetime.getMinute()).minusSeconds(datetime.getSecond());
-    Long timestamp = rounded.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(rounded)) * 1000L;
-    AirQualityProcessedSchema schema = AirQualityProcessedSchema.newBuilder()
-      .setEventId(id.toString())
-      .setSensorId("TestId")
-      .setTimestamp(timestamp)
-      .setAqi(1.0)
-      .setNo2(1.0)
-      .setPm10(1.0)
-      .setPm25(1.0)
-      .build();
-    AirQualityResponse response1 = new AirQualityResponse(id, "TestId", timestamp, 1.0, 1.0, 1.0, 1.0);
-    AirQualityResponse response2 = new AirQualityResponse();
-    response2.setEventId(id);
-    response2.setSensorId("TestId");
-    response2.setTimestamp(timestamp);
-    response2.setAqi(1.0);
-    response2.setNo2(1.0);
-    response2.setPm25(1.0);
-    response2.setPm10(1.0);
-    when(airSensorService.getAqi(any())).thenReturn(schema);
-
-    MvcResult result = this.mockMvc.perform(get("/api/v1/air-sensors/{id}/aqi", id))
-      .andExpect(status().isOk())
-      .andReturn();
-
-    assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(response1));
-    assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(response2));
-    verify(airSensorService).getAqi(any());
-  }
-
-  @Test
-  public void testGetAqi_thenThrowAirSensorNotFound() throws Exception {
-    when(airSensorService.getAqi(any())).thenThrow(AirSensorNotFoundException.class);
-
-    this.mockMvc.perform(get("/api/v1/air-sensors/{id}/aqi", 1L))
       .andExpect(status().isNotFound())
       .andReturn();
   }

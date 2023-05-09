@@ -4,12 +4,10 @@ import com.mahoni.airqualityservice.dto.AirSensorRequest;
 import com.mahoni.airqualityservice.exception.AirSensorAlreadyExistException;
 import com.mahoni.airqualityservice.exception.AirSensorNotFoundException;
 import com.mahoni.airqualityservice.exception.LocationNotFoundException;
-import com.mahoni.airqualityservice.kafka.AirQualityServiceStream;
 import com.mahoni.airqualityservice.model.AirSensor;
 import com.mahoni.airqualityservice.model.Location;
 import com.mahoni.airqualityservice.repository.AirSensorRepository;
 import com.mahoni.airqualityservice.repository.LocationRepository;
-import com.mahoni.schema.AirQualityProcessedSchema;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -18,8 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,9 +34,6 @@ public class AirSensorServiceTest {
 
   @Mock
   LocationRepository locationRepository;
-
-  @Mock
-  AirQualityServiceStream airQualityServiceStream;
 
   @InjectMocks
   AirSensorService airSensorService;
@@ -183,27 +176,5 @@ public class AirSensorServiceTest {
     when(locationRepository.findById(any())).thenReturn(Optional.empty());
 
     assertThrows(LocationNotFoundException.class, () -> airSensorService.update(id, request));
-  }
-
-  @Test
-  public void testGivenSensorId_thenReturnAirQualityProcessed() {
-    Long id = 1L;
-    LocalDateTime datetime = LocalDateTime.now();
-    LocalDateTime rounded = datetime.minusMinutes(datetime.getMinute()).minusSeconds(datetime.getSecond());
-    Long timestamp = rounded.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(rounded)) * 1000L;
-    AirQualityProcessedSchema schema = AirQualityProcessedSchema.newBuilder()
-      .setEventId(id.toString())
-      .setSensorId("TestId")
-      .setTimestamp(timestamp)
-      .setAqi(1.0)
-      .setNo2(1.0)
-      .setPm10(1.0)
-      .setPm25(1.0)
-      .build();
-
-    when(airQualityServiceStream.get(any())).thenReturn(schema);
-    AirQualityProcessedSchema result = airSensorService.getAqi(id);
-
-    assertEquals(schema, result);
   }
 }
