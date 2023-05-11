@@ -56,7 +56,7 @@ public class VoucherEventListenerTest {
       .setPoint(5)
       .setLastModifiedBy(UUID.randomUUID().toString())
       .build();
-    Voucher voucher = new Voucher(UUID.randomUUID(), "Test", "Test", VoucherType.FNB, 5, LocalDateTime.now(), LocalDateTime.now(), new Merchant(), 0);
+    Voucher voucher = new Voucher(UUID.randomUUID(), "Test", "Test", VoucherType.FOOD_AND_BEVERAGES, 5, LocalDateTime.now(), LocalDateTime.now(), new Merchant(), 0);
     RedeemVoucher redeemVoucher = new RedeemVoucher(voucher, "Test", LocalDateTime.now());
     redeemVoucher.setStatus(VoucherStatus.PENDING);
 

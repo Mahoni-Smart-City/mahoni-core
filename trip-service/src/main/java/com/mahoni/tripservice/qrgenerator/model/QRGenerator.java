@@ -27,7 +27,8 @@ public class QRGenerator {
   private String location;
 
   @Column(nullable = false)
-  private String type;
+  @Enumerated(EnumType.STRING)
+  private QRGeneratorType type;
 
   @Column(name = "sensor_id_1", nullable = false)
   private UUID sensorId1;
@@ -35,14 +36,14 @@ public class QRGenerator {
   @Column(name = "sensor_id_2")
   private UUID sensorId2;
 
-  public QRGenerator(String location, String type, UUID sensorId1, UUID sensorId2) {
+  public QRGenerator(String location, QRGeneratorType type, UUID sensorId1, UUID sensorId2) {
     this.location = location;
     this.type = type;
     this.sensorId1 = sensorId1;
     this.sensorId2 = sensorId2;
   }
 
-  public QRGenerator(String location, String type, UUID sensorId1) {
+  public QRGenerator(String location, QRGeneratorType type, UUID sensorId1) {
     this.location = location;
     this.type = type;
     this.sensorId1 = sensorId1;

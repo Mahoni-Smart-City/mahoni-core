@@ -40,10 +40,10 @@ public class AirSensorRepositoryTest {
 
   @Test
   public void testFindAirSensorsByLocation() {
-    Location location1 = new Location(1L, "Ohio A", "Test", "Test", "123", "123");
-    Location location2 = new Location(2L, "Test", "B Ohio", "Test", "123", "123");
-    Location location3 = new Location(3L, "Test", "Test", "Ohio", "123", "123");
-    Location location4 = new Location(4L, "Test", "Test", "Test", "123", "123");
+    Location location1 = new Location(1L, "Ohio A", "Test", "Test", 12.34, 12.34);
+    Location location2 = new Location(2L, "Test", "B Ohio", "Test", 12.34, 12.34);
+    Location location3 = new Location(3L, "Test", "Test", "Ohio", 12.34, 12.34);
+    Location location4 = new Location(4L, "Test", "Test", "Test", 12.34, 12.34);
 
     testEntityManager.persist(location1);
     testEntityManager.persist(location2);

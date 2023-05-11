@@ -29,9 +29,9 @@ public class TripEventListener {
     if (trip.isPresent()) {
       Trip pendingTrip = trip.get();
       // Check if trip is pending and the point is correct
-      if (pendingTrip.getTransactionStatus().equals(TransactionStatus.PENDING.name()) && Math.abs(userPoint.getPoint() - userPoint.getPrevPoint()) == pendingTrip.getPoint()) {
+      if (pendingTrip.getTransactionStatus().equals(TransactionStatus.PENDING) && Math.abs(userPoint.getPoint() - userPoint.getPrevPoint()) == pendingTrip.getPoint()) {
         // Update transaction status
-        pendingTrip.setTransactionStatus(TransactionStatus.SUCCESS.name());
+        pendingTrip.setTransactionStatus(TransactionStatus.SUCCESS);
         tripRepository.save(pendingTrip);
       }
     }

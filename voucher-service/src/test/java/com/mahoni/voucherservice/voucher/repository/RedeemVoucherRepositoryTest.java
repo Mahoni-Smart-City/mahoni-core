@@ -33,7 +33,7 @@ public class RedeemVoucherRepositoryTest {
   public void testFIndAllByUserId() {
     UUID id = UUID.randomUUID();
     Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
-    Voucher voucher = new Voucher("Test", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now(), merchant);
+    Voucher voucher = new Voucher("Test", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, LocalDateTime.now(), LocalDateTime.now(), merchant);
     RedeemVoucher redeemVoucher1 = new RedeemVoucher(voucher, "Test1", LocalDateTime.now());
     RedeemVoucher redeemVoucher2 = new RedeemVoucher(voucher, "Test2", LocalDateTime.now());
     RedeemVoucher redeemVoucher3 = new RedeemVoucher(voucher, "Test3", LocalDateTime.now());
@@ -58,7 +58,7 @@ public class RedeemVoucherRepositoryTest {
   @Test
   public void testFindAllByStatus() {
     Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
-    Voucher voucher = new Voucher("Test", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now(), merchant);
+    Voucher voucher = new Voucher("Test", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, LocalDateTime.now(), LocalDateTime.now(), merchant);
     RedeemVoucher redeemVoucher1 = new RedeemVoucher(voucher, "Test1", LocalDateTime.now());
     RedeemVoucher redeemVoucher2 = new RedeemVoucher(voucher, "Test2", LocalDateTime.now());
     RedeemVoucher redeemVoucher3 = new RedeemVoucher(voucher, "Test3", LocalDateTime.now());
@@ -83,8 +83,8 @@ public class RedeemVoucherRepositoryTest {
   @Test
   public void testFindAvailableRedeemVoucherByVoucherId() {
     Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
-    Voucher voucher1 = new Voucher("Test", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now(), merchant);
-    Voucher voucher2 = new Voucher("Test", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now(), merchant);
+    Voucher voucher1 = new Voucher("Test", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, LocalDateTime.now(), LocalDateTime.now(), merchant);
+    Voucher voucher2 = new Voucher("Test", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, LocalDateTime.now(), LocalDateTime.now(), merchant);
 
     testEntityManager.persist(merchant);
     testEntityManager.persist(voucher1);
@@ -104,8 +104,8 @@ public class RedeemVoucherRepositoryTest {
   public void testFindAllByMerchant() {
     Merchant merchant1 = new Merchant("Test1", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
     Merchant merchant2 = new Merchant("Test2", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
-    Voucher voucher1 = new Voucher("Test1", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now(), merchant1);
-    Voucher voucher2 = new Voucher("Test2", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now(), merchant2);
+    Voucher voucher1 = new Voucher("Test1", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, LocalDateTime.now(), LocalDateTime.now(), merchant1);
+    Voucher voucher2 = new Voucher("Test2", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, LocalDateTime.now(), LocalDateTime.now(), merchant2);
 
     testEntityManager.persist(merchant1);
     testEntityManager.persist(merchant2);

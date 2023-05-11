@@ -3,7 +3,7 @@ package com.mahoni.tripservice.qrgenerator.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mahoni.tripservice.qrgenerator.dto.QRGeneratorRequest;
-import com.mahoni.tripservice.qrgenerator.dto.QRGeneratorType;
+import com.mahoni.tripservice.qrgenerator.model.QRGeneratorType;
 import com.mahoni.tripservice.qrgenerator.exception.QRGeneratorNotFoundException;
 import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
 import com.mahoni.tripservice.qrgenerator.model.QRGeneratorNode;
@@ -46,7 +46,7 @@ public class QRGeneratorControllerTest {
   @Test
   public void testPost_thenReturnNewQrGenerator() throws Exception {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER.name(), id, id);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER, id, id);
     QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.COMMUTER, id, id);
 
     when(qrGeneratorService.create(any())).thenReturn(qrGenerator);
@@ -92,7 +92,7 @@ public class QRGeneratorControllerTest {
   @Test
   public void testGetById_thenReturnQrGenerator() throws Exception {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER.name(), id);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER, id);
 
     when(qrGeneratorService.getById(any())).thenReturn(qrGenerator);
 
@@ -116,7 +116,7 @@ public class QRGeneratorControllerTest {
   @Test
   public void testDelete_thenReturnDeletedQrGenerator() throws Exception {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER.name(), id);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER, id);
 
     when(qrGeneratorService.deleteById(any())).thenReturn(qrGenerator);
 
@@ -143,7 +143,7 @@ public class QRGeneratorControllerTest {
     QRGenerator qrGenerator = new QRGenerator();
     qrGenerator.setId(id);
     qrGenerator.setLocation("Test");
-    qrGenerator.setType(QRGeneratorType.TRANSJAKARTA.name());
+    qrGenerator.setType(QRGeneratorType.TRANSJAKARTA);
     qrGenerator.setSensorId1(id);
     qrGenerator.setSensorId2(id);
     QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.TRANSJAKARTA, id, id);

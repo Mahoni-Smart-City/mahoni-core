@@ -45,7 +45,7 @@ public class AirSensorServiceTest {
   public void testGivenAirSensorRequest_thenSaveAirSensor() {
     Long id = 1L;
     AirSensorRequest request = new AirSensorRequest(id, "Test", id);
-    Location location = new Location(id, "Test", "Test", "Test", "Test", "Test");
+    Location location = new Location(id, "Test", "Test", "Test", 12.34, -12.34);
     AirSensor airSensor = new AirSensor(id, "Test", location);
 
     when(locationRepository.findById(any())).thenReturn(Optional.of(location));
@@ -60,7 +60,7 @@ public class AirSensorServiceTest {
   public void testGivenAirSensorRequest_thenThrowAirSensorAlreadyExist() {
     Long id = 1L;
     AirSensorRequest request = new AirSensorRequest(id, "Test", id);
-    Location location = new Location(id, "Test", "Test", "Test", "Test", "Test");
+    Location location = new Location(id, "Test", "Test", "Test", 12.34, -12.34);
     AirSensor airSensor = new AirSensor(id, "Test", location);
 
     when(airSensorRepository.findById(any())).thenReturn(Optional.of(airSensor));
@@ -81,7 +81,7 @@ public class AirSensorServiceTest {
   @Test
   public void testGivenId_thenReturnAirSensor() {
     Long id = 1L;
-    Location location = new Location(id, "Test", "Test", "Test", "Test", "Test");
+    Location location = new Location(id, "Test", "Test", "Test", 12.34, -12.34);
     AirSensor airSensor = new AirSensor(id, "Test", location);
 
     when(airSensorRepository.findById(any())).thenReturn(Optional.of(airSensor));
@@ -103,7 +103,7 @@ public class AirSensorServiceTest {
   @Test
   public void testGetAll_thenReturnAirSensors() {
     Long id = 1L;
-    Location location = new Location(id, "Test", "Test", "Test", "Test", "Test");
+    Location location = new Location(id, "Test", "Test", "Test", 12.34, -12.34);
     AirSensor airSensor = new AirSensor(id, "Test", location);
     List<AirSensor> airSensors = new ArrayList<>();
     airSensors.add(airSensor);
@@ -118,7 +118,7 @@ public class AirSensorServiceTest {
   @Test
   public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedAirSensor() {
     Long id = 1L;
-    Location location = new Location(id, "Test", "Test", "Test", "Test", "Test");
+    Location location = new Location(id, "Test", "Test", "Test", 12.34, -12.34);
     AirSensor airSensor = new AirSensor(id, "Test", location);
 
     when(airSensorRepository.findById(any())).thenReturn(Optional.of(airSensor));
@@ -141,7 +141,7 @@ public class AirSensorServiceTest {
   public void testGivenIdAndAirSensorRequest_thenUpdateAndReturnUpdatedAirSensor() {
     Long id = 1L;
     AirSensorRequest request = new AirSensorRequest(id, "Test2", id);
-    Location location = new Location(id, "Test", "Test", "Test", "Test", "Test");
+    Location location = new Location(id, "Test", "Test", "Test", 12.34, -12.34);
     AirSensor airSensor = new AirSensor(id, "Test", location);
     AirSensor expectedAirSensor = new AirSensor(id, "Test2", location);
 
@@ -152,7 +152,7 @@ public class AirSensorServiceTest {
 
     assertEquals(updatedAirSensor, expectedAirSensor);
     verify(airSensorRepository).save(airSensorArgumentCaptor.capture());
-    assertEquals(airSensorArgumentCaptor.getValue().getNameLocation(), expectedAirSensor.getNameLocation());
+    assertEquals(airSensorArgumentCaptor.getValue().getLocationName(), expectedAirSensor.getLocationName());
   }
 
   @Test
@@ -169,7 +169,7 @@ public class AirSensorServiceTest {
   public void testGivenIdAndAirSensorRequest_thenThrowLocationNotFound() {
     Long id = 1L;
     AirSensorRequest request = new AirSensorRequest(id, "Test", id);
-    Location location = new Location(id, "Test", "Test", "Test", "Test", "Test");
+    Location location = new Location(id, "Test", "Test", "Test", 12.34, -12.34);
     AirSensor airSensor = new AirSensor(id, "Test", location);
 
     when(airSensorRepository.findById(any())).thenReturn(Optional.of(airSensor));

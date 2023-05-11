@@ -17,12 +17,12 @@ public class Location {
   private Long id;
   @Column
   private String district;
-  @Column(name = "subdistrict")
+  @Column(name = "sub_district")
   private String subDistrict;
   @Column
   private String village;
   @Column
-  private String longitude;
+  private Double longitude;
   @Column
-  private String latitude;
+  private Double latitude;
 }

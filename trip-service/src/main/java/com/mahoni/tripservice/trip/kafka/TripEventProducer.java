@@ -33,7 +33,7 @@ public class TripEventProducer {
       .setScanInTimestamp(parseTimestamp(trip.getScanInAt()))
       .setScanOutPlaceId(trip.getScanOutPlaceId() == null ? null : trip.getScanOutPlaceId().getId().toString())
       .setScanOutTimestamp(trip.getScanOutAt() == null ? null : parseTimestamp(trip.getScanOutAt()))
-      .setStatus(trip.getStatus())
+      .setStatus(trip.getStatus().name())
       .setAqi(trip.getAqi() == null ? null : trip.getAqi())
       .setPoint(trip.getPoint() == null ? null : trip.getPoint())
       .build();

@@ -55,8 +55,8 @@ public class TripEventListenerTest {
       .setPoint(5)
       .setLastModifiedBy(UUID.randomUUID().toString())
       .build();
-    Trip trip = new Trip(UUID.randomUUID(), new QRGenerator(), LocalDateTime.now(), TripStatus.ACTIVE.name());
-    trip.setTransactionStatus(TransactionStatus.PENDING.name());
+    Trip trip = new Trip(UUID.randomUUID(), new QRGenerator(), LocalDateTime.now(), TripStatus.ACTIVE);
+    trip.setTransactionStatus(TransactionStatus.PENDING);
     trip.setPoint(5);
 
     when(tripRepository.findById(any())).thenReturn(Optional.of(trip));

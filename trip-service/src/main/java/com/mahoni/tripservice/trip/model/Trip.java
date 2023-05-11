@@ -2,7 +2,6 @@ package com.mahoni.tripservice.trip.model;
 
 import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,7 +45,8 @@ public class Trip {
   private LocalDateTime scanOutAt;
 
   @Column
-  private String status;
+  @Enumerated(EnumType.STRING)
+  private TripStatus status;
 
   @Column
   private Double aqi;
@@ -55,9 +55,10 @@ public class Trip {
   private Integer point;
 
   @Column(name = "transaction_status")
-  private String transactionStatus;
+  @Enumerated(EnumType.STRING)
+  private TransactionStatus transactionStatus;
 
-  public Trip(UUID userId, QRGenerator scanInPlaceId, LocalDateTime scanInAt, String status) {
+  public Trip(UUID userId, QRGenerator scanInPlaceId, LocalDateTime scanInAt, TripStatus status) {
     this.userId = userId;
     this.scanInPlaceId = scanInPlaceId;
     this.scanInAt = scanInAt;

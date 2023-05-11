@@ -66,7 +66,7 @@ public class DetailVoucherControllerTest {
   void init() {
     UUID id = UUID.randomUUID();
     merchant = new Merchant(id, "Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
-    Voucher voucher = new Voucher(id, "Test", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now(), merchant, 0);
+    Voucher voucher = new Voucher(id, "Test", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, LocalDateTime.now(), LocalDateTime.now(), merchant, 0);
     redeemVoucher = new RedeemVoucher(voucher, "Test", LocalDateTime.now());
     request = new RedeemVoucherRequestCRUD(id,"Test", LocalDateTime.now());
     mockMvc = MockMvcBuilders

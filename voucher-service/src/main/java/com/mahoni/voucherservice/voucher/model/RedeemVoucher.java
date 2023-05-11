@@ -34,7 +34,7 @@ public class RedeemVoucher {
   @Column(name = "user_id")
   private UUID userId;
 
-  @Column(name = "redeem_code")
+  @Column(name = "redeem_code", nullable = false)
   private String redeemCode;
 
   @Enumerated(EnumType.ORDINAL)

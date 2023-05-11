@@ -72,7 +72,7 @@ public class VoucherEventProducerTest {
 
   @Test
   public void givenEmbeddedKafkaBroker_whenSendEvent_thenMessageSent() throws InterruptedException {
-    Voucher voucher = new Voucher(UUID.randomUUID(), "Test", "Test", VoucherType.FNB, 5, LocalDateTime.now(), LocalDateTime.now(), new Merchant(), 0);
+    Voucher voucher = new Voucher(UUID.randomUUID(), "Test", "Test", VoucherType.FOOD_AND_BEVERAGES, 5, LocalDateTime.now(), LocalDateTime.now(), new Merchant(), 0);
     RedeemVoucher redeemVoucher = new RedeemVoucher(UUID.randomUUID(), voucher, UUID.randomUUID(), "Test", VoucherStatus.ACTIVE, LocalDateTime.now(),LocalDateTime.now());
 
     voucherEventProducer.send(redeemVoucher);

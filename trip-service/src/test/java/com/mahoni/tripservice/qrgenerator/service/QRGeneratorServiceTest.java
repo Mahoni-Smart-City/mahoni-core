@@ -6,7 +6,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.mahoni.tripservice.qrgenerator.dto.QRGeneratorRequest;
-import com.mahoni.tripservice.qrgenerator.dto.QRGeneratorType;
+import com.mahoni.tripservice.qrgenerator.model.QRGeneratorType;
 import com.mahoni.tripservice.qrgenerator.dto.QRToken;
 import com.mahoni.tripservice.qrgenerator.exception.QRGeneratorNotFoundException;
 import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
@@ -64,7 +64,7 @@ public class QRGeneratorServiceTest {
     UUID id1 = UUID.randomUUID();
     UUID id2 = UUID.randomUUID();
     QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.COMMUTER, id1, id2);
-    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER.name(), id1, id2);
+    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER, id1, id2);
 
     when(qrGeneratorRepository.save(any())).thenReturn(qrGenerator);
     QRGenerator savedQrGenerator = qrGeneratorService.create(request);
@@ -76,7 +76,7 @@ public class QRGeneratorServiceTest {
   @Test
   public void testGivenId_thenReturnQrGenerator() {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator(id, "Test", QRGeneratorType.COMMUTER.name(), UUID.randomUUID(), UUID.randomUUID());
+    QRGenerator qrGenerator = new QRGenerator(id, "Test", QRGeneratorType.COMMUTER, UUID.randomUUID(), UUID.randomUUID());
 
     when(qrGeneratorRepository.findById(any())).thenReturn(Optional.of(qrGenerator));
     QRGenerator savedQrGenerator = qrGeneratorService.getById(id);
@@ -97,7 +97,7 @@ public class QRGeneratorServiceTest {
 
   @Test
   public void testGetAll_thenReturnQrGenerators() {
-    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER.name(), UUID.randomUUID(), UUID.randomUUID());
+    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER, UUID.randomUUID(), UUID.randomUUID());
     List<QRGenerator> qrGenerators = new ArrayList<>();
     qrGenerators.add(qrGenerator);
 
@@ -111,7 +111,7 @@ public class QRGeneratorServiceTest {
   @Test
   public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedQrGenerator() {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER.name(), UUID.randomUUID(), UUID.randomUUID());
+    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER, UUID.randomUUID(), UUID.randomUUID());
 
     when(qrGeneratorRepository.findById(any())).thenReturn(Optional.of(qrGenerator));
     QRGenerator deletedQrGenerator = qrGeneratorService.deleteById(id);
@@ -135,8 +135,8 @@ public class QRGeneratorServiceTest {
     UUID id1 = UUID.randomUUID();
     UUID id2 = UUID.randomUUID();
     QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.COMMUTER, id1, id2);
-    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER.name(), UUID.randomUUID(), UUID.randomUUID());
-    QRGenerator expectedQrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER.name(), id1, id2);
+    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER, UUID.randomUUID(), UUID.randomUUID());
+    QRGenerator expectedQrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER, id1, id2);
 
     when(qrGeneratorRepository.findById(any())).thenReturn(Optional.of(qrGenerator));
     when(qrGeneratorRepository.save(any())).thenReturn(expectedQrGenerator);
@@ -163,7 +163,7 @@ public class QRGeneratorServiceTest {
   @Test
   public void testGivenId_thenReturnQrToken() throws Exception {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER.name(), UUID.randomUUID(), UUID.randomUUID());
+    QRGenerator qrGenerator = new QRGenerator(UUID.randomUUID(), "Test", QRGeneratorType.COMMUTER, UUID.randomUUID(), UUID.randomUUID());
     String token = "Test";
 
     when(qrGeneratorRepository.findById(any())).thenReturn(Optional.of(qrGenerator));

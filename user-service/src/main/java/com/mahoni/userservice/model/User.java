@@ -23,7 +23,7 @@ public class User {
   @Column(name = "id", updatable = false, nullable = false)
   private UUID id;
 
-  @Column(unique = true)
+  @Column(unique = true, nullable = false)
   private String username;
 
   @Column(nullable = false)
@@ -36,7 +36,7 @@ public class User {
   @Enumerated(EnumType.ORDINAL)
   private Sex sex;
 
-  @Column(name = "yob")
+  @Column(name = "year_of_birth")
   private Integer yearOfBirth;
 
   @Column

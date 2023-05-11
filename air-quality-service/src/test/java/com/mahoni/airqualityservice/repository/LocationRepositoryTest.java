@@ -22,8 +22,8 @@ public class LocationRepositoryTest {
 
   @Test
   public void testFindAll() {
-    testEntityManager.persist(new Location(1L, "Test", "Test", "Test", "Test", "Test"));
-    testEntityManager.persist(new Location(2L, "Test", "Test", "Test", "Test", "Test"));
+    testEntityManager.persist(new Location(1L, "Test", "Test", "Test", 12.34, 12.34));
+    testEntityManager.persist(new Location(2L, "Test", "Test", "Test", 12.34, 12.34));
 
     List<Location> locations = locationRepository.findAll();
 

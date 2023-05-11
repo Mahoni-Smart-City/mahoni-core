@@ -2,8 +2,6 @@ package com.mahoni.tripservice.qrgenerator.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
@@ -69,7 +67,7 @@ public class QRGeneratorService {
   public QRGenerator create(QRGeneratorRequest qrGenerator) {
     return qrGeneratorRepository.save(new QRGenerator(
       qrGenerator.getLocation(),
-      qrGenerator.getType().name(),
+      qrGenerator.getType(),
       qrGenerator.getSensorId1(),
       qrGenerator.getSensorId2())
     );
@@ -103,7 +101,7 @@ public class QRGeneratorService {
     }
     QRGenerator updatedQRGenerator = qrGenerator.get();
     updatedQRGenerator.setLocation(newQRGenerator.getLocation());
-    updatedQRGenerator.setType(newQRGenerator.getType().name());
+    updatedQRGenerator.setType(newQRGenerator.getType());
     updatedQRGenerator.setSensorId1(newQRGenerator.getSensorId1());
     updatedQRGenerator.setSensorId2(newQRGenerator.getSensorId2());
     return qrGeneratorRepository.save(updatedQRGenerator);

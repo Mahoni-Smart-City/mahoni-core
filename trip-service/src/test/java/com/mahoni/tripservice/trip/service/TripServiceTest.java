@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mahoni.tripservice.qrgenerator.exception.QRGeneratorNotFoundException;
 import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
 import com.mahoni.tripservice.qrgenerator.model.QRGeneratorNode;
+import com.mahoni.tripservice.qrgenerator.model.QRGeneratorType;
 import com.mahoni.tripservice.qrgenerator.repository.QRGeneratorRepository;
 import com.mahoni.tripservice.qrgenerator.service.QRGeneratorService;
 import com.mahoni.tripservice.trip.dto.TripRequest;
@@ -76,7 +77,7 @@ public class TripServiceTest {
     trip.setScanOutPlaceId(new QRGenerator());
     trip.setScanInAt(LocalDateTime.now());
     trip.setScanOutAt(LocalDateTime.now());
-    trip.setStatus(TripStatus.ACTIVE.name());
+    trip.setStatus(TripStatus.ACTIVE);
     trip.setAqi(1.0);
     trip.setPoint(0);
     List<Trip> trips = new ArrayList<>();
@@ -102,9 +103,9 @@ public class TripServiceTest {
   @Test
   public void testScanIn_thenReturnTrip() {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator("Test", "Test", id, id);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.MRT, id, id);
     LocalDateTime time = LocalDateTime.now().minusDays(1);
-    Trip trip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.ACTIVE.name(), 1.0, 0, TransactionStatus.PENDING.name());
+    Trip trip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.ACTIVE, 1.0, 0, TransactionStatus.PENDING);
     TripRequest tripRequest = new TripRequest("Test", id, id);
 
     when(tripRepository.findLatestActiveTripByUserId(any())).thenReturn(Optional.of(trip));
@@ -118,12 +119,12 @@ public class TripServiceTest {
   @Test
   public void testScanOut_thenReturnTrip() {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator("Test", "Test", id, id);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.MRT, id, id);
     List<QRGeneratorNode> qrGeneratorNodes = new ArrayList<>();
     qrGeneratorNodes.add(new QRGeneratorNode());
     LocalDateTime time = LocalDateTime.now();
-    Trip trip = new Trip(id, qrGenerator, time, TripStatus.ACTIVE.name());
-    Trip expectedTrip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.FINISHED.name(), 1.0, 1, TransactionStatus.PENDING.name());
+    Trip trip = new Trip(id, qrGenerator, time, TripStatus.ACTIVE);
+    Trip expectedTrip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.FINISHED, 1.0, 1, TransactionStatus.PENDING);
     TripRequest tripRequest = new TripRequest("Test", id, id);
 
     when(tripRepository.findLatestActiveTripByUserId(any())).thenReturn(Optional.of(trip));
@@ -140,8 +141,8 @@ public class TripServiceTest {
 
   @Test
   public void testScanTrip_thenReturnNewTrip() {
-    Trip trip = new Trip(UUID.randomUUID(), new QRGenerator(), LocalDateTime.now(), TripStatus.ACTIVE.name());
-    QRGenerator qrGenerator = new QRGenerator("Test", "Test", UUID.randomUUID(), UUID.randomUUID());
+    Trip trip = new Trip(UUID.randomUUID(), new QRGenerator(), LocalDateTime.now(), TripStatus.ACTIVE);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.MRT, UUID.randomUUID(), UUID.randomUUID());
     TripRequest tripRequest = new TripRequest("Test", UUID.randomUUID(), UUID.randomUUID());
 
     when(tripRepository.findLatestActiveTripByUserId(any())).thenReturn(Optional.empty());
@@ -154,7 +155,7 @@ public class TripServiceTest {
 
   @Test
   public void testScanTrip_thenThrowQRGeneratorNotFound() {
-    Trip trip = new Trip(UUID.randomUUID(), new QRGenerator(), LocalDateTime.now(), TripStatus.ACTIVE.name());
+    Trip trip = new Trip(UUID.randomUUID(), new QRGenerator(), LocalDateTime.now(), TripStatus.ACTIVE);
     TripRequest tripRequest = new TripRequest("Test", UUID.randomUUID(), UUID.randomUUID());
 
     when(tripRepository.findLatestActiveTripByUserId(any())).thenReturn(Optional.of(trip));
@@ -183,8 +184,8 @@ public class TripServiceTest {
 
   @Test
   public void testScheduleCheckAndUpdateStatus() throws Exception {
-    Trip trip = new Trip(UUID.randomUUID(), new QRGenerator(), LocalDateTime.now().minusDays(1), TripStatus.ACTIVE.name());
-    Trip expectedTrip = new Trip(UUID.randomUUID(), new QRGenerator(), LocalDateTime.now().minusDays(1), TripStatus.EXPIRED.name());
+    Trip trip = new Trip(UUID.randomUUID(), new QRGenerator(), LocalDateTime.now().minusDays(1), TripStatus.ACTIVE);
+    Trip expectedTrip = new Trip(UUID.randomUUID(), new QRGenerator(), LocalDateTime.now().minusDays(1), TripStatus.EXPIRED);
     List<Trip> trips = new ArrayList<>();
     List<Trip> expectedTrips = new ArrayList<>();
     ObjectMapper objectMapper = mock(ObjectMapper.class);

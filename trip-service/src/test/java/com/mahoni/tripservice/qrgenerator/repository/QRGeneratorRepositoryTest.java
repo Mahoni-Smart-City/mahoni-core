@@ -1,6 +1,6 @@
 package com.mahoni.tripservice.qrgenerator.repository;
 
-import com.mahoni.tripservice.qrgenerator.dto.QRGeneratorType;
+import com.mahoni.tripservice.qrgenerator.model.QRGeneratorType;
 import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +24,8 @@ public class QRGeneratorRepositoryTest {
 
   @Test
   public void testFindAll() {
-    testEntityManager.persist(new QRGenerator("Test", QRGeneratorType.MRT.name(), UUID.randomUUID()));
-    testEntityManager.persist(new QRGenerator("Test", QRGeneratorType.JAKLINGKO.name(), UUID.randomUUID()));
+    testEntityManager.persist(new QRGenerator("Test", QRGeneratorType.MRT, UUID.randomUUID()));
+    testEntityManager.persist(new QRGenerator("Test", QRGeneratorType.JAKLINGKO, UUID.randomUUID()));
 
     List<QRGenerator> qrGenerators = qrGeneratorRepository.findAll();
 

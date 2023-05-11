@@ -29,8 +29,8 @@ public class VoucherRepositoryTest {
     Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
 
     testEntityManager.persist(merchant);
-    testEntityManager.persist(new Voucher("Test", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now(), merchant));
-    testEntityManager.persist(new Voucher("Test", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now(), merchant));
+    testEntityManager.persist(new Voucher("Test", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, LocalDateTime.now(), LocalDateTime.now(), merchant));
+    testEntityManager.persist(new Voucher("Test", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, LocalDateTime.now(), LocalDateTime.now(), merchant));
 
     List<Voucher> vouchers = voucherRepository.findAll();
 

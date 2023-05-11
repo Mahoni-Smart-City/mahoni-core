@@ -1,5 +1,6 @@
 package com.mahoni.tripservice.qrgenerator.dto;
 
+import com.mahoni.tripservice.qrgenerator.model.QRGeneratorType;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.UUID;
 public class QRGeneratorRequest {
   private String location;
   @NotNull
-  private  QRGeneratorType type;
+  private QRGeneratorType type;
   @NotNull
   private UUID sensorId1;
   private UUID sensorId2;

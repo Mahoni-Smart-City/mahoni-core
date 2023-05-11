@@ -29,16 +29,16 @@ public class AirSensorService {
   AirQualityServiceStream airQualityServiceStream;
 
   public AirSensor create(AirSensorRequest airSensor) {
-    Optional<Location> location = locationRepository.findById(airSensor.getIdLocation());
+    Optional<Location> location = locationRepository.findById(airSensor.getLocationId());
     if (airSensorRepository.findById(airSensor.getId()).isPresent()) {
       throw new AirSensorAlreadyExistException(airSensor.getId());
     }
     if (location.isEmpty()) {
-      throw new LocationNotFoundException(airSensor.getIdLocation());
+      throw new LocationNotFoundException(airSensor.getLocationId());
     }
     return airSensorRepository.save(new AirSensor(
       airSensor.getId(),
-      airSensor.getNameLocation(),
+      airSensor.getLocationName(),
       location.get()
     ));
   }
@@ -69,13 +69,13 @@ public class AirSensorService {
     if (airSensor.isEmpty()) {
       throw new AirSensorNotFoundException(id);
     }
-    Optional<Location> location = locationRepository.findById(newAirSensor.getIdLocation());
+    Optional<Location> location = locationRepository.findById(newAirSensor.getLocationId());
     if (location.isEmpty()) {
-      throw new LocationNotFoundException(newAirSensor.getIdLocation());
+      throw new LocationNotFoundException(newAirSensor.getLocationId());
     }
     AirSensor updatedAirSensor = airSensor.get();
     updatedAirSensor.setId(newAirSensor.getId());
-    updatedAirSensor.setNameLocation(newAirSensor.getNameLocation());
+    updatedAirSensor.setLocationName(newAirSensor.getLocationName());
     updatedAirSensor.setLocation(location.get());
     return airSensorRepository.save(updatedAirSensor);
   }

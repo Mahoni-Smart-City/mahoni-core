@@ -1,7 +1,6 @@
 package com.mahoni.tripservice.trip.service;
 
 import com.mahoni.schema.AirQualityProcessedSchema;
-import com.mahoni.schema.AirQualityTableSchema;
 import com.mahoni.tripservice.qrgenerator.exception.QRGeneratorNotFoundException;
 import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
 import com.mahoni.tripservice.qrgenerator.model.QRGeneratorNode;
@@ -23,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -75,7 +73,7 @@ public class TripService {
       throw new QRGeneratorNotFoundException();
     }
     if (latestTrip.isEmpty()) {
-      Trip newTrip = tripRepository.save(new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name()));
+      Trip newTrip = tripRepository.save(new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE));
       tripEventProducer.send(newTrip);
       return newTrip;
     }
@@ -83,10 +81,10 @@ public class TripService {
     Trip trip = latestTrip.get();
     if (isOngoing(trip)) {
       // scan out ongoing trip
-      trip.setStatus(TripStatus.FINISHED.name());
+      trip.setStatus(TripStatus.FINISHED);
       trip.setScanOutPlaceId(qrGenerator.get());
       trip.setScanOutAt(LocalDateTime.now());
-      trip.setTransactionStatus(TransactionStatus.PENDING.name());
+      trip.setTransactionStatus(TransactionStatus.PENDING);
 
       // calculate point
       QRGenerator scanInPlace = trip.getScanInPlaceId();
@@ -103,7 +101,7 @@ public class TripService {
     } else {
       // update expired trip and start new trip
       checkAndUpdateStatus(trip);
-      Trip newTrip = tripRepository.save(new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE.name()));
+      Trip newTrip = tripRepository.save(new Trip(tripRequest.getUserId(), qrGenerator.get(), LocalDateTime.now(), TripStatus.ACTIVE));
       tripEventProducer.send(newTrip);
       return newTrip;
     }
@@ -116,7 +114,7 @@ public class TripService {
 
   @Scheduled(cron = "0 */6 * * * *")
   public void scheduleCheckAndUpdateStatus() {
-    Optional<List<Trip>> ongoingTrips = tripRepository.findByStatus(TripStatus.ACTIVE.name());
+    Optional<List<Trip>> ongoingTrips = tripRepository.findByStatus(TripStatus.ACTIVE);
     if (ongoingTrips.isPresent()) {
       for (Trip trip: ongoingTrips.get()) {
         checkAndUpdateStatus(trip);
@@ -125,8 +123,8 @@ public class TripService {
   }
 
   public void checkAndUpdateStatus(Trip trip) {
-    if (!isOngoing(trip) && trip.getStatus().equals(TripStatus.ACTIVE.name())) {
-      trip.setStatus(TripStatus.EXPIRED.name());
+    if (!isOngoing(trip) && trip.getStatus().equals(TripStatus.ACTIVE)) {
+      trip.setStatus(TripStatus.EXPIRED);
       tripEventProducer.send(trip);
       tripRepository.save(trip);
     }

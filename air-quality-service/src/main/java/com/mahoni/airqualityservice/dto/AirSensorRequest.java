@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class AirSensorRequest {
   @NotNull
   private Long id;
-  private String nameLocation;
+  private String locationName;
   @NotNull
-  private Long idLocation;
+  private Long locationId;
 }

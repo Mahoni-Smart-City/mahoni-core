@@ -2,6 +2,7 @@ package com.mahoni.tripservice.trip.kafka;
 
 import com.mahoni.schema.TripSchema;
 import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
+import com.mahoni.tripservice.qrgenerator.model.QRGeneratorType;
 import com.mahoni.tripservice.trip.mock.CustomKafkaAvroDeserializer;
 import com.mahoni.tripservice.trip.model.TransactionStatus;
 import com.mahoni.tripservice.trip.model.Trip;
@@ -72,9 +73,9 @@ public class TripEventProducerTest {
   @Test
   public void givenEmbeddedKafkaBroker_whenSendEvent_thenMessageSent() throws InterruptedException {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator(id, "Test", "Test", id, id);
+    QRGenerator qrGenerator = new QRGenerator(id, "Test", QRGeneratorType.MRT, id, id);
     LocalDateTime time = LocalDateTime.now().minusDays(1);
-    Trip trip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.ACTIVE.name(), 1.0, 0, TransactionStatus.PENDING.name());
+    Trip trip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.ACTIVE, 1.0, 0, TransactionStatus.PENDING);
 
     tripEventProducer.send(trip);
 

@@ -1,4 +1,4 @@
-package com.mahoni.tripservice.qrgenerator.dto;
+package com.mahoni.tripservice.qrgenerator.model;
 
 public enum QRGeneratorType {
   TRANSJAKARTA,
