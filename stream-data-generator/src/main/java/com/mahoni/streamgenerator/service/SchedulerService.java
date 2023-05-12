@@ -99,7 +99,7 @@ public class SchedulerService {
         if (enableStream) {
             LocalDateTime datetime = LocalDateTime.now();
             LocalDateTime rounded = datetime.minusMinutes(datetime.getMinute()).minusSeconds(datetime.getSecond());
-            Long timestamp = rounded.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(rounded)) * 1000L;
+            Long timestamp = datetime.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(rounded)) * 1000L;
 
             for (String sensorId: airlyLocationIds) {
             logger.info(timestamp.toString());
