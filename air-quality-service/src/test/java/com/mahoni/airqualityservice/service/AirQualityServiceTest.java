@@ -20,7 +20,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AirQualityServiceTest {
@@ -95,6 +95,22 @@ public class AirQualityServiceTest {
     when(airSensorRepository.findAirSensorsByLocation(any())).thenReturn(Optional.empty());
 
     assertThrows(AirSensorNotFoundException.class, () -> airQualityService.getAqiByLocation("Test"));
+  }
+
+  @Test
+  public void testGivenCoordinate_thenReturnAirQualityProcessed() {
+    List<AirSensor> airSensors = new ArrayList<>();
+    Location location1 = new Location(1L, "Test", "Test", "Test", -10.00, 10.00);
+    Location location2 = new Location(2L, "Test", "Test", "Test", 5.00, -5.00);
+    airSensors.add(new AirSensor(1L, "Test", location1));
+    airSensors.add(new AirSensor(2L, "Test", location2));
+
+    when(airSensorRepository.findAll()).thenReturn(airSensors);
+    when(airQualityServiceStream.get(any())).thenReturn(schema);
+    AirQualityProcessedSchema result = airQualityService.getAqiByCoordinate(0.0, 0.0);
+
+    assertEquals(schema, result);
+    verify(airQualityServiceStream).get(AirQualityServiceStream.parseTableKey(2L));
   }
 
   @Test

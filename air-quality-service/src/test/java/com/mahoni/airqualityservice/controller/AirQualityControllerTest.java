@@ -149,6 +149,32 @@ public class AirQualityControllerTest {
   }
 
   @Test
+  public void testGetByCoordinate_thenReturnAirQualityResponse() throws Exception {
+    when(airQualityService.getAqiByCoordinate(any(), any())).thenReturn(schema);
+    when(locationRepository.findById(any())).thenReturn(Optional.of(new Location()));
+
+    MvcResult result = this.mockMvc.perform(get("/api/v1/air-quality/coordinate")
+        .param("longitude", "0.0")
+        .param("latitude", "0.0"))
+      .andExpect(status().isOk())
+      .andReturn();
+
+    assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(response));
+    verify(airQualityService).getAqiByCoordinate(any(), any());
+  }
+
+  @Test
+  public void testGetByCoordinate_thenThrowAirSensorNotFound() throws Exception {
+    when(airQualityService.getAqiByCoordinate(any(), any())).thenThrow(AirSensorNotFoundException.class);
+
+    this.mockMvc.perform(get("/api/v1/air-quality/coordinate")
+        .param("longitude", "0.0")
+        .param("latitude", "0.0"))
+      .andExpect(status().isNotFound())
+      .andReturn();
+  }
+
+  @Test
   public void testHistory_thenReturnMap() throws Exception {
     String key = LocalDateTime.now().getDayOfWeek().name() + ":" + LocalDateTime.now().getHour() + ":" + 1L;
     HashMap<String, AirQualityProcessedSchema> history = new HashMap<>();

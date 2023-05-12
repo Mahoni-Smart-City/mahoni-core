@@ -10,10 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -47,6 +44,17 @@ public class AirQualityController {
   public ResponseEntity<List<AirQualityResponse>> getByLoc(@PathVariable("loc") String loc) {
     try {
       return ResponseEntity.ok(airQualityService.getAqiByLocation(loc).stream().map(this::mapper).collect(Collectors.toList()));
+    } catch (AirSensorNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+  }
+
+  @GetMapping("/coordinate")
+  public ResponseEntity<AirQualityResponse> getByCoordinate(
+    @RequestParam("longitude") Double longitude,
+    @RequestParam("latitude") Double latitude) {
+    try {
+      return ResponseEntity.ok(mapper(airQualityService.getAqiByCoordinate(longitude, latitude)));
     } catch (AirSensorNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     }

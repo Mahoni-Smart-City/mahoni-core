@@ -38,6 +38,12 @@ public class AirQualityService {
     return airSensors.get().stream().map(AirSensor::getId).map(this::getAqi).collect(Collectors.toList());
   }
 
+  public AirQualityProcessedSchema getAqiByCoordinate(Double longitude, Double latitude) {
+    AirSensor airSensor = findShortestSensor(longitude, latitude);
+    Long sensorId = airSensor.getId();
+    return getAqi(sensorId);
+  }
+
   public HashMap<String, AirQualityProcessedSchema> history(Long sensorId) {
     List<String> keys = new LinkedList<>();
     for (DayOfWeek day: DayOfWeek.values()) {
@@ -51,5 +57,24 @@ public class AirQualityService {
       history.put(key, airQualityServiceStream.get(key));
     }
     return history;
+  }
+
+  private AirSensor findShortestSensor(Double longitude, Double latitude) {
+    AirSensor airSensor = new AirSensor();
+    Double distance = Double.MAX_VALUE;
+    for (AirSensor sensor: airSensorRepository.findAll()) {
+      Double currentDistance = calculateDistance(longitude, latitude, sensor.getLocation().getLongitude(), sensor.getLocation().getLatitude());
+      if (currentDistance <= distance) {
+        airSensor = sensor;
+        distance = currentDistance;
+      }
+    }
+    return airSensor;
+  }
+
+  private static Double calculateDistance(Double longitude1, Double latitude1, Double longitude2, Double latitude2) {
+    Double x = longitude1 - longitude2;
+    Double y = latitude1 - latitude2;
+    return Math.sqrt(x * x + y * y);
   }
 }
