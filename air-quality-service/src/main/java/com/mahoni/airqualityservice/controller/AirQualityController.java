@@ -63,25 +63,29 @@ public class AirQualityController {
   }
 
   private AirQualityResponse mapper(AirQualityProcessedSchema schema) {
-    return new AirQualityResponse(
-      schema.getSensorId(),
-      schema.getTimestamp(),
-      schema.getAqi(),
-      schema.getCategory(),
-      schema.getCo(),
-      schema.getNo(),
-      schema.getNo2(),
-      schema.getO3(),
-      schema.getSo2(),
-      schema.getPm25(),
-      schema.getPm10(),
-      schema.getNh3(),
-      schema.getPressure(),
-      schema.getHumidity(),
-      schema.getTemperature(),
-      locationRepository.findById(schema.getIdLocation()).orElseGet(Location::new),
-      Recommendation.recommendation.get(schema.getCategory())
-    );
+    if (schema != null) {
+      return new AirQualityResponse(
+        schema.getSensorId(),
+        schema.getTimestamp(),
+        schema.getAqi(),
+        schema.getCategory(),
+        schema.getCo(),
+        schema.getNo(),
+        schema.getNo2(),
+        schema.getO3(),
+        schema.getSo2(),
+        schema.getPm25(),
+        schema.getPm10(),
+        schema.getNh3(),
+        schema.getPressure(),
+        schema.getHumidity(),
+        schema.getTemperature(),
+        locationRepository.findById(schema.getIdLocation()).orElseGet(Location::new),
+        Recommendation.recommendation.get(schema.getCategory())
+      );
+    } else {
+      return null;
+    }
   }
 
   static class Recommendation {
