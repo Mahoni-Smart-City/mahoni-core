@@ -142,17 +142,14 @@ services:
     restart: always
     image: debezium/connect:1.9
     environment:
-      BOOTSTRAP_SERVERS: 34.101.138.220:9092
+      BOOTSTRAP_SERVERS: 34.128.127.171:9092
       GROUP_ID: 1
       CONFIG_STORAGE_TOPIC: connect_configs
       OFFSET_STORAGE_TOPIC: connect_offsets
       KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
       VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
-      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://34.101.138.220:8081
-      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://34.101.138.220:8081
-    depends_on:
-      - kafka
-      - kafka-schema-registry
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://34.128.127.171:8081
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://34.128.127.171:8081
     ports:
       - "8083:8083"
 
@@ -165,8 +162,8 @@ services:
     restart: always
     environment:
       KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 34.101.138.220:9092
-      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://34.101.138.220:8081
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 34.128.127.171:9092
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://34.128.127.171:8081
 
   cassandra-db:
     image: cassandra:latest
@@ -181,7 +178,7 @@ services:
   kafka-connect:
     image: confluentinc/cp-kafka-connect
     environment:
-      CONNECT_BOOTSTRAP_SERVERS: 34.101.138.220:9092
+      CONNECT_BOOTSTRAP_SERVERS: 34.128.127.171:9092
       CONNECT_REST_ADVERTISED_HOST_NAME: "kafka-connect"
       CONNECT_REST_PORT: 9090
       CONNECT_GROUP_ID: 1
@@ -190,14 +187,7 @@ services:
       CONNECT_STATUS_STORAGE_TOPIC: kafka-connect-status
       CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
       CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
-      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://34.101.138.220:8081
-      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://34.101.138.220:8081
-      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: "1"
-      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: "1"
-      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://34.128.127.171:8081
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://34.128.127.171:8081
     ports:
       - "9090:9090"
-    depends_on:
-      - kafka
-    volumes:
-      - ./config:/config
