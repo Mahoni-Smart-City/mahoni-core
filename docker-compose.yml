@@ -144,7 +144,7 @@ services:
     restart: always
     image: debezium/connect:1.9
     environment:
-      BOOTSTRAP_SERVERS: kafka:29092
+      BOOTSTRAP_SERVERS: kafka:29092,kafka-2:29092,kafka-3:29092
       GROUP_ID: 1
       CONFIG_STORAGE_TOPIC: connect_configs
       OFFSET_STORAGE_TOPIC: connect_offsets
@@ -152,11 +152,11 @@ services:
       VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
       CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
       CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
-    depends_on:
-      - kafka
-      - kafka-schema-registry
-    ports:
-      - "8083:8083"
+      depends_on:
+        - kafka
+        - kafka-schema-registry
+      ports:
+        - "8083:8083"
 
   # Utility
   kafka-ui:
@@ -167,8 +167,8 @@ services:
     restart: always
     environment:
       KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 34.101.138.220:9092
-      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://34.101.138.220:8081
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 34.128.127.171:9092
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://34.128.127.171:8081
 
   cassandra-db:
     image: cassandra:latest
@@ -195,8 +195,6 @@ services:
       CONNECT_CASSANDRA_KEY_SPACE: mahoni
       CONNECT_CASSANDRA_HOST: "cassandra"
       CONNECT_CASSANDRA_PORT: 9042
-#      TOPICS: postgres.public.air_sensors, postgres.public.locations
-#      POSTGRES_PUBLIC_AIR_SENSORS_INSERT_STATEMENT: INSERT INTO air_sensors SELECT
     ports:
       - "9090:9090"
     depends_on:
