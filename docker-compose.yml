@@ -113,6 +113,8 @@ services:
     ports:
       - "5435:5435/tcp"
 
+
+
 #  user-service:
 #    environment:
 #      SPRING_PROFILES_ACTIVE: docker
@@ -142,14 +144,14 @@ services:
     restart: always
     image: debezium/connect:1.9
     environment:
-      BOOTSTRAP_SERVERS: 34.101.138.220:9092
+      BOOTSTRAP_SERVERS: kafka:29092
       GROUP_ID: 1
       CONFIG_STORAGE_TOPIC: connect_configs
       OFFSET_STORAGE_TOPIC: connect_offsets
       KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
       VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
-      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://34.101.138.220:8081
-      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://34.101.138.220:8081
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
     depends_on:
       - kafka
       - kafka-schema-registry
@@ -181,23 +183,26 @@ services:
   kafka-connect:
     image: confluentinc/cp-kafka-connect
     environment:
-      CONNECT_BOOTSTRAP_SERVERS: 34.101.138.220:9092
-      CONNECT_REST_ADVERTISED_HOST_NAME: "kafka-connect"
-      CONNECT_REST_PORT: 9090
-      CONNECT_GROUP_ID: 1
+      CONNECT_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:29092,PLAINTEXT://kafka-2:29092,PLAINTEXT://kafka-3:29092
+      CONNECT_GROUP_ID: kafka-connect-group-id
       CONNECT_CONFIG_STORAGE_TOPIC: kafka-connect-configs
       CONNECT_OFFSET_STORAGE_TOPIC: kafka-connect-offsets
       CONNECT_STATUS_STORAGE_TOPIC: kafka-connect-status
       CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
       CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
-      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://34.101.138.220:8081
-      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://34.101.138.220:8081
-      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: "1"
-      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: "1"
-      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
+      CONNECT_CASSANDRA_KEY_SPACE: mahoni
+      CONNECT_CASSANDRA_HOST: "cassandra"
+      CONNECT_CASSANDRA_PORT: 9042
+#      TOPICS: postgres.public.air_sensors, postgres.public.locations
+#      POSTGRES_PUBLIC_AIR_SENSORS_INSERT_STATEMENT: INSERT INTO air_sensors SELECT
     ports:
       - "9090:9090"
     depends_on:
       - kafka
+      - kafka-2
+      - kafka-3
+      - zookeeper
     volumes:
       - ./config:/config
