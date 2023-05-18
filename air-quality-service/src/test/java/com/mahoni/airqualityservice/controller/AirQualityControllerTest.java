@@ -2,11 +2,10 @@ package com.mahoni.airqualityservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mahoni.airqualityservice.dto.AirQualityResponse;
-import com.mahoni.airqualityservice.exception.AirSensorNotFoundException;
 import com.mahoni.airqualityservice.model.Location;
 import com.mahoni.airqualityservice.repository.LocationRepository;
 import com.mahoni.airqualityservice.service.AirQualityService;
-import com.mahoni.schema.AirQualityProcessedSchema;
+import com.mahoni.flink.schema.AirQualityProcessedSchema;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -115,7 +114,7 @@ public class AirQualityControllerTest {
 
   @Test
   public void testGet_thenThrowAirSensorNotFound() throws Exception {
-    when(airQualityService.getAqi(any())).thenThrow(AirSensorNotFoundException.class);
+    when(airQualityService.getAqi(any())).thenReturn(null);
 
     this.mockMvc.perform(get("/api/v1/air-quality/id/{id}", 1L))
       .andExpect(status().isNotFound())
@@ -141,7 +140,7 @@ public class AirQualityControllerTest {
 
   @Test
   public void testGetByLoc_thenThrowAirSensorNotFound() throws Exception {
-    when(airQualityService.getAqiByLocation(any())).thenThrow(AirSensorNotFoundException.class);
+    when(airQualityService.getAqiByLocation(any())).thenReturn(new ArrayList<>());
 
     this.mockMvc.perform(get("/api/v1/air-quality/loc/{loc}", "test"))
       .andExpect(status().isNotFound())
@@ -161,17 +160,6 @@ public class AirQualityControllerTest {
 
     assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(response));
     verify(airQualityService).getAqiByCoordinate(any(), any());
-  }
-
-  @Test
-  public void testGetByCoordinate_thenThrowAirSensorNotFound() throws Exception {
-    when(airQualityService.getAqiByCoordinate(any(), any())).thenThrow(AirSensorNotFoundException.class);
-
-    this.mockMvc.perform(get("/api/v1/air-quality/coordinate")
-        .param("longitude", "0.0")
-        .param("latitude", "0.0"))
-      .andExpect(status().isNotFound())
-      .andReturn();
   }
 
   @Test

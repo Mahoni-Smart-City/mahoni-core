@@ -5,7 +5,7 @@ import com.mahoni.airqualityservice.exception.AirSensorNotFoundException;
 import com.mahoni.airqualityservice.model.Location;
 import com.mahoni.airqualityservice.repository.LocationRepository;
 import com.mahoni.airqualityservice.service.AirQualityService;
-import com.mahoni.schema.AirQualityProcessedSchema;
+import com.mahoni.flink.schema.AirQualityProcessedSchema;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +34,9 @@ public class AirQualityController {
   public ResponseEntity<AirQualityResponse> get(@PathVariable("id") Long id) {
     try {
       AirQualityResponse response = mapper(airQualityService.getAqi(id));
+      if (response == null) {
+        throw new AirSensorNotFoundException();
+      }
       return ResponseEntity.ok(response);
     } catch (AirSensorNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -43,7 +46,11 @@ public class AirQualityController {
   @GetMapping("/loc/{loc}")
   public ResponseEntity<List<AirQualityResponse>> getByLoc(@PathVariable("loc") String loc) {
     try {
-      return ResponseEntity.ok(airQualityService.getAqiByLocation(loc).stream().map(this::mapper).collect(Collectors.toList()));
+      List<AirQualityResponse> responses = airQualityService.getAqiByLocation(loc).stream().map(this::mapper).collect(Collectors.toList());
+      if (responses.isEmpty()) {
+        throw new AirSensorNotFoundException();
+      }
+      return ResponseEntity.ok(responses);
     } catch (AirSensorNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     }
@@ -53,11 +60,7 @@ public class AirQualityController {
   public ResponseEntity<AirQualityResponse> getByCoordinate(
     @RequestParam("longitude") Double longitude,
     @RequestParam("latitude") Double latitude) {
-    try {
-      return ResponseEntity.ok(mapper(airQualityService.getAqiByCoordinate(longitude, latitude)));
-    } catch (AirSensorNotFoundException e) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-    }
+    return ResponseEntity.ok(mapper(airQualityService.getAqiByCoordinate(longitude, latitude)));
   }
 
   @GetMapping("/history/{id}")

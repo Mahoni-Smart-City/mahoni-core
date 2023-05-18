@@ -52,7 +52,7 @@ public class AirSensorControllerTest {
     airSensor.setId(id);
     airSensor.setLocationName("Test");
     airSensor.setLocation(location);
-    request = new AirSensorRequest(id, "Test", id);
+    request = new AirSensorRequest("1", "Test", "1");
   }
 
   @Test

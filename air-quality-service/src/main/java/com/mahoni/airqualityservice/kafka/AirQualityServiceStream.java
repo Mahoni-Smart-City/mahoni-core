@@ -1,6 +1,6 @@
 package com.mahoni.airqualityservice.kafka;
 
-import com.mahoni.schema.AirQualityProcessedSchema;
+import com.mahoni.flink.schema.AirQualityProcessedSchema;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StoreQueryParameters;
@@ -35,11 +35,7 @@ public class AirQualityServiceStream {
       .groupByKey();
 
     KTable<String, AirQualityProcessedSchema> airQualityTable = groupedAirQuality
-      .reduce((airQualityProcessedSchema, v1) -> v1)
-      .mapValues((s, airQualityProcessedSchema) ->   AirQualityProcessedSchema.newBuilder()
-        .setSensorId(airQualityProcessedSchema.getSensorId())
-        .setAqi(airQualityProcessedSchema.getAqi())
-        .build(), Materialized.as("air-quality-state-store"));
+      .reduce((airQualityProcessedSchema, v1) -> v1, Materialized.as("air-quality-state-store"));
 
     airQualityTable.toStream().to(KafkaTopic.AIR_QUALITY_COMPACTED);
 

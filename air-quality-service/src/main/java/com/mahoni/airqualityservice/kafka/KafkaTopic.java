@@ -6,9 +6,9 @@ import org.springframework.kafka.config.TopicBuilder;
 
 public class KafkaTopic {
 
-  public static String AIR_QUALITY_RAW = "air-quality-raw";
-  public static String AIR_QUALITY_PROCESSED = "air-quality-processed";
-  public static String AIR_QUALITY_COMPACTED = "air-quality-compacted";
+  public static String AIR_QUALITY_RAW = "air-quality-raw-topic";
+  public static String AIR_QUALITY_PROCESSED = "air-quality-processed-topic";
+  public static String AIR_QUALITY_COMPACTED = "air-quality-compacted-topic";
 
 //  @Bean
 //  public NewTopic airQualityRaw() {

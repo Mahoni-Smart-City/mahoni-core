@@ -29,15 +29,15 @@ public class AirSensorService {
   AirQualityServiceStream airQualityServiceStream;
 
   public AirSensor create(AirSensorRequest airSensor) {
-    Optional<Location> location = locationRepository.findById(airSensor.getLocationId());
-    if (airSensorRepository.findById(airSensor.getId()).isPresent()) {
-      throw new AirSensorAlreadyExistException(airSensor.getId());
+    Optional<Location> location = locationRepository.findById(Long.parseLong(airSensor.getLocationId()));
+    if (airSensorRepository.findById(Long.parseLong(airSensor.getId())).isPresent()) {
+      throw new AirSensorAlreadyExistException(Long.parseLong(airSensor.getId()));
     }
     if (location.isEmpty()) {
-      throw new LocationNotFoundException(airSensor.getLocationId());
+      throw new LocationNotFoundException(Long.parseLong(airSensor.getLocationId()));
     }
     return airSensorRepository.save(new AirSensor(
-      airSensor.getId(),
+      Long.parseLong(airSensor.getId()),
       airSensor.getLocationName(),
       location.get()
     ));
@@ -69,12 +69,12 @@ public class AirSensorService {
     if (airSensor.isEmpty()) {
       throw new AirSensorNotFoundException(id);
     }
-    Optional<Location> location = locationRepository.findById(newAirSensor.getLocationId());
+    Optional<Location> location = locationRepository.findById(Long.parseLong(newAirSensor.getLocationId()));
     if (location.isEmpty()) {
-      throw new LocationNotFoundException(newAirSensor.getLocationId());
+      throw new LocationNotFoundException(Long.parseLong(newAirSensor.getLocationId()));
     }
     AirSensor updatedAirSensor = airSensor.get();
-    updatedAirSensor.setId(newAirSensor.getId());
+    updatedAirSensor.setId(Long.parseLong(newAirSensor.getId()));
     updatedAirSensor.setLocationName(newAirSensor.getLocationName());
     updatedAirSensor.setLocation(location.get());
     return airSensorRepository.save(updatedAirSensor);

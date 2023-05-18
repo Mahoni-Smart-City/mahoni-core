@@ -1,11 +1,10 @@
 package com.mahoni.airqualityservice.service;
 
-import com.mahoni.airqualityservice.exception.AirSensorNotFoundException;
 import com.mahoni.airqualityservice.kafka.AirQualityServiceStream;
 import com.mahoni.airqualityservice.model.AirSensor;
 import com.mahoni.airqualityservice.model.Location;
 import com.mahoni.airqualityservice.repository.AirSensorRepository;
-import com.mahoni.schema.AirQualityProcessedSchema;
+import com.mahoni.flink.schema.AirQualityProcessedSchema;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +17,6 @@ import java.time.ZoneId;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -83,18 +81,11 @@ public class AirQualityServiceTest {
     List<AirQualityProcessedSchema> schemas = new ArrayList<>();
     schemas.add(schema);
 
-    when(airSensorRepository.findAirSensorsByLocation(any())).thenReturn(Optional.of(airSensors));
+    when(airSensorRepository.findAirSensorsByLocation(any())).thenReturn(airSensors);
     when(airQualityServiceStream.get(any())).thenReturn(schema);
     List<AirQualityProcessedSchema> results = airQualityService.getAqiByLocation("Test");
 
     assertEquals(schemas, results);
-  }
-
-  @Test
-  public void testGivenLocation_thenThrowAirSensorNotFound() {
-    when(airSensorRepository.findAirSensorsByLocation(any())).thenReturn(Optional.empty());
-
-    assertThrows(AirSensorNotFoundException.class, () -> airQualityService.getAqiByLocation("Test"));
   }
 
   @Test

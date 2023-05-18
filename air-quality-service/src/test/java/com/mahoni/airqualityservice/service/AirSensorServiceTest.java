@@ -44,7 +44,7 @@ public class AirSensorServiceTest {
   @Test
   public void testGivenAirSensorRequest_thenSaveAirSensor() {
     Long id = 1L;
-    AirSensorRequest request = new AirSensorRequest(id, "Test", id);
+    AirSensorRequest request = new AirSensorRequest("1", "Test", "1");
     Location location = new Location(id, "Test", "Test", "Test", 12.34, -12.34);
     AirSensor airSensor = new AirSensor(id, "Test", location);
 
@@ -59,7 +59,7 @@ public class AirSensorServiceTest {
   @Test
   public void testGivenAirSensorRequest_thenThrowAirSensorAlreadyExist() {
     Long id = 1L;
-    AirSensorRequest request = new AirSensorRequest(id, "Test", id);
+    AirSensorRequest request = new AirSensorRequest("1", "Test", "1");
     Location location = new Location(id, "Test", "Test", "Test", 12.34, -12.34);
     AirSensor airSensor = new AirSensor(id, "Test", location);
 
@@ -71,7 +71,7 @@ public class AirSensorServiceTest {
   @Test
   public void testGivenAirSensorRequest_thenThrowLocationNotFound() {
     Long id = 1L;
-    AirSensorRequest request = new AirSensorRequest(id, "Test", id);
+    AirSensorRequest request = new AirSensorRequest("1", "Test", "1");
 
     when(locationRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -140,7 +140,7 @@ public class AirSensorServiceTest {
   @Test
   public void testGivenIdAndAirSensorRequest_thenUpdateAndReturnUpdatedAirSensor() {
     Long id = 1L;
-    AirSensorRequest request = new AirSensorRequest(id, "Test2", id);
+    AirSensorRequest request = new AirSensorRequest("1", "Test2", "1");
     Location location = new Location(id, "Test", "Test", "Test", 12.34, -12.34);
     AirSensor airSensor = new AirSensor(id, "Test", location);
     AirSensor expectedAirSensor = new AirSensor(id, "Test2", location);
@@ -158,7 +158,7 @@ public class AirSensorServiceTest {
   @Test
   public void testGivenIdAndAirSensorRequest_thenThrowAirSensorNotFound() {
     Long id = 1L;
-    AirSensorRequest request = new AirSensorRequest(id, "Test", id);
+    AirSensorRequest request = new AirSensorRequest("1", "Test", "1");
 
     when(airSensorRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -168,7 +168,7 @@ public class AirSensorServiceTest {
   @Test
   public void testGivenIdAndAirSensorRequest_thenThrowLocationNotFound() {
     Long id = 1L;
-    AirSensorRequest request = new AirSensorRequest(id, "Test", id);
+    AirSensorRequest request = new AirSensorRequest("1", "Test", "1");
     Location location = new Location(id, "Test", "Test", "Test", 12.34, -12.34);
     AirSensor airSensor = new AirSensor(id, "Test", location);
 

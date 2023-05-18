@@ -8,11 +8,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 public class AirSensorRepositoryTest {
@@ -52,14 +50,14 @@ public class AirSensorRepositoryTest {
     testEntityManager.persist(new AirSensor(1L, "Test", location1));
     testEntityManager.persist(new AirSensor(2L, "Test", location2));
     testEntityManager.persist(new AirSensor(3L, "Test", location3));
-    testEntityManager.persist(new AirSensor(4L, "Test", location4));
+    testEntityManager.persist(new AirSensor(4L, "Ohio", location4));
 
-    Optional<List<AirSensor>> airSensors = airSensorRepository.findAirSensorsByLocation("Ohio");
+    List<AirSensor> airSensors = airSensorRepository.findAirSensorsByLocation("ohio");
 
-    assertTrue(airSensors.isPresent());
-    assertEquals(3, airSensors.get().size());
-    assertEquals(location1, airSensors.get().get(0).getLocation());
-    assertEquals(location2, airSensors.get().get(1).getLocation());
-    assertEquals(location3, airSensors.get().get(2).getLocation());
+    assertEquals(4, airSensors.size());
+    assertEquals(location1, airSensors.get(0).getLocation());
+    assertEquals(location2, airSensors.get(1).getLocation());
+    assertEquals(location3, airSensors.get(2).getLocation());
+    assertEquals("Ohio", airSensors.get(3).getLocationName());
   }
 }

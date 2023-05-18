@@ -1,7 +1,7 @@
 package com.mahoni.airqualityservice.config;
 
 import com.mahoni.airqualityservice.kafka.KafkaTopic;
-import com.mahoni.schema.AirQualityProcessedSchema;
+import com.mahoni.flink.schema.AirQualityProcessedSchema;
 import com.mahoni.schema.UserPointSchema;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import org.apache.kafka.common.serialization.Serde;
