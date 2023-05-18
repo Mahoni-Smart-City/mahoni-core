@@ -1,7 +1,6 @@
 package com.mahoni.tripservice.trip.config;
 
-import com.mahoni.schema.AirQualityProcessedSchema;
-import com.mahoni.schema.AirQualityTableSchema;
+import com.mahoni.flink.schema.AirQualityProcessedSchema;
 import com.mahoni.schema.UserPointSchema;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import org.apache.kafka.common.serialization.Serde;
@@ -37,7 +36,7 @@ public class KafkaConfiguration {
   private static final Serde<String> stringSerde = Serdes.String();
   private static final SpecificAvroSerde<UserPointSchema> avroSerde =  new SpecificAvroSerde<>();
   public static final String USER_POINT_COMPACTED_TOPIC = "user-point-compacted-topic";
-  public static final String AIR_QUALITY_COMPACTED_TOPIC = "air-quality-compacted";
+  public static final String AIR_QUALITY_COMPACTED_TOPIC = "air-quality-compacted-topic";
 
   @Bean(name = KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME)
   public KafkaStreamsConfiguration kafkaStreamsConfiguration() {

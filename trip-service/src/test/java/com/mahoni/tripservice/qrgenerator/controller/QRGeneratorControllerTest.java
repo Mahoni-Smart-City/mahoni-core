@@ -45,9 +45,8 @@ public class QRGeneratorControllerTest {
 
   @Test
   public void testPost_thenReturnNewQrGenerator() throws Exception {
-    UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER, id, id);
-    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.COMMUTER, id, id);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER, 1L, 1L);
+    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.COMMUTER, "1", "1");
 
     when(qrGeneratorService.create(any())).thenReturn(qrGenerator);
 
@@ -63,8 +62,7 @@ public class QRGeneratorControllerTest {
 
   @Test
   public void testPost_thenThrowRuntimeException() throws Exception {
-    UUID id = UUID.randomUUID();
-    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.COMMUTER, id, id);
+    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.COMMUTER, "1", "1");
 
     when(qrGeneratorService.create(any())).thenThrow(RuntimeException.class);
 
@@ -92,7 +90,7 @@ public class QRGeneratorControllerTest {
   @Test
   public void testGetById_thenReturnQrGenerator() throws Exception {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER, id);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER, 1L);
 
     when(qrGeneratorService.getById(any())).thenReturn(qrGenerator);
 
@@ -116,7 +114,7 @@ public class QRGeneratorControllerTest {
   @Test
   public void testDelete_thenReturnDeletedQrGenerator() throws Exception {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER, id);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER, 1L);
 
     when(qrGeneratorService.deleteById(any())).thenReturn(qrGenerator);
 
@@ -144,9 +142,9 @@ public class QRGeneratorControllerTest {
     qrGenerator.setId(id);
     qrGenerator.setLocation("Test");
     qrGenerator.setType(QRGeneratorType.TRANSJAKARTA);
-    qrGenerator.setSensorId1(id);
-    qrGenerator.setSensorId2(id);
-    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.TRANSJAKARTA, id, id);
+    qrGenerator.setSensorId1(1L);
+    qrGenerator.setSensorId2(1L);
+    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.TRANSJAKARTA, "1", "1");
 
     when(qrGeneratorService.updateById(any(), any())).thenReturn(qrGenerator);
 
@@ -163,7 +161,7 @@ public class QRGeneratorControllerTest {
   @Test
   public void testUpdate_thenThrowQRGeneratorNotFound() throws Exception {
     UUID id = UUID.randomUUID();
-    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.TRANSJAKARTA, id, id);
+    QRGeneratorRequest request = new QRGeneratorRequest("Test", QRGeneratorType.TRANSJAKARTA, "1", "1");
 
     when(qrGeneratorService.updateById(any(), any())).thenThrow(QRGeneratorNotFoundException.class);
 
@@ -264,5 +262,25 @@ public class QRGeneratorControllerTest {
 
     assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(qrGeneratorNodes));
     verify(qrGeneratorService).shortestPathBetweenNodes(any(), any());
+  }
+
+  @Test
+  public void testDecodeQR_thenReturnString() throws Exception {
+    String token = "TestToken";
+    String generatedQr = QRGeneratorService.generateQRCodeImage(token);
+    String decodedQr = QRGeneratorService.decodeQRCodeImage(generatedQr);
+
+    this.mockMvc.perform(get("/api/v1/qr-generators/decode-qr")
+        .param("data", generatedQr))
+      .andExpect(content().string(decodedQr))
+      .andReturn();
+  }
+
+  @Test
+  public void testDecodedQr_thenThrowException() throws Exception {
+    this.mockMvc.perform(get("/api/v1/qr-generators/decode-qr")
+        .param("data", "Test"))
+      .andExpect(status().isInternalServerError())
+      .andReturn();
   }
 }

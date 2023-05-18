@@ -1,6 +1,6 @@
 package com.mahoni.tripservice.trip.service;
 
-import com.mahoni.schema.AirQualityProcessedSchema;
+import com.mahoni.flink.schema.AirQualityProcessedSchema;
 import com.mahoni.tripservice.qrgenerator.exception.QRGeneratorNotFoundException;
 import com.mahoni.tripservice.qrgenerator.model.QRGenerator;
 import com.mahoni.tripservice.qrgenerator.model.QRGeneratorNode;

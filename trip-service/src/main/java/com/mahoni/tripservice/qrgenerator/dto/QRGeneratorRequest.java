@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,6 +14,6 @@ public class QRGeneratorRequest {
   @NotNull
   private QRGeneratorType type;
   @NotNull
-  private UUID sensorId1;
-  private UUID sensorId2;
+  private String sensorId1;
+  private String sensorId2;
 }

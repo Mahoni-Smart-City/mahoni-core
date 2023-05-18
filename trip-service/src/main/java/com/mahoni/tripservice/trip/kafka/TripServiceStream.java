@@ -1,7 +1,6 @@
 package com.mahoni.tripservice.trip.kafka;
 
-import com.mahoni.schema.AirQualityProcessedSchema;
-import com.mahoni.schema.AirQualityTableSchema;
+import com.mahoni.flink.schema.AirQualityProcessedSchema;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StoreQueryParameters;

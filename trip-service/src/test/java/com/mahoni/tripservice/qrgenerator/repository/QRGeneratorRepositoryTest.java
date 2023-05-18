@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -24,8 +23,8 @@ public class QRGeneratorRepositoryTest {
 
   @Test
   public void testFindAll() {
-    testEntityManager.persist(new QRGenerator("Test", QRGeneratorType.MRT, UUID.randomUUID()));
-    testEntityManager.persist(new QRGenerator("Test", QRGeneratorType.JAKLINGKO, UUID.randomUUID()));
+    testEntityManager.persist(new QRGenerator("Test", QRGeneratorType.MRT, 1L));
+    testEntityManager.persist(new QRGenerator("Test", QRGeneratorType.JAKLINGKO, 1L));
 
     List<QRGenerator> qrGenerators = qrGeneratorRepository.findAll();
 

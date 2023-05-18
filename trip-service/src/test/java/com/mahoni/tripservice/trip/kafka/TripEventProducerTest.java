@@ -73,7 +73,7 @@ public class TripEventProducerTest {
   @Test
   public void givenEmbeddedKafkaBroker_whenSendEvent_thenMessageSent() throws InterruptedException {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator(id, "Test", QRGeneratorType.MRT, id, id);
+    QRGenerator qrGenerator = new QRGenerator(id, "Test", QRGeneratorType.MRT, 1L, 1L);
     LocalDateTime time = LocalDateTime.now().minusDays(1);
     Trip trip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.ACTIVE, 1.0, 0, TransactionStatus.PENDING);
 

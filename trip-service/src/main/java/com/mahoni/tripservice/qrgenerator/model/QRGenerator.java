@@ -31,19 +31,19 @@ public class QRGenerator {
   private QRGeneratorType type;
 
   @Column(name = "sensor_id_1", nullable = false)
-  private UUID sensorId1;
+  private Long sensorId1;
 
   @Column(name = "sensor_id_2")
-  private UUID sensorId2;
+  private Long sensorId2;
 
-  public QRGenerator(String location, QRGeneratorType type, UUID sensorId1, UUID sensorId2) {
+  public QRGenerator(String location, QRGeneratorType type, Long sensorId1, Long sensorId2) {
     this.location = location;
     this.type = type;
     this.sensorId1 = sensorId1;
     this.sensorId2 = sensorId2;
   }
 
-  public QRGenerator(String location, QRGeneratorType type, UUID sensorId1) {
+  public QRGenerator(String location, QRGeneratorType type, Long sensorId1) {
     this.location = location;
     this.type = type;
     this.sensorId1 = sensorId1;

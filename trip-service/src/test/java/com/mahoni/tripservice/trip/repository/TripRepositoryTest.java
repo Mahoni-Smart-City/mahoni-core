@@ -30,7 +30,7 @@ public class TripRepositoryTest {
   @Test
   public void testFIndByUserId() {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER, id);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER, 1L);
 
     testEntityManager.persist(qrGenerator);
     testEntityManager.persist(new Trip(id, qrGenerator, LocalDateTime.now(), TripStatus.EXPIRED));
@@ -48,7 +48,7 @@ public class TripRepositoryTest {
   @Test
   public void testFIndByStatus() {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER, id);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER, 1L);
 
     testEntityManager.persist(qrGenerator);
     testEntityManager.persist(new Trip(id, qrGenerator, LocalDateTime.now(), TripStatus.EXPIRED));
@@ -65,7 +65,7 @@ public class TripRepositoryTest {
   @Test
   public void testFindLatestTripByUserId() {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER, id);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.COMMUTER, 1L);
 
     testEntityManager.persist(qrGenerator);
     testEntityManager.persist(new Trip(id, qrGenerator, LocalDateTime.now(), TripStatus.ACTIVE));
@@ -81,8 +81,8 @@ public class TripRepositoryTest {
   @Test
   public void testFindLatestActiveTripByUserId() {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator1 = new QRGenerator("Test1", QRGeneratorType.COMMUTER, id);
-    QRGenerator qrGenerator2 = new QRGenerator("Test2", QRGeneratorType.COMMUTER, id);
+    QRGenerator qrGenerator1 = new QRGenerator("Test1", QRGeneratorType.COMMUTER, 1L);
+    QRGenerator qrGenerator2 = new QRGenerator("Test2", QRGeneratorType.COMMUTER, 1L);
 
     testEntityManager.persist(qrGenerator1);
     testEntityManager.persist(qrGenerator2);

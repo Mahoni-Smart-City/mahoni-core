@@ -103,7 +103,7 @@ public class TripServiceTest {
   @Test
   public void testScanIn_thenReturnTrip() {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.MRT, id, id);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.MRT, 1L, 1L);
     LocalDateTime time = LocalDateTime.now().minusDays(1);
     Trip trip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.ACTIVE, 1.0, 0, TransactionStatus.PENDING);
     TripRequest tripRequest = new TripRequest("Test", id, id);
@@ -119,7 +119,7 @@ public class TripServiceTest {
   @Test
   public void testScanOut_thenReturnTrip() {
     UUID id = UUID.randomUUID();
-    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.MRT, id, id);
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.MRT, 1L, 1L);
     List<QRGeneratorNode> qrGeneratorNodes = new ArrayList<>();
     qrGeneratorNodes.add(new QRGeneratorNode());
     LocalDateTime time = LocalDateTime.now();
@@ -142,7 +142,7 @@ public class TripServiceTest {
   @Test
   public void testScanTrip_thenReturnNewTrip() {
     Trip trip = new Trip(UUID.randomUUID(), new QRGenerator(), LocalDateTime.now(), TripStatus.ACTIVE);
-    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.MRT, UUID.randomUUID(), UUID.randomUUID());
+    QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.MRT, 1L, 1L);
     TripRequest tripRequest = new TripRequest("Test", UUID.randomUUID(), UUID.randomUUID());
 
     when(tripRepository.findLatestActiveTripByUserId(any())).thenReturn(Optional.empty());

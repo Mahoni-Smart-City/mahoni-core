@@ -14,21 +14,21 @@ spring:
     hibernate:
       ddl-auto: update
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: 34.128.127.171:9092
     properties:
-      schema.registry.url: http://localhost:8081
+      schema.registry.url: http://34.128.127.171:8081
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: 34.128.127.171:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       properties:
-        schema.registry.url: http://localhost:8081
+        schema.registry.url: http://34.128.127.171:8081
     consumer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: 34.128.127.171:9092
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
       properties:
-        schema.registry.url: http://localhost:8081
+        schema.registry.url: http://34.128.127.171:8081
         specific.avro.reader: true
   security:
     qr-token:
@@ -70,7 +70,7 @@ spring:
     bootstrap.servers: "PLAINTEXT://kafka:29092"
     schema.registry.url: http://kafka-schema-registry:8081
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: 34.128.127.171:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       properties:
