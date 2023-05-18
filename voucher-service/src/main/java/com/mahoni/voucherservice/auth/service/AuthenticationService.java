@@ -31,18 +31,16 @@ public class AuthenticationService {
       throw new MerchantAlreadyExistException(request.getUsername());
     }
 
-    Merchant merchant = new Merchant(
+    Merchant merchant = merchantRepository.save(new Merchant(
       request.getUsername(),
       request.getName(),
       request.getEmail(),
       passwordEncoder.encode(request.getPassword()),
       MerchantRole.MERCHANT
-    );
-
-    merchantRepository.save(merchant);
+    ));
     String jwtToken = jwtTokenUtil.generateToken(merchant);
 
-    return new AuthenticationResponse(jwtToken);
+    return new AuthenticationResponse(jwtToken, merchant.getId());
   }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -57,6 +55,6 @@ public class AuthenticationService {
       .orElseThrow(() -> new MerchantNotFoundException(request.getUsername()));
     String jwtToken = jwtTokenUtil.generateToken(merchant);
 
-    return new AuthenticationResponse(jwtToken);
+    return new AuthenticationResponse(jwtToken, merchant.getId());
   }
 }
