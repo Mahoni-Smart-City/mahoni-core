@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5434/mahoni?user=test123&password=test123
+    url: jdbc:postgresql://34.101.161.17:5432/mahoni?user=mahoni&password=mahoni
     driver-class-name: org.postgresql.Driver
   jpa:
     properties:
