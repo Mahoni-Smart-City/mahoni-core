@@ -1,6 +1,6 @@
 package com.mahoni.tripservice.trip.kafka;
 
-import com.mahoni.schema.AirQualityTableSchema;
+import com.mahoni.flink.schema.AirQualityProcessedSchema;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StoreQueryParameters;
@@ -20,15 +20,15 @@ public class TripServiceStream {
   StreamsBuilderFactoryBean factoryBean;
 
   @Autowired
-  public KTable<String, AirQualityTableSchema> airQualityKtable(KStream<String, AirQualityTableSchema> kStream) {
+  public KTable<String, AirQualityProcessedSchema> airQualityKtable(KStream<String, AirQualityProcessedSchema> kStream) {
     return kStream.toTable(Materialized.as("air-quality-state-store"));
   }
 
-  public AirQualityTableSchema getAirQuality(String id) {
+  public AirQualityProcessedSchema getAirQuality(String id) {
     log.info("GET AIR QUALITY" + id);
     KafkaStreams kafkaStreams =  factoryBean.getKafkaStreams();
     assert kafkaStreams != null;
-    ReadOnlyKeyValueStore<String, AirQualityTableSchema> amounts = kafkaStreams
+    ReadOnlyKeyValueStore<String, AirQualityProcessedSchema> amounts = kafkaStreams
       .store(StoreQueryParameters.fromNameAndType("air-quality-state-store", QueryableStoreTypes.keyValueStore()));
     return amounts.get(id);
   }

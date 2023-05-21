@@ -3,7 +3,6 @@ package com.mahoni.tripservice.trip.kafka;
 import com.mahoni.schema.UserPointSchema;
 import com.mahoni.tripservice.trip.model.TransactionStatus;
 import com.mahoni.tripservice.trip.model.Trip;
-import com.mahoni.tripservice.trip.model.TripStatus;
 import com.mahoni.tripservice.trip.repository.TripRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -30,9 +29,9 @@ public class TripEventListener {
     if (trip.isPresent()) {
       Trip pendingTrip = trip.get();
       // Check if trip is pending and the point is correct
-      if (pendingTrip.getTransactionStatus().equals(TransactionStatus.PENDING.name()) && Math.abs(userPoint.getPoint() - userPoint.getPrevPoint()) == pendingTrip.getPoint()) {
+      if (pendingTrip.getTransactionStatus().equals(TransactionStatus.PENDING) && Math.abs(userPoint.getPoint() - userPoint.getPrevPoint()) == pendingTrip.getPoint()) {
         // Update transaction status
-        pendingTrip.setTransactionStatus(TransactionStatus.SUCCESS.name());
+        pendingTrip.setTransactionStatus(TransactionStatus.SUCCESS);
         tripRepository.save(pendingTrip);
       }
     }

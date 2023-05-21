@@ -31,7 +31,7 @@ public class Merchant implements UserDetails {
   @Column(name = "id", updatable = false, nullable = false)
   private UUID id;
 
-  @Column(unique = true)
+  @Column(unique = true, nullable = false)
   private String username;
 
   @Column(nullable = false)

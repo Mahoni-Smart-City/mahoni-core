@@ -1,6 +1,6 @@
 package com.mahoni.tripservice.trip.config;
 
-import com.mahoni.schema.AirQualityTableSchema;
+import com.mahoni.flink.schema.AirQualityProcessedSchema;
 import com.mahoni.schema.UserPointSchema;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import org.apache.kafka.common.serialization.Serde;
@@ -30,9 +30,9 @@ import static org.apache.kafka.streams.StreamsConfig.*;
 @EnableKafkaStreams
 public class KafkaConfiguration {
 
-  @Value("${spring.kafka.bootstrap.servers}")
+  @Value("${spring.kafka.bootstrap-servers}")
   private List<String> bootstrapAddress;
-  @Value("${spring.kafka.schema.registry.url}")
+  @Value("${spring.kafka.properties.schema.registry.url}")
   private String schemaRegistryUrl;
   private static final Serde<String> stringSerde = Serdes.String();
   private static final SpecificAvroSerde<UserPointSchema> avroSerde =  new SpecificAvroSerde<>();
@@ -55,12 +55,12 @@ public class KafkaConfiguration {
 
   @Autowired
   @Bean
-  public KStream<String, AirQualityTableSchema> buildPipelineAirQuality(StreamsBuilder streamsBuilder) {
+  public KStream<String, AirQualityProcessedSchema> buildPipelineAirQuality(StreamsBuilder streamsBuilder) {
     Map<String, Object> props = new HashMap<>();
     props.put(SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
     Serde<String> stringSerde = Serdes.String();
     stringSerde.configure(props, true);
-    SpecificAvroSerde<AirQualityTableSchema> avroSerde = new SpecificAvroSerde<>();
+    SpecificAvroSerde<AirQualityProcessedSchema> avroSerde = new SpecificAvroSerde<>();
     avroSerde.configure(props, false);
 
     return streamsBuilder

@@ -2,11 +2,14 @@ package com.mahoni.tripservice.qrgenerator.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.mahoni.tripservice.qrgenerator.dto.QRGeneratorRequest;
 import com.mahoni.tripservice.qrgenerator.dto.QRToken;
@@ -16,12 +19,15 @@ import com.mahoni.tripservice.qrgenerator.model.QRGeneratorNode;
 import com.mahoni.tripservice.qrgenerator.repository.QRGeneratorNodeRepository;
 import com.mahoni.tripservice.qrgenerator.repository.QRGeneratorRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -54,10 +60,10 @@ public class QRGeneratorService {
 
   static int MATRIX_HEIGHT = 200;
 
-  public static String generateQRCodeImage(String barcodeText) throws Exception {
-    QRCodeWriter barcodeWriter = new QRCodeWriter();
+  public static String generateQRCodeImage(String qrText) throws Exception {
+    QRCodeWriter qrWriter = new QRCodeWriter();
     BitMatrix bitMatrix =
-      barcodeWriter.encode(barcodeText, BarcodeFormat.QR_CODE, MATRIX_WIDTH, MATRIX_HEIGHT);
+      qrWriter.encode(qrText, BarcodeFormat.QR_CODE, MATRIX_WIDTH, MATRIX_HEIGHT);
 
     BufferedImage bufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
 
@@ -66,13 +72,21 @@ public class QRGeneratorService {
     return Base64Utils.encodeToString(pngOutputStream.toByteArray());
   }
 
+  public static String decodeQRCodeImage(String qrCodeText) throws Exception {
+    byte[] decoded = Base64.decodeBase64(qrCodeText);
+    BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(decoded));
+    LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
+    BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+    return new MultiFormatReader().decode(bitmap).getText();
+  }
+
   public QRGenerator create(QRGeneratorRequest qrGenerator) {
     return qrGeneratorRepository.save(new QRGenerator(
       qrGenerator.getLocation(),
-      qrGenerator.getType().name(),
-      qrGenerator.getSensorId1(),
-      qrGenerator.getSensorId2())
-    );
+      qrGenerator.getType(),
+      Long.parseLong(qrGenerator.getSensorId1()),
+      Long.parseLong(qrGenerator.getSensorId2())
+    ));
   }
 
   public QRGenerator getById(UUID id) {
@@ -103,9 +117,9 @@ public class QRGeneratorService {
     }
     QRGenerator updatedQRGenerator = qrGenerator.get();
     updatedQRGenerator.setLocation(newQRGenerator.getLocation());
-    updatedQRGenerator.setType(newQRGenerator.getType().name());
-    updatedQRGenerator.setSensorId1(newQRGenerator.getSensorId1());
-    updatedQRGenerator.setSensorId2(newQRGenerator.getSensorId2());
+    updatedQRGenerator.setType(newQRGenerator.getType());
+    updatedQRGenerator.setSensorId1(Long.parseLong(newQRGenerator.getSensorId1()));
+    updatedQRGenerator.setSensorId2(Long.parseLong(newQRGenerator.getSensorId2()));
     return qrGeneratorRepository.save(updatedQRGenerator);
   }
 

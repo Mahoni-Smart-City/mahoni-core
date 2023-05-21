@@ -57,7 +57,11 @@ public class MerchantService {
   }
 
   public List<Merchant> getAll() {
-    return merchantRepository.findAll();
+    if (isAdmin()) {
+      return merchantRepository.findAll();
+    } else {
+      return merchantRepository.findAllByRole(MerchantRole.MERCHANT);
+    }
   }
 
   public Merchant deleteById(UUID id) {

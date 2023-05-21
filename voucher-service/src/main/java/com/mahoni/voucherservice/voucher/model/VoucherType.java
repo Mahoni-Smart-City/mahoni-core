@@ -1,9 +1,9 @@
 package com.mahoni.voucherservice.voucher.model;
 
 public enum VoucherType {
-  FNB,
-  GRC,
-  ENT,
-  TLC,
-  HNB
+  FOOD_AND_BEVERAGES,
+  GROCERIES,
+  ENTERTAINMENT,
+  TELECOMMUNICATION,
+  HEALTH_AND_BEAUTY
 }

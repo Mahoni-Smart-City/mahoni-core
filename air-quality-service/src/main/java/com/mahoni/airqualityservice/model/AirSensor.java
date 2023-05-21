@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Optional;
-
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,10 +16,10 @@ public class AirSensor {
   @Id
   private Long id;
 
-  @Column(name = "name_location")
-  private String nameLocation;
+  @Column(name = "location_name")
+  private String locationName;
 
   @ManyToOne
-  @JoinColumn(name = "id_location")
+  @JoinColumn(name = "location_id")
   private Location location;
 }

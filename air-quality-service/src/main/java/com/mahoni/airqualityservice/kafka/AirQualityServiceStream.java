@@ -1,10 +1,6 @@
 package com.mahoni.airqualityservice.kafka;
 
-import com.mahoni.schema.AirQualityProcessedSchema;
-import com.mahoni.schema.AirQualityTableSchema;
-import com.mahoni.schema.UserPointSchema;
-import com.mahoni.schema.UserPointTableSchema;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import com.mahoni.flink.schema.AirQualityProcessedSchema;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StoreQueryParameters;
@@ -19,10 +15,9 @@ import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.UUID;
+import java.util.TimeZone;
 
 @Component
 public class AirQualityServiceStream {
@@ -34,31 +29,38 @@ public class AirQualityServiceStream {
   KafkaTemplate<String, AirQualityProcessedSchema> kafkaTemplate;
 
   @Autowired
-  public KTable<String, AirQualityTableSchema> kTable(KStream<String, AirQualityProcessedSchema> kStream) {
+  public KTable<String, AirQualityProcessedSchema> kTable(KStream<String, AirQualityProcessedSchema> kStream) {
     KGroupedStream<String, AirQualityProcessedSchema> groupedAirQuality = kStream
-      .map((s, airQualityProcessedSchema) -> {
-        String key = airQualityProcessedSchema.getTimestamp() + ":" + airQualityProcessedSchema.getSensorId();
-        return KeyValue.pair(key, airQualityProcessedSchema);
-      })
+      .map((s, airQualityProcessedSchema) -> KeyValue.pair(AirQualityServiceStream.parseTableKey(airQualityProcessedSchema), airQualityProcessedSchema))
       .groupByKey();
 
-    KTable<String, AirQualityTableSchema> airQualityTable = groupedAirQuality
-      .reduce((airQualityProcessedSchema, v1) -> v1)
-      .mapValues((s, airQualityProcessedSchema) ->   AirQualityTableSchema.newBuilder()
-        .setSensorId(airQualityProcessedSchema.getSensorId())
-        .setAqi(airQualityProcessedSchema.getAqi())
-        .build());
+    KTable<String, AirQualityProcessedSchema> airQualityTable = groupedAirQuality
+      .reduce((airQualityProcessedSchema, v1) -> v1, Materialized.as("air-quality-state-store"));
 
     airQualityTable.toStream().to(KafkaTopic.AIR_QUALITY_COMPACTED);
 
     return airQualityTable;
   }
 
-  public AirQualityTableSchema get(String id) {
+  public AirQualityProcessedSchema get(String id) {
     KafkaStreams kafkaStreams =  factoryBean.getKafkaStreams();
     assert kafkaStreams != null;
-    ReadOnlyKeyValueStore<String, AirQualityTableSchema> amounts = kafkaStreams
-      .store(StoreQueryParameters.fromNameAndType("user-point-state-store", QueryableStoreTypes.keyValueStore()));
+    ReadOnlyKeyValueStore<String, AirQualityProcessedSchema> amounts = kafkaStreams
+      .store(StoreQueryParameters.fromNameAndType("air-quality-state-store", QueryableStoreTypes.keyValueStore()));
     return amounts.get(id);
+  }
+
+  public static String  parseTableKey(AirQualityProcessedSchema airQualityProcessedSchema) {
+    LocalDateTime timestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(airQualityProcessedSchema.getTimestamp()), TimeZone.getDefault().toZoneId());
+    return timestamp.getDayOfWeek().name() + ":" + timestamp.getHour() + ":" + airQualityProcessedSchema.getSensorId();
+  }
+
+  public static String  parseTableKey(Long sensorId) {
+    LocalDateTime datetime = LocalDateTime.now();
+    return datetime.getDayOfWeek().name() + ":" + datetime.getHour() + ":" + sensorId;
+  }
+
+  public static String  parseTableKey(AirQualityProcessedSchema airQualityProcessedSchema, LocalDateTime timestamp) {
+    return timestamp.getDayOfWeek().name() + ":" + timestamp.getHour() + ":" + airQualityProcessedSchema.getSensorId();
   }
 }

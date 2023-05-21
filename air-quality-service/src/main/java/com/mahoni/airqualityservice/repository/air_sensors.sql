@@ -1,0 +1,17 @@
+INSERT INTO "air_sensors" ("id", "location_name", "location_id") VALUES
+	('100927', 'Gang Al Ijabah', '317491004'),
+	('35787', 'Jalan Juragan Sinda III', '317491002'),
+	('18453', 'Jalan Tanjung Mas Utama', '317491005'),
+	('42975', 'Jalan Raya Condet', '317541005'),
+	('35960', 'Jalan Raya Condet 2', '317541005'),
+	('100041', 'Jalan SMA 14', '317541007'),
+	('107276', 'LAvenue Office & Apartment', '317481001'),
+	('18450', 'Jalan Cipinang Jaya AA', '317531008'),
+	('16692', 'Jalan Surabaya', '317161001'),
+	('40905', 'Jalan Haji R. Rasuna Said', '317421001'),
+	('38596', 'Jalan Teuku Umar', '317161004'),
+	('14266', 'Jalan Arief Rachman Hakim', '317161005'),
+	('87300', 'Jalan KH Hasyim Asyari', '317121001'),
+	('96571', 'Jalan K.H. Zainul Arifin', '317331002'),
+	('18456', 'Jalan Mangga Besar V', '317331004'),
+	('105476', 'Jalan Hayam Wuruk', '317331005');

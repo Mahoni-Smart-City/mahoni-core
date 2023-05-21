@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:12.9-alpine:///spring_boot_testcontainers
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create
+  test:
+    database:
+      replace: none
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+      group-id: trip-service-group-id
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: com.mahoni.tripservice.trip.mock.CustomKafkaAvroDeserializer
+      properties:
+        schema.registry.url: mock://not-used
+        specific.avro.reader: true
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: com.mahoni.tripservice.trip.mock.CustomKafkaAvroSerializer
+      properties:
+        schema.registry.url: mock://not-used
+    properties:
+      schema.registry.url: mock://not-used
+  security:
+    qr-token:
+      lifespan: 30
+      secret: test123
+  trip:
+    expired-duration: 360
+    base-multiplier: 1.0
+    aqi-multiplier: 2.0
+    duration-multiplier: 2.0
