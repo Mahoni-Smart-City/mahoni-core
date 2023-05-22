@@ -1,0 +1,13 @@
+{
+  "name": "air-quality-sink",
+  "config": {
+    "connector.class": "com.datamountaineer.streamreactor.connect.cassandra.sink.CassandraSinkConnector",
+    "topics": "postgres.public.air_sensors, postgres.public.locations",
+    "connect.cassandra.host": "cassandra-db",
+    "connect.cassandra.port": "9042",
+    "connect.cassandra.key.space": "mahoni",
+    "connect.cassandra.table": "air_sensors, locations",
+    "connect.cassandra.contact.points": "cassandra-db",
+    "connect.cassandra.kcql": "INSERT INTO air_sensor SELECT * FROM postgres.public.air_sensors; INSERT INTO locations SELECT * FROM postgres.public.locations"
+  }
+}
