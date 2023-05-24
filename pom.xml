@@ -33,6 +33,7 @@
         <module>stream-data-generator</module>
         <module>voucher-service</module>
         <module>air-quality-service</module>
+        <module>cassandra-sink</module>
         <module>loyalty-service</module>
     </modules>
 

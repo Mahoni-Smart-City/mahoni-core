@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://34.101.194.5:5432/mahoni?user=mahoni&password=mahoni
+    url: jdbc:postgresql://localhost:5433/mahoni?user=test123&password=test123
     driver-class-name: org.postgresql.Driver
   neo4j:
     uri: bolt://34.101.87.94
