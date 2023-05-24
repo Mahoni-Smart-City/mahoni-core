@@ -84,16 +84,16 @@ spring:
     url: jdbc:postgresql://${postgres.host:localhost}:${postgres.port}/${postgres.database}?user=${postgres.user}&password=${postgres.password}
     driver-class-name: org.postgresql.Driver
   kafka:
-    bootstrap.servers: 34.129.184.97:9092,34.129.184.97:9093,34.129.184.97:9094
-    schema.registry.url: http://34.129.184.97:8081
+    bootstrap-servers: 34.128.127.171:9092,34.128.127.171:9093,34.128.127.171:9094
+    schema.registry.url: http://34.128.127.171:8081
     producer:
-      bootstrap-servers: ${spring.kafka.bootstrap.servers}
+      bootstrap-servers: ${spring.kafka.bootstrap-servers}
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       properties:
         schema.registry.url: ${spring.kafka.schema.registry.url}
     consumer:
-      bootstrap-servers: ${spring.kafka.bootstrap.servers}
+      bootstrap-servers: ${spring.kafka.bootstrap-servers}
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
       properties:
