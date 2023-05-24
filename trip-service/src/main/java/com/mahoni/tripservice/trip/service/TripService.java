@@ -90,7 +90,7 @@ public class TripService {
       QRGenerator scanInPlace = trip.getScanInPlaceId();
       QRGenerator scanOutPlace = trip.getScanOutPlaceId();
       List<QRGeneratorNode> shortestPath = qrGeneratorService.shortestPathBetweenNodes(scanInPlace.getId(), scanOutPlace.getId());
-      double aqi = maxAqi(shortestPath);
+      double aqi = maxAqi(shortestPath, trip);
       int point = calculatePoint(aqi, trip);
       trip.setAqi(aqi);
       trip.setPoint(point);
@@ -135,16 +135,16 @@ public class TripService {
     return (int) ((aqi * AQI_MULTIPLIER) + (durationInMinutes * DURATION_MULTIPLIER) * BASE_MULTIPLIER);
   }
 
-  private double maxAqi(List<QRGeneratorNode> nodes) {
+  private double maxAqi(List<QRGeneratorNode> nodes, Trip trip) {
     double aqi = 0;
     for (QRGeneratorNode node: nodes) {
       Optional<QRGenerator> qrGenerator = qrGeneratorRepository.findById(node.getQrGeneratorId());
       if (qrGenerator.isPresent()) {
         QRGenerator qrGenerator1 = qrGenerator.get();
-        double aqi1 = storedAqi(qrGenerator1.getSensorId1().toString()); // get from KTable
+        double aqi1 = storedAqi(qrGenerator1.getSensorId1().toString(), trip); // get from KTable
         double aqi2 = Integer.MIN_VALUE;
         if (qrGenerator1.getSensorId2() != null) {
-          aqi2 = storedAqi(qrGenerator1.getSensorId2().toString()); // get from KTable
+          aqi2 = storedAqi(qrGenerator1.getSensorId2().toString(), trip); // get from KTable
         }
         double maxAqi = max(aqi1, aqi2);
         if (aqi <= maxAqi) {
@@ -155,10 +155,14 @@ public class TripService {
     return aqi;
   }
 
-  private double storedAqi(String sensorId) {
-    LocalDateTime datetime = LocalDateTime.now();
-    AirQualityProcessedSchema aqi = tripServiceStream.getAirQuality(datetime.getDayOfWeek() + ":" + datetime.getHour() + ":" + sensorId);
-    return aqi != null ? aqi.getAqi() : 0;
+  private double storedAqi(String sensorId, Trip trip) {
+    double aqi = 0;
+    long durationInHours = Math.abs(Duration.between(trip.getScanInAt(), trip.getScanOutAt()).toHours()) + 1;
+    for (int i = 0; i <= durationInHours; i++) {
+      AirQualityProcessedSchema aqiSchema = tripServiceStream.getAirQuality(trip.getScanOutAt().minusHours(i).getDayOfWeek() + ":" + trip.getScanOutAt().minusHours(i).getHour() + ":" + sensorId);
+      aqi = max(aqi, aqiSchema != null ? aqiSchema.getAqi() : 0);
+    }
+    return aqi;
   }
 
   private boolean isOngoing(Trip trip) {

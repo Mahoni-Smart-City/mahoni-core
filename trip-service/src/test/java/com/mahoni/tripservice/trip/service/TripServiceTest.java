@@ -21,6 +21,7 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TripServiceTest {
@@ -104,16 +103,22 @@ public class TripServiceTest {
   public void testScanIn_thenReturnTrip() {
     UUID id = UUID.randomUUID();
     QRGenerator qrGenerator = new QRGenerator("Test", QRGeneratorType.MRT, 1L, 1L);
-    LocalDateTime time = LocalDateTime.now().minusDays(1);
-    Trip trip = new Trip(id, id, qrGenerator, qrGenerator, time, time, TripStatus.ACTIVE, 1.0, 0, TransactionStatus.PENDING);
+    List<QRGeneratorNode> shortestPath = new ArrayList<>();
+    shortestPath.add(new QRGeneratorNode());
+    shortestPath.add(new QRGeneratorNode());
+    LocalDateTime time = LocalDateTime.now().minusHours(4);
+    Trip trip = new Trip(id, id, qrGenerator, qrGenerator, time, null, TripStatus.ACTIVE, null, null, TransactionStatus.PENDING);
     TripRequest tripRequest = new TripRequest("Test", id, id);
 
     when(tripRepository.findLatestActiveTripByUserId(any())).thenReturn(Optional.of(trip));
     when(qrGeneratorRepository.findById(any())).thenReturn(Optional.of(qrGenerator));
     when(tripRepository.save(any())).thenReturn(trip);
+    when(qrGeneratorService.shortestPathBetweenNodes(any(),any())).thenReturn(shortestPath);
     Trip expectedTrip = tripService.scanTrip(tripRequest);
+    long duration = Math.abs(Duration.between(expectedTrip.getScanInAt(), expectedTrip.getScanOutAt()).toHours()) + 1;
 
     assertEquals(expectedTrip, trip);
+    verify(tripServiceStream, times((int) ((duration + 1) * shortestPath.size() * 2))).getAirQuality(any());
   }
 
   @Test
