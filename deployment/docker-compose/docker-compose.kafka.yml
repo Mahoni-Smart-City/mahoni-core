@@ -17,13 +17,22 @@ services:
     restart: always
     environment:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://34.128.127.171:9092
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      JVM_OPTS: >
+        -Dcom.sun.management.jmxremote.rmi.port=9999
+        -Dcom.sun.management.jmxremote=true
+        -Dcom.sun.management.jmxremote.port=9999
+        -Dcom.sun.management.jmxremote.ssl=false
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Djava.rmi.server.hostname=localhost
     image: confluentinc/cp-kafka:latest
+    user: root
     ports:
       - "9092:9092"
+      - "9999:9999"
     volumes:
       - ./kafka/data/kafka-1:/var/lib/kafka/data
     depends_on:
@@ -33,13 +42,22 @@ services:
     restart: always
     environment:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-2:29092,PLAINTEXT_HOST://localhost:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-2:29092,PLAINTEXT_HOST://34.128.127.171:9093
       KAFKA_BROKER_ID: 2
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      JVM_OPTS: >
+        -Dcom.sun.management.jmxremote.rmi.port=9999
+        -Dcom.sun.management.jmxremote=true
+        -Dcom.sun.management.jmxremote.port=9999
+        -Dcom.sun.management.jmxremote.ssl=false
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Djava.rmi.server.hostname=localhost
     image: confluentinc/cp-kafka:latest
+    user: root
     ports:
       - "9093:9093"
+      - "9998:9999"
     volumes:
       - ./kafka/data/kafka-2:/var/lib/kafka/data
     depends_on:
@@ -49,13 +67,22 @@ services:
     restart: always
     environment:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-3:29092,PLAINTEXT_HOST://localhost:9094
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-3:29092,PLAINTEXT_HOST://34.128.127.171:9094
       KAFKA_BROKER_ID: 3
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      JVM_OPTS: >
+        -Dcom.sun.management.jmxremote.rmi.port=9999
+        -Dcom.sun.management.jmxremote=true
+        -Dcom.sun.management.jmxremote.port=9999
+        -Dcom.sun.management.jmxremote.ssl=false
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Djava.rmi.server.hostname=localhost
     image: confluentinc/cp-kafka:latest
+    user: root
     ports:
       - "9094:9094"
+      - "9997:9999"
     volumes:
       - ./kafka/data/kafka-3:/var/lib/kafka/data
     depends_on:
