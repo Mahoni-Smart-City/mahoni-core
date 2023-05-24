@@ -4,6 +4,7 @@ import com.mahoni.schema.TripSchema;
 import com.mahoni.tripservice.trip.model.Trip;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
+
+import static com.mahoni.tripservice.trip.kafka.KafkaTopic.TRIP_TOPIC_PARTITION;
 
 @Component
 @Slf4j
@@ -39,12 +42,14 @@ public class TripEventProducer {
       .build();
 
     log.info("Sending event to " + KafkaTopic.TRIP_TOPIC + " with payload: " + event.toString());
-    kafkaTemplate.send(new ProducerRecord<>(KafkaTopic.TRIP_TOPIC, id, event));
+    kafkaTemplate.send(new ProducerRecord<>(KafkaTopic.TRIP_TOPIC, partition(event.getUserId()), id, event));
+  }
+
+  private int partition(String identifier) {
+    return Utils.toPositive(Utils.murmur2(identifier.getBytes())) % TRIP_TOPIC_PARTITION;
   }
 
   private long parseTimestamp(LocalDateTime dateTime) {
     return dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
   }
 }
-
-

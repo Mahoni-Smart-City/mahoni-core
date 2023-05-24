@@ -11,6 +11,7 @@ import org.springframework.kafka.config.TopicBuilder;
 public class KafkaTopic {
 
   static String VOUCHER_REDEEMED_TOPIC = "voucher-redeemed-topic";
+  static int VOUCHER_REDEEMED_TOPIC_PARTITION = 3;
 
 //  @Bean
 //  public NewTopic voucherRedeemedTopic() {

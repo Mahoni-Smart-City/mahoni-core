@@ -18,6 +18,8 @@ public class KafkaTopic {
   public static String AIR_QUALITY_PROCESSED = "air-quality-processed-topic";
   public static String AIR_QUALITY_COMPACTED = "air-quality-compacted-topic";
 
+  public static int USER_POINT_TOPIC_PARTITION = 3;
+
 
   @Bean
   public NewTopic userPointCompacted() {
