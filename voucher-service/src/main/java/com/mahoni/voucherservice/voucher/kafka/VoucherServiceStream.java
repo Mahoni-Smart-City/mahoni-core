@@ -1,6 +1,5 @@
 package com.mahoni.voucherservice.voucher.kafka;
 
-import com.mahoni.schema.UserPointTableSchema;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StoreQueryParameters;
 import org.apache.kafka.streams.kstream.KStream;

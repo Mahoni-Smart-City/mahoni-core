@@ -182,7 +182,7 @@ services:
   kafka-connect:
     image: confluentinc/cp-kafka-connect
     environment:
-      CONNECT_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:29092,PLAINTEXT://kafka-2:29092,PLAINTEXT://kafka-3:29092
+      CONNECT_BOOTSTRAP_SERVERS: PLAINTEXT://34.128.127.171:9092,PLAINTEXT://34.128.127.171:9093,PLAINTEXT://34.128.127.171:9094
       CONNECT_GROUP_ID: kafka-connect-group-id
       CONNECT_REST_ADVERTISED_HOST_NAME: kafka-connect
       CONNECT_REST_ADVERTISED_PORT: 8084
@@ -208,3 +208,4 @@ services:
     volumes:
       - ./cassandra-sink/kafka-connect/config:/config
       - ./cassandra-sink/kafka-connect/plugins:/data/connectors
+      - ./cassandra-sink/kafka-connect/key:/key

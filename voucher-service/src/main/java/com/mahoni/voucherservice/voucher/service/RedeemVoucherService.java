@@ -121,11 +121,14 @@ public class RedeemVoucherService {
     RedeemVoucher updatedRedeemVoucher = redeemVoucher.get();
 
     // Check if point is sufficient
+    /*
     UserPointTableSchema userPoint = voucherServiceStream.get(request.getUserId().toString());
     log.info("USER POINT " + userPoint.getPoint());
     if (userPoint.getPoint() < updatedRedeemVoucher.getVoucher().getPoint()) {
       throw new InsufficientUserPointException();
     }
+
+     */
 
     updatedRedeemVoucher.setUserId(request.getUserId());
     updatedRedeemVoucher.setStatus(VoucherStatus.PENDING);
