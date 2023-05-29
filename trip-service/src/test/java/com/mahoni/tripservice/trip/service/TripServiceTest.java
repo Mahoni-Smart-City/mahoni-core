@@ -64,6 +64,7 @@ public class TripServiceTest {
     ReflectionTestUtils.setField(tripService, "BASE_MULTIPLIER", 1.0);
     ReflectionTestUtils.setField(tripService, "AQI_MULTIPLIER", 2.0);
     ReflectionTestUtils.setField(tripService, "DURATION_MULTIPLIER", 1.0);
+    ReflectionTestUtils.setField(tripService, "ADDITIONAL_CONSTANT", 10);
   }
 
   @Test

@@ -36,3 +36,4 @@ spring:
     base-multiplier: 1.0
     aqi-multiplier: 2.0
     duration-multiplier: 2.0
+    additional-constant: 10
