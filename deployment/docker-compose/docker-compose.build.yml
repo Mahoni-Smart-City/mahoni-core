@@ -18,6 +18,10 @@ services:
     build: .
     image: zsaschz/user-service:1.0-SNAPSHOT
 
+  loyalty-service:
+      build: .
+      image: zsaschz/loyalty-service:1.0-SNAPSHOT
+
   stream-data-generator:
     build: .
     image: zsaschz/stream-data-generator:1.0-SNAPSHOT

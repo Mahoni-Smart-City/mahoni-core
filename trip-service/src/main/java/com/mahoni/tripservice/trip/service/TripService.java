@@ -60,6 +60,9 @@ public class TripService {
   @Value("${spring.trip.duration-multiplier}")
   Double DURATION_MULTIPLIER;
 
+  @Value("${spring.trip.additional-constant}")
+  Integer ADDITIONAL_CONSTANT;
+
   public List<Trip> getAllByUserId(UUID userId) {
     Optional<List<Trip>> trips = tripRepository.findByUserId(userId);
     return trips.orElseGet(ArrayList::new);
@@ -132,7 +135,7 @@ public class TripService {
 
   private int calculatePoint(double aqi, Trip trip) {
     Long durationInMinutes = Duration.between(trip.getScanInAt(), trip.getScanOutAt()).toMinutes();
-    return (int) ((aqi * AQI_MULTIPLIER) + (durationInMinutes * DURATION_MULTIPLIER) * BASE_MULTIPLIER);
+    return (int) ((aqi * AQI_MULTIPLIER) + (durationInMinutes * DURATION_MULTIPLIER) * BASE_MULTIPLIER) + ADDITIONAL_CONSTANT;
   }
 
   private double maxAqi(List<QRGeneratorNode> nodes, Trip trip) {
