@@ -3,11 +3,11 @@
   "config": {
     "connector.class": "com.datamountaineer.streamreactor.connect.cassandra.sink.CassandraSinkConnector",
     "topics": "postgres.public.vouchers, postgres.public.merchants",
-    "connect.cassandra.host": "cassandra-db",
+    "connect.cassandra.host": "34.101.176.46",
     "connect.cassandra.port": "9042",
     "connect.cassandra.key.space": "mahoni",
     "connect.cassandra.table": "vouchers, merchants",
-    "connect.cassandra.contact.points": "cassandra-db",
-    "connect.cassandra.kcql": "INSERT INTO vouchers SELECT id, name, merchant_id, type FROM postgres.public.vouchers; INSERT INTO merchants SELECT id, name FROM postgres.public.merchants; "
+    "connect.cassandra.contact.points": "34.101.176.46",
+    "connect.cassandra.kcql": "UPSERT INTO vouchers SELECT id, name, merchant_id, type FROM postgres.public.vouchers; UPSERT INTO merchants SELECT id, name FROM postgres.public.merchants"
   }
 }

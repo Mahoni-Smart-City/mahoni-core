@@ -1,17 +1,17 @@
 {
-  "name": "air-quality-processed-kcbq",
+  "name": "trip-kcbq",
   "config": {
     "connector.class": "com.wepay.kafka.connect.bigquery.BigQuerySinkConnector",
     "key.converter": "org.apache.kafka.connect.storage.StringConverter",
     "tasks.max" : "1",
-    "topics" : "air-quality-processed-topic",
+    "topics" : "trip-topic",
     "sanitizeTopics" : "true",
     "autoCreateTables" : "true",
     "allowNewBigQueryFields" : "true",
     "allowBigQueryRequiredFieldRelaxation" : "true",
     "schemaRetriever" : "com.wepay.kafka.connect.bigquery.retrieve.IdentitySchemaRetriever",
     "project" : "mahoni-387706",
-    "defaultDataset" : "air_quality",
+    "defaultDataset" : "trip",
     "keyfile" : "/home/appuser/key/mahoni-387706-969252dea32e.json"
   }
 }

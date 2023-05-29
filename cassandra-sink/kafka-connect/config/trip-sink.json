@@ -3,11 +3,11 @@
   "config": {
     "connector.class": "com.datamountaineer.streamreactor.connect.cassandra.sink.CassandraSinkConnector",
     "topics": "postgres.public.qr_generators",
-    "connect.cassandra.host": "cassandra-db",
+    "connect.cassandra.host": "34.101.176.46",
     "connect.cassandra.port": "9042",
     "connect.cassandra.key.space": "mahoni",
     "connect.cassandra.table": "qr_generators ",
-    "connect.cassandra.contact.points": "cassandra-db",
-    "connect.cassandra.kcql": "INSERT INTO qr_generators SELECT id, location, type FROM postgres.public.qr_generators"
+    "connect.cassandra.contact.points": "34.101.176.46",
+    "connect.cassandra.kcql": "UPSERT INTO qr_generators SELECT id, location, type FROM postgres.public.qr_generators"
   }
 }

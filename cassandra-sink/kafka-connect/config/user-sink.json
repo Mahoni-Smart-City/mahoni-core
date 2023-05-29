@@ -3,11 +3,11 @@
   "config": {
     "connector.class": "com.datamountaineer.streamreactor.connect.cassandra.sink.CassandraSinkConnector",
     "topics": "postgres.public.users",
-    "connect.cassandra.host": "cassandra-db",
+    "connect.cassandra.host": "34.101.176.46",
     "connect.cassandra.port": "9042",
     "connect.cassandra.key.space": "mahoni",
     "connect.cassandra.table": "users",
-    "connect.cassandra.contact.points": "cassandra-db",
-    "connect.cassandra.kcql": "INSERT INTO users SELECT id, sex, year_of_birth FROM postgres.public.users"
+    "connect.cassandra.contact.points": "34.101.176.46",
+    "connect.cassandra.kcql": "UPSERT INTO users SELECT id, sex, year_of_birth FROM postgres.public.users"
   }
 }

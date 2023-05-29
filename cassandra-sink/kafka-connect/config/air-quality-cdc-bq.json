@@ -1,10 +1,10 @@
 {
-  "name": "air-quality-processed-kcbq",
+  "name": "air-quality-cdc-kcbq",
   "config": {
     "connector.class": "com.wepay.kafka.connect.bigquery.BigQuerySinkConnector",
     "key.converter": "org.apache.kafka.connect.storage.StringConverter",
     "tasks.max" : "1",
-    "topics" : "air-quality-processed-topic",
+    "topics" : "postgres.public.air_sensors, postgres.public.locations",
     "sanitizeTopics" : "true",
     "autoCreateTables" : "true",
     "allowNewBigQueryFields" : "true",
