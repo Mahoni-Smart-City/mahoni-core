@@ -1,5 +1,7 @@
-RANDOMIZE_STREAM_DATA: true
-ENABLE_STREAM: true
+generator:
+  enabled: true
+  randomize: false
+  rate: 5
 server:
   port : 8087
 spring:

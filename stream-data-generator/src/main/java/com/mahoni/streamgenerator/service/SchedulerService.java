@@ -34,11 +34,14 @@ public class SchedulerService {
 
   private final String AIRLY_BASE_URL = "https://airapi.airly.eu/v2";
 
-  @Value("${RANDOMIZE_STREAM_DATA}")
+  @Value("${generator.randomize}")
   private Boolean randomizeStreamData = false;
 
-  @Value("${ENABLE_STREAM}")
+  @Value("${generator.enabled}")
   private Boolean enableStream = false;
+
+  @Value("${generator.rate}")
+  private int rate;
 
   private String TOPIC = "air-quality-raw-topic";
 
@@ -79,6 +82,7 @@ public class SchedulerService {
         ResponseBody response = okhttp.newCall(request).execute().body();
         AirlyResponseDTO mappedObject = objectMapper.readValue(response.string(), AirlyResponseDTO.class);
         result.put(locationId, mappedObject);
+        logger.info(result.toString());
       } catch (Exception e) {
         logger.error(e.toString());
       }
@@ -93,7 +97,7 @@ public class SchedulerService {
     parseAndSaveData(data);
   }
 
-  @Scheduled(cron = "*/5 * * * * *")
+  @Scheduled(cron = "*/1 * * * * *")
   public void sendToKafka() {
     logger.info("Running send to kafka");
     if (enableStream) {
@@ -101,32 +105,33 @@ public class SchedulerService {
       LocalDateTime rounded = datetime.minusMinutes(datetime.getMinute()).minusSeconds(datetime.getSecond());
       Long timestamp = datetime.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(rounded)) * 1000L;
 
-      for (String sensorId: airlyLocationIds) {
-        logger.info(timestamp.toString());
-        AirQuality airQuality = airQualityStreamRepository.findByTimestampAndSensorId(timestamp, sensorId);
-        if (randomizeStreamData || airQuality == null){
-          airQuality = new AirQuality(
-            rand.nextLong(),
-            sensorId,
-            timestamp,
-            rand.nextDouble(),
-            rand.nextDouble(),
-            rand.nextDouble(),
-            rand.nextDouble(),
-            rand.nextDouble(),
-            rand.nextDouble(),
-            rand.nextDouble(),
-            rand.nextDouble(),
-            rand.nextDouble(),
-            rand.nextDouble(),
-            rand.nextDouble(),
-            rand.nextDouble(),
-            rand.nextDouble()
-          );
+      for (int i = 0; i < rate; i++) {
+        for (String sensorId : airlyLocationIds) {
+          logger.info(timestamp.toString());
+          AirQuality airQuality = airQualityStreamRepository.findBySensorId(sensorId);
+          if (randomizeStreamData || airQuality == null) {
+            airQuality = new AirQuality(
+              sensorId,
+              timestamp,
+              rand.nextDouble(),
+              rand.nextDouble(),
+              rand.nextDouble(),
+              rand.nextDouble(),
+              rand.nextDouble(),
+              rand.nextDouble(),
+              rand.nextDouble(),
+              rand.nextDouble(),
+              rand.nextDouble(),
+              rand.nextDouble(),
+              rand.nextDouble(),
+              rand.nextDouble(),
+              rand.nextDouble()
+            );
+          }
+          ProducerRecord<String, AirQualityRawSchema> record = createRecord(airQuality);
+          logger.info(record.toString());
+          kafkaTemplate.send(record);
         }
-        ProducerRecord<String, AirQualityRawSchema> record = createRecord(airQuality);
-        logger.info(record.toString());
-        kafkaTemplate.send(record);
       }
     }
   }
@@ -169,22 +174,22 @@ public class SchedulerService {
     String id = UUID.randomUUID().toString();
 
     AirQualityRawSchema event = AirQualityRawSchema.newBuilder()
-      .setEventId(data.getId().toString())
+      .setEventId(id)
       .setSensorId(data.getSensorId())
       .setTimestamp(data.getTimestamp())
-      .setAqi(data.getAqi())
+      .setAqi(data.getAqi() != null ? data.getAqi() : 0 )
       .setCo(data.getCo())
       .setNo(data.getNo())
       .setNo2(data.getNo2())
       .setO3(data.getO3())
       .setSo2(data.getSo2())
-      .setPm25(data.getPm25())
-      .setPm10(data.getPm10())
-      .setPm1(data.getPm1())
+      .setPm25(data.getPm25() != null ? data.getPm25() : 0 )
+      .setPm10(data.getPm10() != null ? data.getPm10() : 0 )
+      .setPm1(data.getPm1() != null ? data.getPm1() : 0 )
       .setNh3(data.getNh3())
-      .setPressure(data.getPressure())
-      .setHumidity(data.getHumidity())
-      .setTemperature(data.getTemperature())
+      .setPressure(data.getPressure() != null ? data.getPressure() : 0 )
+      .setHumidity(data.getHumidity() != null ? data.getHumidity() : 0 )
+      .setTemperature(data.getTemperature() != null ? data.getTemperature() : 0 )
       .build();
 
     return new ProducerRecord<>(TOPIC, id, event);
