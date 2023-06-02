@@ -30,7 +30,7 @@ public class VoucherEventProducer {
     VoucherRedeemedSchema event = VoucherRedeemedSchema.newBuilder()
       .setEventId(id)
       .setTimestamp(now)
-      .setVoucherId(redeemVoucher.getId().toString())
+      .setVoucherId(redeemVoucher.getVoucher().getId().toString())
       .setUserId(redeemVoucher.getUserId().toString())
       .setCode(redeemVoucher.getRedeemCode())
       .setPoint(redeemVoucher.getVoucher().getPoint())
