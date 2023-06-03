@@ -1,7 +1,9 @@
 package com.mahoni.userservice.controller;
 
+import com.mahoni.schema.UserPointTableSchema;
 import com.mahoni.userservice.dto.UserRequest;
 import com.mahoni.userservice.exception.ResourceNotFoundException;
+import com.mahoni.userservice.kafka.UserStreams;
 import com.mahoni.userservice.model.User;
 import com.mahoni.userservice.service.UserService;
 import jakarta.validation.Valid;
@@ -22,6 +24,9 @@ public class UserController {
 
   @Autowired
   UserService userService;
+
+  @Autowired
+  UserStreams userStreams;
 
   @PostMapping
   public ResponseEntity<User> post(@Valid @RequestBody UserRequest request) {
@@ -64,6 +69,16 @@ public class UserController {
     try {
       User updatedUser = userService.update(id, request);
       return ResponseEntity.ok(updatedUser);
+    } catch (ResourceNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+  }
+
+  @GetMapping("/point/{id}")
+  public ResponseEntity<Object> getPoint(@PathVariable("id") String id) {
+    try {
+      UserPointTableSchema updatedUser = userStreams.get(id);
+      return ResponseEntity.ok(updatedUser.getPoint());
     } catch (ResourceNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     }

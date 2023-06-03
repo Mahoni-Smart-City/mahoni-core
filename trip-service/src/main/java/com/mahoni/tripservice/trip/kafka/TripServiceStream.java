@@ -19,10 +19,10 @@ public class TripServiceStream {
   @Autowired
   StreamsBuilderFactoryBean factoryBean;
 
-  @Autowired
-  public KTable<String, AirQualityProcessedSchema> airQualityKtable(KStream<String, AirQualityProcessedSchema> kStream) {
-    return kStream.toTable(Materialized.as("air-quality-state-store"));
-  }
+//  @Autowired
+//  public KTable<String, AirQualityProcessedSchema> airQualityKtable(KStream<String, AirQualityProcessedSchema> kStream) {
+//    return kStream.toTable(Materialized.as("air-quality-state-store"));
+//  }
 
   public AirQualityProcessedSchema getAirQuality(String id) {
     log.info("GET AIR QUALITY" + id);

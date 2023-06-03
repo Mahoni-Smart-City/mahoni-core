@@ -33,7 +33,7 @@ spring:
   security:
     qr-token:
       lifespan: 30
-      secret: test123
+      secret: Kx4VFGKtKqav9RWICc9PPA==
   trip:
     expired-duration: 360
     base-multiplier: 1.0

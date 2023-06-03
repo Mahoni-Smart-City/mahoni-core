@@ -25,7 +25,7 @@ public class KafkaTopic {
   public NewTopic userPointCompacted() {
     return TopicBuilder
       .name(USER_POINT_COMPACTED_TOPIC)
-      .replicas(3)
+      .replicas(2)
       .partitions(3)
       .compact()
       .build();
@@ -35,7 +35,7 @@ public class KafkaTopic {
   public NewTopic userPoint() {
     return TopicBuilder
       .name(USER_POINT_TOPIC)
-      .replicas(3)
+      .replicas(2)
       .partitions(3)
       .build();
   }
@@ -44,7 +44,7 @@ public class KafkaTopic {
   public NewTopic tripCompletedTopic() {
     return TopicBuilder
       .name(TRIP_TOPIC)
-      .replicas(3)
+      .replicas(2)
       .partitions(3)
       .build();
   }
@@ -53,7 +53,7 @@ public class KafkaTopic {
   public NewTopic voucherRedeemedTopic() {
     return TopicBuilder
       .name(VOUCHER_REDEEMED_TOPIC)
-      .replicas(3)
+      .replicas(2)
       .partitions(3)
       .build();
   }
@@ -62,7 +62,7 @@ public class KafkaTopic {
   public NewTopic airQualityRaw() {
     return TopicBuilder
       .name(AIR_QUALITY_RAW)
-      .replicas(3)
+      .replicas(2)
       .partitions(3)
       .build();
   }
@@ -71,7 +71,7 @@ public class KafkaTopic {
   public NewTopic airQualityProcessed() {
     return TopicBuilder
       .name(AIR_QUALITY_PROCESSED)
-      .replicas(3)
+      .replicas(2)
       .partitions(3)
       .build();
   }
@@ -80,7 +80,7 @@ public class KafkaTopic {
   public NewTopic airQualityCompacted() {
     return TopicBuilder
       .name(AIR_QUALITY_COMPACTED)
-      .replicas(3)
+      .replicas(2)
       .partitions(3)
       .compact()
       .build();

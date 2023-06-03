@@ -30,9 +30,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -55,6 +53,8 @@ public class QRGeneratorService {
 
   @Autowired
   ObjectMapper objectMapper;
+
+  private Map<String, Map<String, String>> cachedToken = new HashMap<>();
 
   static int MATRIX_WIDTH = 200;
 
@@ -129,8 +129,21 @@ public class QRGeneratorService {
       throw new QRGeneratorNotFoundException(id);
     }
     QRToken token = new QRToken(nearestTokenStartAt(), currentTokenExpiration(), id);
+    Map<String, String> cached = cachedToken.get(nearestTokenStartAt().toString());
+    if (cached != null) {
+      String cachedTokenString = cached.get(token.getQRGeneratorId().toString());
+      if (cachedTokenString != null) {
+        log.info("Use cached string token for id=" + token.getQRGeneratorId().toString() + " and startTime=" + nearestTokenStartAt());
+        return cachedTokenString;
+      }
+    }
+    cachedToken.clear();
     String stringToken = objectMapper.writeValueAsString(token);
-    return cryptographyService.encrypt(stringToken, secret);
+    String newStringToken = cryptographyService.encrypt(stringToken, secret);
+    cached = new HashMap<>();
+    cached.put(token.getQRGeneratorId().toString(), newStringToken);
+    cachedToken.put(nearestTokenStartAt().toString(), cached);
+    return newStringToken;
   }
 
   public Boolean validateQRToken(String token, UUID qrGeneratorId) throws JsonProcessingException {

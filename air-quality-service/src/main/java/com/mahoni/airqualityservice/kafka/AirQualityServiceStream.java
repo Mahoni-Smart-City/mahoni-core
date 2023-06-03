@@ -29,18 +29,28 @@ public class AirQualityServiceStream {
   KafkaTemplate<String, AirQualityProcessedSchema> kafkaTemplate;
 
   @Autowired
-  public KTable<String, AirQualityProcessedSchema> kTable(KStream<String, AirQualityProcessedSchema> kStream) {
-    KGroupedStream<String, AirQualityProcessedSchema> groupedAirQuality = kStream
-      .map((s, airQualityProcessedSchema) -> KeyValue.pair(AirQualityServiceStream.parseTableKey(airQualityProcessedSchema), airQualityProcessedSchema))
-      .groupByKey();
-
-    KTable<String, AirQualityProcessedSchema> airQualityTable = groupedAirQuality
-      .reduce((airQualityProcessedSchema, v1) -> v1, Materialized.as("air-quality-state-store"));
-
-    airQualityTable.toStream().to(KafkaTopic.AIR_QUALITY_COMPACTED);
-
-    return airQualityTable;
+  public void compactedTopic(KStream<String, AirQualityProcessedSchema> kStream) {
+    KStream<String, AirQualityProcessedSchema> airQualityCompacted = kStream
+      .map((s, airQualityProcessedSchema) -> KeyValue.pair(AirQualityServiceStream.parseTableKey(airQualityProcessedSchema), airQualityProcessedSchema));
+    airQualityCompacted.to(KafkaTopic.AIR_QUALITY_COMPACTED);
+    airQualityCompacted.toTable(Materialized.as("air-quality-state-store"));
   }
+
+//  @Autowired
+//  public KTable<String, AirQualityProcessedSchema> kTable(KStream<String, AirQualityProcessedSchema> kStream) {
+//    return kStream.toTable(Materialized.as("air-quality-state-store"));
+//  }
+//    KGroupedStream<String, AirQualityProcessedSchema> groupedAirQuality = kStream
+//      .map((s, airQualityProcessedSchema) -> KeyValue.pair(AirQualityServiceStream.parseTableKey(airQualityProcessedSchema), airQualityProcessedSchema))
+//      .groupByKey();
+//
+//    KTable<String, AirQualityProcessedSchema> airQualityTable = groupedAirQuality
+//      .reduce((airQualityProcessedSchema, v1) -> v1, Materialized.as("air-quality-state-store"));
+//
+//    airQualityTable.toStream().to(KafkaTopic.AIR_QUALITY_COMPACTED);
+
+//    return airQualityTable;
+//  }
 
   public AirQualityProcessedSchema get(String id) {
     KafkaStreams kafkaStreams =  factoryBean.getKafkaStreams();

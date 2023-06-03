@@ -4,6 +4,7 @@ import com.mahoni.schema.AirQualityRawSchema;
 import com.mahoni.userservice.dto.UserRequest;
 import com.mahoni.userservice.exception.ResourceAlreadyExistException;
 import com.mahoni.userservice.exception.ResourceNotFoundException;
+import com.mahoni.userservice.kafka.UserEventProducer;
 import com.mahoni.userservice.model.User;
 import com.mahoni.userservice.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -22,13 +23,18 @@ public class UserService {
   @Autowired
   UserRepository userRepository;
 
+  @Autowired
+  UserEventProducer userEventProducer;
+
   final Integer DEFAULT_USER_POINT = 0;
 
   public User create(UserRequest user) {
     if (userRepository.findByUsername(user.getUsername()).isPresent()) {
       throw  new ResourceAlreadyExistException(user.getUsername());
     }
-    return userRepository.save(new User(user.getUsername(), user.getName(), user.getEmail(), user.getSex(), user.getYearOfBirth(), DEFAULT_USER_POINT));
+    User savedUser = userRepository.save(new User(user.getUsername(), user.getName(), user.getEmail(), user.getSex(), user.getYearOfBirth(), DEFAULT_USER_POINT));
+    userEventProducer.send(savedUser, DEFAULT_USER_POINT, savedUser.getId().toString());
+    return savedUser;
   }
 
   public User getById(UUID id) {

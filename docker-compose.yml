@@ -21,9 +21,12 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_JMX_PORT: 9101
     image: confluentinc/cp-kafka:latest
     ports:
       - "9092:9092"
+      - "9101:9101"
     volumes:
       - ./kafka/data/kafka-1:/var/lib/kafka/data
     depends_on:
@@ -37,9 +40,12 @@ services:
       KAFKA_BROKER_ID: 2
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_JMX_PORT: 9102
     image: confluentinc/cp-kafka:latest
     ports:
       - "9093:9093"
+      - "9102:9102"
     volumes:
       - ./kafka/data/kafka-2:/var/lib/kafka/data
     depends_on:
@@ -53,9 +59,12 @@ services:
       KAFKA_BROKER_ID: 3
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_JMX_PORT: 9103
     image: confluentinc/cp-kafka:latest
     ports:
       - "9094:9094"
+      - "9103:9103"
     volumes:
       - ./kafka/data/kafka-3:/var/lib/kafka/data
     depends_on:
@@ -208,3 +217,10 @@ services:
     volumes:
       - ./cassandra-sink/kafka-connect/config:/config
       - ./cassandra-sink/kafka-connect/plugins:/data/connectors
+
+  kafka_manager:
+    image: hlebalbau/kafka-manager:stable
+    ports:
+      - "9000:9000"
+    environment:
+      ZK_HOSTS: zookeeper:2181

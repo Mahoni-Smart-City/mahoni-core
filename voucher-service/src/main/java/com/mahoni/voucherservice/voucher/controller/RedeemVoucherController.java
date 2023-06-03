@@ -1,8 +1,10 @@
 package com.mahoni.voucherservice.voucher.controller;
 
+import com.mahoni.schema.UserPointTableSchema;
 import com.mahoni.voucherservice.voucher.dto.RedeemVoucherRequest;
 import com.mahoni.voucherservice.voucher.dto.RedeemVoucherResponse;
 import com.mahoni.voucherservice.voucher.exception.RedeemVoucherNotFoundException;
+import com.mahoni.voucherservice.voucher.kafka.VoucherServiceStream;
 import com.mahoni.voucherservice.voucher.model.RedeemVoucher;
 import com.mahoni.voucherservice.voucher.model.VoucherStatus;
 import com.mahoni.voucherservice.voucher.service.RedeemVoucherService;
@@ -23,6 +25,9 @@ public class RedeemVoucherController {
 
   @Autowired
   RedeemVoucherService redeemVoucherService;
+
+  @Autowired
+  VoucherServiceStream voucherServiceStream;
 
   @PostMapping
   public ResponseEntity<RedeemVoucherResponse> post(@Valid @RequestBody RedeemVoucherRequest request) {
@@ -61,5 +66,11 @@ public class RedeemVoucherController {
       redeemVoucher.getRedeemedAt(),
       redeemVoucher.getExpiredAt()
     );
+  }
+
+  @GetMapping("/point/{id}")
+  public ResponseEntity<Object> getPoint(@PathVariable("id") String id) {
+      UserPointTableSchema updatedUser = voucherServiceStream.get(id);
+      return ResponseEntity.ok(updatedUser.getPoint());
   }
 }
