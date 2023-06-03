@@ -10,18 +10,19 @@ spring:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
     hibernate.ddl-auto: update
   kafka:
-    bootstrap.servers: localhost:9092
+    bootstrap.servers: localhost:9092,localhost:9093,localhost:9094
     schema.registry.url: http://localhost:8081
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       properties:
         schema.registry.url: http://localhost:8081
     consumer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      auto-offset-reset: earliest
       properties:
         schema.registry.url: http://localhost:8081
         specific.avro.reader: true
@@ -102,6 +103,7 @@ spring:
       bootstrap-servers: ${spring.kafka.bootstrap.servers}
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      auto-offset-reset: earliest
       properties:
         schema.registry.url: ${spring.kafka.schema.registry.url}
         specific.avro.reader: true
