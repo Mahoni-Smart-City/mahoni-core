@@ -5,14 +5,16 @@
     "plugin.name": "pgoutput",
     "database.hostname": "34.128.102.22",
     "database.port": "5432",
-    "database.user": "postgres",
-    "database.password": "mahonitest123",
+    "database.user": "mahoni",
+    "database.password": "mahoni",
     "database.dbname": "mahoni",
     "database.server.name": "postgres",
     "key.converter": "io.confluent.connect.avro.AvroConverter",
     "value.converter": "io.confluent.connect.avro.AvroConverter",
     "publication.autocreate.mode": "all_tables",
     "key.converter.schema.registry.url": "http://34.128.127.171:8081",
-    "value.converter.schema.registry.url": "http://34.128.127.171:8081"
+    "value.converter.schema.registry.url": "http://34.128.127.171:8081",
+    "transforms": "unwrap",
+    "transforms.unwrap.type":"io.debezium.transforms.ExtractNewRecordState"
   }
 }
