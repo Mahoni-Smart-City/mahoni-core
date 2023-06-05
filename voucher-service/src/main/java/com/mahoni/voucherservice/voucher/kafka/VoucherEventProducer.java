@@ -24,11 +24,11 @@ public class VoucherEventProducer {
 
   public void send(RedeemVoucher redeemVoucher) {
 
-    String id = UUID.randomUUID().toString();
     long now = System.currentTimeMillis();
 
+    // Event id = RedeemVoucher id
     VoucherRedeemedSchema event = VoucherRedeemedSchema.newBuilder()
-      .setEventId(id)
+      .setEventId(redeemVoucher.getId().toString())
       .setTimestamp(now)
       .setVoucherId(redeemVoucher.getVoucher().getId().toString())
       .setUserId(redeemVoucher.getUserId().toString())
@@ -39,7 +39,7 @@ public class VoucherEventProducer {
       .build();
 
     log.info("Sending event to " + KafkaTopic.VOUCHER_REDEEMED_TOPIC + " with payload: " + event.toString());
-    kafkaTemplate.send(new ProducerRecord<>(KafkaTopic.VOUCHER_REDEEMED_TOPIC, partition(event.getUserId()), id, event));
+    kafkaTemplate.send(new ProducerRecord<>(KafkaTopic.VOUCHER_REDEEMED_TOPIC, partition(event.getUserId()), redeemVoucher.getId().toString(), event));
   }
 
   private int partition(String identifier) {
