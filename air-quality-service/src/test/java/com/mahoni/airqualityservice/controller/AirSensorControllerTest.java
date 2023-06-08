@@ -29,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(AirSensorController.class)
 public class AirSensorControllerTest {
+
   @Autowired
   private MockMvc mockMvc;
 
@@ -39,6 +40,7 @@ public class AirSensorControllerTest {
   private AirSensorService airSensorService;
 
   AirSensor airSensor;
+
   AirSensorRequest request;
 
   @BeforeEach
@@ -48,9 +50,9 @@ public class AirSensorControllerTest {
     location.setId(id);
     airSensor = new AirSensor();
     airSensor.setId(id);
-    airSensor.setNameLocation("Test");
+    airSensor.setLocationName("Test");
     airSensor.setLocation(location);
-    request = new AirSensorRequest(id, "Test", id);
+    request = new AirSensorRequest("1", "Test", "1");
   }
 
   @Test
@@ -105,7 +107,7 @@ public class AirSensorControllerTest {
   }
 
   @Test
-  public void testGetById_thenReturnAirSensorNotFound() throws Exception {
+  public void testGetById_thenThrowAirSensorNotFound() throws Exception {
     when(airSensorService.getById(any())).thenThrow(AirSensorNotFoundException.class);
 
     this.mockMvc.perform(get("/api/v1/air-sensors/{id}", 1L))
@@ -126,7 +128,7 @@ public class AirSensorControllerTest {
   }
 
   @Test
-  public void testDelete_thenReturnAirSensorNotFound() throws Exception {
+  public void testDelete_thenThrowAirSensorNotFound() throws Exception {
     when(airSensorService.deleteById(any())).thenThrow(AirSensorNotFoundException.class);
 
     this.mockMvc.perform(delete("/api/v1/air-sensors/{id}", 1L))
@@ -149,7 +151,7 @@ public class AirSensorControllerTest {
   }
 
   @Test
-  public void testUpdate_thenReturnAirSensorNotFound() throws Exception {
+  public void testUpdate_thenThrowAirSensorNotFound() throws Exception {
     when(airSensorService.update(any(), any())).thenThrow(AirSensorNotFoundException.class);
 
     this.mockMvc.perform(put("/api/v1/air-sensors/{id}", 1L)

@@ -8,6 +8,8 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.KTable;
+import org.apache.kafka.streams.kstream.Materialized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,7 @@ import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
 import org.springframework.kafka.config.KafkaStreamsConfiguration;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG;
@@ -29,9 +32,9 @@ import static org.apache.kafka.streams.StreamsConfig.*;
 @EnableKafkaStreams
 public class KafkaConfiguration {
 
-  @Value("${spring.kafka.bootstrap.servers}")
-  private String bootstrapAddress;
-  @Value("${spring.kafka.schema.registry.url}")
+  @Value("${spring.kafka.bootstrap-servers}")
+  private List<String> bootstrapAddress;
+  @Value("${spring.kafka.properties.schema.registry.url}")
   private String schemaRegistryUrl;
   private static final Serde<String> stringSerde = Serdes.String();
   private static final SpecificAvroSerde<UserPointSchema> avroSerde =  new SpecificAvroSerde<>();
@@ -53,7 +56,7 @@ public class KafkaConfiguration {
 
   @Autowired
   @Bean
-  public KStream<String, UserPointTableSchema> buildPipelineUserPoint(StreamsBuilder streamsBuilder) {
+  public KTable<String, UserPointTableSchema> buildPipelineUserPoint(StreamsBuilder streamsBuilder) {
     Map<String, Object> props = new HashMap<>();
     props.put(SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
     Serde<String> stringSerde = Serdes.String();
@@ -62,6 +65,6 @@ public class KafkaConfiguration {
     avroSerde.configure(props, false);
 
     return streamsBuilder
-      .stream(USER_POINT_COMPACTED_TOPIC, Consumed.with(stringSerde, avroSerde));
+      .table(USER_POINT_COMPACTED_TOPIC, Consumed.with(stringSerde, avroSerde), Materialized.as("user-point-state-store"));
   }
 }

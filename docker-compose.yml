@@ -21,9 +21,12 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_JMX_PORT: 9101
     image: confluentinc/cp-kafka:latest
     ports:
       - "9092:9092"
+      - "9101:9101"
     volumes:
       - ./kafka/data/kafka-1:/var/lib/kafka/data
     depends_on:
@@ -37,9 +40,12 @@ services:
       KAFKA_BROKER_ID: 2
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_JMX_PORT: 9102
     image: confluentinc/cp-kafka:latest
     ports:
       - "9093:9093"
+      - "9102:9102"
     volumes:
       - ./kafka/data/kafka-2:/var/lib/kafka/data
     depends_on:
@@ -53,9 +59,12 @@ services:
       KAFKA_BROKER_ID: 3
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_JMX_PORT: 9103
     image: confluentinc/cp-kafka:latest
     ports:
       - "9094:9094"
+      - "9103:9103"
     volumes:
       - ./kafka/data/kafka-3:/var/lib/kafka/data
     depends_on:
@@ -113,14 +122,14 @@ services:
     ports:
       - "5435:5435/tcp"
 
-#  user-service:
-#    environment:
-#      SPRING_PROFILES_ACTIVE: docker
-#    image: zsaschz/user-service:1.0-SNAPSHOT
-#    depends_on:
-#      - user-db
-#    ports:
-#      - "8080:8080"
+  #  user-service:
+  #    environment:
+  #      SPRING_PROFILES_ACTIVE: docker
+  #    image: zsaschz/user-service:1.0-SNAPSHOT
+  #    depends_on:
+  #      - user-db
+  #    ports:
+  #      - "8080:8080"
 
 
   kafka-schema-registry:
@@ -142,16 +151,19 @@ services:
     restart: always
     image: debezium/connect:1.9
     environment:
-      BOOTSTRAP_SERVERS: kafka:29092
+      BOOTSTRAP_SERVERS: kafka:29092,kafka-2:29092,kafka-3:29092
       GROUP_ID: 1
       CONFIG_STORAGE_TOPIC: connect_configs
       OFFSET_STORAGE_TOPIC: connect_offsets
       KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
       VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_TOPIC_CREATION_ENABLE: true
       CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
       CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
     depends_on:
       - kafka
+      - kafka-2
+      - kafka-3
       - kafka-schema-registry
     ports:
       - "8083:8083"
@@ -165,5 +177,50 @@ services:
     restart: always
     environment:
       KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: PLAINTEXT://kafka:29092
-      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://kafka-schema-registry:8081/
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092,kafka-2:29092,kafka-3:29092
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://kafka-schema-registry:8081
+
+  cassandra-db:
+    image: cassandra:latest
+    container_name: cassandra
+    ports:
+      - "9042:9042"
+    volumes:
+      - ./cassandra:/var/lib/cassandra
+
+  kafka-connect:
+    image: confluentinc/cp-kafka-connect
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:29092,PLAINTEXT://kafka-2:29092,PLAINTEXT://kafka-3:29092
+      CONNECT_GROUP_ID: kafka-connect-group-id
+      CONNECT_REST_ADVERTISED_HOST_NAME: kafka-connect
+      CONNECT_REST_ADVERTISED_PORT: 8084
+      CONNECT_CONFIG_STORAGE_TOPIC: kafka-connect-configs
+      CONNECT_OFFSET_STORAGE_TOPIC: kafka-connect-offsets
+      CONNECT_STATUS_STORAGE_TOPIC: kafka-connect-status
+      CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081
+      CONNECT_CASSANDRA_KEY_SPACE: mahoni
+      CONNECT_CASSANDRA_HOST: "cassandra-db"
+      CONNECT_CASSANDRA_PORT: 9042
+      CONNECT_PLUGIN_PATH: '/usr/share/java,/usr/share/confluent-hub-components/,/data/connectors'
+    ports:
+      - "9090:9090"
+      - "8888:8083"
+    depends_on:
+      - kafka
+      - kafka-2
+      - kafka-3
+      - zookeeper
+    volumes:
+      - ./cassandra-sink/kafka-connect/config:/config
+      - ./cassandra-sink/kafka-connect/plugins:/data/connectors
+
+  kafka_manager:
+    image: hlebalbau/kafka-manager:stable
+    ports:
+      - "9000:9000"
+    environment:
+      ZK_HOSTS: zookeeper:2181

@@ -9,20 +9,22 @@ spring:
     hibernate:
       ddl-auto: update
   kafka:
-    bootstrap.servers: localhost:9092
-    schema.registry.url: http://localhost:8081
+    bootstrap-servers: 34.128.127.171:9092,34.128.127.171:9093,34.128.127.171:9094
+    properties:
+      schema.registry.url: http://34.128.127.171:8081
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: 34.128.127.171:9092,34.128.127.171:9093,34.128.127.171:9094
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       properties:
-        schema.registry.url: http://localhost:8081
+        schema.registry.url: http://34.128.127.171:8081
     consumer:
-      bootstrap-servers: localhost:9092
+      group-id: user-service-group-id
+      bootstrap-servers: 34.128.127.171:9092,34.128.127.171:9093,34.128.127.171:9094
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
       properties:
-        schema.registry.url: http://localhost:8081
+        schema.registry.url: http://34.128.127.171:8081
         specific.avro.reader: true
 management:
   endpoints:
@@ -38,7 +40,7 @@ management:
     prometheus:
       enabled: true
 server:
-  port: 8080
+  port: 8088
   error:
     include-message: ALWAYS
 logging:
@@ -54,6 +56,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   kafka:
     bootstrap.servers: "PLAINTEXT://kafka:29092"
+    schema.registry.url: http://kafka-schema-registry:8081
     producer:
       bootstrap-servers: "PLAINTEXT://kafka:29092"
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -66,4 +69,34 @@ spring:
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
       properties:
         schema.registry.url: http://kafka-schema-registry:8081
+        specific.avro.reader: true
+---
+postgres:
+  port: 5432
+  host: user-db
+  database: mahoni
+  user: mahonitest123
+  password: mahonitest123
+server:
+  port: 8080
+spring:
+  config.activate.on-profile: cloud
+  datasource:
+    url: jdbc:postgresql://${postgres.host:localhost}:${postgres.port}/${postgres.database}?user=${postgres.user}&password=${postgres.password}
+    driver-class-name: org.postgresql.Driver
+  kafka:
+    bootstrap-servers: 34.128.127.171:9092,34.128.127.171:9093,34.128.127.171:9094
+    schema.registry.url: http://34.128.127.171:8081
+    producer:
+      bootstrap-servers: ${spring.kafka.bootstrap-servers}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: ${spring.kafka.schema.registry.url}
+    consumer:
+      bootstrap-servers: ${spring.kafka.bootstrap-servers}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        schema.registry.url: ${spring.kafka.schema.registry.url}
         specific.avro.reader: true

@@ -48,7 +48,8 @@ public class UserEventListener {
     if (user.sufficientPoint(voucher.getPoint())) {
       user.subtractPoint(voucher.getPoint());
       userRepository.save(user);
-      eventProducer.send(user, -voucher.getPoint(), voucher.getVoucherId());
+      // Event id = RedeemVoucher  id
+      eventProducer.send(user, -voucher.getPoint(), voucher.getEventId());
     }
   }
 }

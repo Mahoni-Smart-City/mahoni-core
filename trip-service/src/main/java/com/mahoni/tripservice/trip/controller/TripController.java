@@ -44,11 +44,7 @@ public class TripController {
 
   @GetMapping("/history/{userId}")
   public ResponseEntity<List<Trip>> getHistoryByUserId(@PathVariable("userId") UUID userId) {
-    try {
-      return ResponseEntity.ok(tripService.getAllByUserId(userId));
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
+    return ResponseEntity.ok(tripService.getAllByUserId(userId));
   }
 
   @GetMapping("/latest-trip/{userId}")

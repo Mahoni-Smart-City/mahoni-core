@@ -3,6 +3,7 @@ package com.mahoni.userservice.service;
 import com.mahoni.userservice.dto.UserRequest;
 import com.mahoni.userservice.exception.ResourceAlreadyExistException;
 import com.mahoni.userservice.exception.ResourceNotFoundException;
+import com.mahoni.userservice.model.Sex;
 import com.mahoni.userservice.model.User;
 import com.mahoni.userservice.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -36,9 +38,9 @@ class UserServiceTest {
   ArgumentCaptor<User> userArgumentCaptor;
 
   @Test
-  public void testGivenUserRequest_thenSaveUser() throws Exception {
-    UserRequest request = new UserRequest("Test", "Test", "Test@mail.com" );
-    User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
+  public void testGivenUserRequest_thenSaveUser() {
+    UserRequest request = new UserRequest("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000);
+    User user = new User("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, userService.DEFAULT_USER_POINT);
 
     when(userRepository.findByUsername(any())).thenReturn(Optional.empty());
     when(userRepository.save(any())).thenReturn(user);
@@ -49,21 +51,19 @@ class UserServiceTest {
   }
 
   @Test
-  public void testGivenUserRequest_thenThrowResourceAlreadyExist() throws Exception {
-    UserRequest request = new UserRequest("Test", "Test", "Test@mail.com" );
-    User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
+  public void testGivenUserRequest_thenThrowResourceAlreadyExist() {
+    UserRequest request = new UserRequest("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000);
+    User user = new User("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, userService.DEFAULT_USER_POINT);
 
     when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
 
-    assertThrows(ResourceAlreadyExistException.class, () -> {
-      userService.create(request);
-    });
+    assertThrows(ResourceAlreadyExistException.class, () -> userService.create(request));
   }
 
   @Test
-  public void testGivenId_thenReturnUser() throws Exception {
+  public void testGivenId_thenReturnUser() {
     UUID id = UUID.randomUUID();
-    User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
+    User user = new User("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, userService.DEFAULT_USER_POINT);
 
     when(userRepository.findById(any())).thenReturn(Optional.of(user));
     User savedUser = userService.getById(id);
@@ -73,19 +73,17 @@ class UserServiceTest {
   }
 
   @Test
-  public void testGivenId_thenThrowResourceNotFound() throws Exception {
+  public void testGivenId_thenThrowResourceNotFound() {
     UUID id = UUID.randomUUID();
 
     when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-    assertThrows(ResourceNotFoundException.class, () -> {
-      userService.getById(id);
-    });
+    assertThrows(ResourceNotFoundException.class, () -> userService.getById(id));
   }
 
   @Test
-  public void testGetAll_thenReturnUsers() throws Exception {
-    User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
+  public void testGetAll_thenReturnUsers() {
+    User user = new User("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, userService.DEFAULT_USER_POINT);
     List<User> users = new ArrayList<>();
     users.add(user);
 
@@ -97,9 +95,9 @@ class UserServiceTest {
   }
 
   @Test
-  public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedUser() throws Exception {
+  public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedUser() {
     UUID id = UUID.randomUUID();
-    User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
+    User user = new User("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, userService.DEFAULT_USER_POINT);
 
     when(userRepository.findById(any())).thenReturn(Optional.of(user));
     User deletedUser = userService.deleteById(id);
@@ -109,22 +107,20 @@ class UserServiceTest {
   }
 
   @Test
-  public void testGivenIdToBeDeleted_thenThrowResourceNotFound() throws Exception {
+  public void testGivenIdToBeDeleted_thenThrowResourceNotFound() {
     UUID id = UUID.randomUUID();
 
     when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-    assertThrows(ResourceNotFoundException.class, () -> {
-      userService.deleteById(id);
-    });
+    assertThrows(ResourceNotFoundException.class, () -> userService.deleteById(id));
   }
 
   @Test
-  public void testGivenIdAndUserRequest_thenUpdateAndReturnUpdatedUser() throws Exception {
+  public void testGivenIdAndUserRequest_thenUpdateAndReturnUpdatedUser() {
     UUID id = UUID.randomUUID();
-    UserRequest request = new UserRequest("Test2", "Test", "Test@mail.com" );
-    User user = new User("Test", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
-    User expectedUser = new User("Test2", "Test", "Test@mail.com", userService.DEFAULT_USER_POINT);
+    UserRequest request = new UserRequest("Test2", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000);
+    User user = new User("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, userService.DEFAULT_USER_POINT);
+    User expectedUser = new User("Test2", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, userService.DEFAULT_USER_POINT);
 
     when(userRepository.findById(any())).thenReturn(Optional.of(user));
     when(userRepository.save(any())).thenReturn(expectedUser);
@@ -136,14 +132,12 @@ class UserServiceTest {
   }
 
   @Test
-  public void testGivenIdAndUserRequest_thenThrowResourceNotFound() throws Exception {
+  public void testGivenIdAndUserRequest_thenThrowResourceNotFound() {
     UUID id = UUID.randomUUID();
-    UserRequest request = new UserRequest("Test2", "Test", "Test@mail.com" );
+    UserRequest request = new UserRequest("Test2", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000);
 
     when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-    assertThrows(ResourceNotFoundException.class, () -> {
-      userService.update(id, request);
-    });
+    assertThrows(ResourceNotFoundException.class, () -> userService.update(id, request));
   }
 }

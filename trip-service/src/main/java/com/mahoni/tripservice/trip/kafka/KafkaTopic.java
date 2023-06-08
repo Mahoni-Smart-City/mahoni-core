@@ -9,6 +9,7 @@ import org.springframework.kafka.config.TopicBuilder;
 public class KafkaTopic {
 
   static String TRIP_TOPIC = "trip-topic";
+  static int TRIP_TOPIC_PARTITION = 3;
 
 //  @Bean
 //  public NewTopic tripCompletedTopic() {

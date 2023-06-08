@@ -7,15 +7,15 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "AIR_QUALITY_RAW")
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 public class AirQuality {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private Long id;
 
-    @Column
+    @Id
     private String sensorId;
 
     @Column

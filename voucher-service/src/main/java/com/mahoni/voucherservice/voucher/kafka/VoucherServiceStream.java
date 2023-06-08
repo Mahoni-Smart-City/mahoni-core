@@ -17,10 +17,10 @@ public class VoucherServiceStream {
   @Autowired
   StreamsBuilderFactoryBean factoryBean;
 
-  @Autowired
-  public KTable<String, UserPointTableSchema> kTable(KStream<String, UserPointTableSchema> kStream) {
-    return kStream.toTable(Materialized.as("user-point-state-store"));
-  }
+//  @Autowired
+//  public KTable<String, UserPointTableSchema> kTable(KStream<String, UserPointTableSchema> kStream) {
+//    return kStream.toTable(Materialized.as("user-point-state-store"));
+//  }
 
   public UserPointTableSchema get(String id) {
     KafkaStreams kafkaStreams =  factoryBean.getKafkaStreams();

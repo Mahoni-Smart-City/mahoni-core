@@ -1,0 +1,13 @@
+{
+  "name": "trip-sink",
+  "config": {
+    "connector.class": "com.datamountaineer.streamreactor.connect.cassandra.sink.CassandraSinkConnector",
+    "topics": "postgres.public.qr_generators",
+    "connect.cassandra.host": "34.101.129.28",
+    "connect.cassandra.port": "9042",
+    "connect.cassandra.key.space": "mahoni",
+    "connect.cassandra.table": "qr_generators ",
+    "connect.cassandra.contact.points": "34.101.129.28",
+    "connect.cassandra.kcql": "INSERT INTO qr_generators SELECT id, location, type FROM postgres.public.qr_generators"
+  }
+}

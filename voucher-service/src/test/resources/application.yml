@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:12.9-alpine:///spring_boot_testcontainers
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create
+  test:
+    database:
+      replace: none
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+      group-id: voucher-service-group-id
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: com.mahoni.voucherservice.voucher.mock.CustomKafkaAvroDeserializer
+      properties:
+        schema.registry.url: mock://not-used
+        specific.avro.reader: true
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: com.mahoni.voucherservice.voucher.mock.CustomKafkaAvroSerializer
+      properties:
+        schema.registry.url: mock://not-used
+    properties:
+      schema.registry.url: mock://not-used
+  voucher:
+    transaction-failed-duration: 10
+  security:
+    token.secret: 576E5A7234753778214125442A472D4B6150645367566B58703273357638792F

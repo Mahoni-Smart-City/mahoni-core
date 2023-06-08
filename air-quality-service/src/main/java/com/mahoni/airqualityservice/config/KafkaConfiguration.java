@@ -1,7 +1,7 @@
 package com.mahoni.airqualityservice.config;
 
 import com.mahoni.airqualityservice.kafka.KafkaTopic;
-import com.mahoni.schema.AirQualityProcessedSchema;
+import com.mahoni.flink.schema.AirQualityProcessedSchema;
 import com.mahoni.schema.UserPointSchema;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import org.apache.kafka.common.serialization.Serde;
@@ -19,6 +19,7 @@ import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
 import org.springframework.kafka.config.KafkaStreamsConfiguration;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG;
@@ -30,9 +31,9 @@ import static org.apache.kafka.streams.StreamsConfig.*;
 @EnableKafkaStreams
 public class KafkaConfiguration {
 
-  @Value("${spring.kafka.bootstrap.servers}")
-  private String bootstrapAddress;
-  @Value("${spring.kafka.schema.registry.url}")
+  @Value("${spring.kafka.bootstrap-servers}")
+  private List<String> bootstrapAddress;
+  @Value("${spring.kafka.properties.schema.registry.url}")
   private String schemaRegistryUrl;
   private static final Serde<String> stringSerde = Serdes.String();
   private static final SpecificAvroSerde<UserPointSchema> avroSerde =  new SpecificAvroSerde<>();

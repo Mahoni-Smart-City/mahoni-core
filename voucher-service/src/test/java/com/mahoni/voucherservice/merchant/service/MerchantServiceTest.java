@@ -125,8 +125,22 @@ class MerchantServiceTest {
   }
 
   @Test
-  public void testGetAll_thenReturnMerchants() {
+  public void testGetAll_thenReturnMerchantsOnly() {
     List<Merchant> merchants = new ArrayList<>();
+    merchants.add(merchant);
+
+    when(merchantRepository.findAllByRole(MerchantRole.MERCHANT)).thenReturn(merchants);
+    List<Merchant> savedMerchants = merchantService.getAll();
+
+    assertEquals(savedMerchants, merchants);
+    verify(merchantRepository).findAllByRole(any());
+  }
+
+  @Test
+  public void testGetAll_thenReturnMerchantsAndAdmin() {
+    setAdmin();
+    List<Merchant> merchants = new ArrayList<>();
+    merchant.setRole(MerchantRole.ADMIN);
     merchants.add(merchant);
 
     when(merchantRepository.findAll()).thenReturn(merchants);

@@ -42,6 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(JwtTokenUtil.class)
 @WebMvcTest(VoucherController.class)
 public class VoucherControllerTest {
+
   @Autowired
   private MockMvc mockMvc;
 
@@ -55,8 +56,11 @@ public class VoucherControllerTest {
   private VoucherService voucherService;
 
   private Merchant merchant;
+
   private Voucher voucher;
+
   private VoucherRequest request;
+
   private VoucherResponse response;
 
   @BeforeEach
@@ -64,13 +68,13 @@ public class VoucherControllerTest {
     UUID id = UUID.randomUUID();
     LocalDateTime time = LocalDateTime.now();
     merchant = new Merchant(id, "Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
-    request = new VoucherRequest("Test", "Test", VoucherType.FNB, 1, time, time);
-    voucher = new Voucher(id, "Test", "Test", VoucherType.FNB, 1, time, time, merchant, 0);
+    request = new VoucherRequest("Test", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, time, time);
+    voucher = new Voucher(id, "Test", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, time, time, merchant, 0);
     response = new VoucherResponse();
     response.setId(id);
     response.setName("Test");
     response.setDescription("Test");
-    response.setType(VoucherType.FNB);
+    response.setType(VoucherType.FOOD_AND_BEVERAGES);
     response.setPoint(1);
     response.setStartAt(time);
     response.setExpiredAt(time);

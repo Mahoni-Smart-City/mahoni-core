@@ -1,0 +1,44 @@
+version: "3.3"
+
+services:
+  debezium:
+    restart: always
+    image: debezium/connect:1.9
+    environment:
+      BOOTSTRAP_SERVERS:  PLAINTEXT://34.128.127.171:9092,PLAINTEXT://34.128.127.171:9093,PLAINTEXT://34.128.127.171:9094
+      GROUP_ID: debezium-group-id
+      CONFIG_STORAGE_TOPIC: debezium-connect-configs
+      OFFSET_STORAGE_TOPIC: debezium-connect-offsets
+      STATUS_STORAGE_TOPIC: debezium-connect-status
+      KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
+      VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_TOPIC_CREATION_ENABLE: true
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://34.128.127.171:8081
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://34.128.127.171:8081
+    ports:
+      - "8083:8083"
+
+  kafka-connect:
+    image: confluentinc/cp-kafka-connect
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: PLAINTEXT://34.128.127.171:9092,PLAINTEXT://34.128.127.171:9093,PLAINTEXT://34.128.127.171:9094
+      CONNECT_GROUP_ID: kafka-connect-group-id
+      CONNECT_REST_ADVERTISED_HOST_NAME: kafka-connect
+      CONNECT_REST_ADVERTISED_PORT: 8084
+      CONNECT_CONFIG_STORAGE_TOPIC: kafka-connect-configs
+      CONNECT_OFFSET_STORAGE_TOPIC: kafka-connect-offsets
+      CONNECT_STATUS_STORAGE_TOPIC: kafka-connect-status
+      CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://34.128.127.171:8081
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://34.128.127.171:8081
+      CONNECT_CASSANDRA_KEY_SPACE: mahoni
+      CONNECT_CASSANDRA_HOST: "cassandra-db"
+      CONNECT_CASSANDRA_PORT: 9042
+      CONNECT_PLUGIN_PATH: '/usr/share/java,/usr/share/confluent-hub-components/,/data/connectors'
+    ports:
+      - "9090:9090"
+      - "8888:8083"
+    volumes:
+      - ./cassandra-sink/kafka-connect/config:/config
+      - ./cassandra-sink/kafka-connect/plugins:/data/connectors

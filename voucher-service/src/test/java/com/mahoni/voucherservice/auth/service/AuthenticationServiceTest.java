@@ -19,6 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -47,9 +48,9 @@ public class AuthenticationServiceTest {
   @Test
   public void testGivenMerchantRequest_thenRegisterMerchant() {
     MerchantRequest request = new MerchantRequest("Test", "Test", "Test@mail.com", "Test");
-    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
+    Merchant merchant = new Merchant(UUID.randomUUID(), "Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
     String token = "Test";
-    AuthenticationResponse response = new AuthenticationResponse("Test");
+    AuthenticationResponse response = new AuthenticationResponse("Test", merchant.getId());
 
     when(merchantRepository.findByUsername(any())).thenReturn(Optional.empty());
     when(passwordEncoder.encode(any())).thenReturn("Test");
@@ -77,9 +78,9 @@ public class AuthenticationServiceTest {
   public void testGivenAuthenticationRequest_thenAuthenticateMerchant() {
     AuthenticationRequest request = new AuthenticationRequest("Test", "Test");
     UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken("Test", "Test");
-    Merchant merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
+    Merchant merchant = new Merchant(UUID.randomUUID(), "Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
     String token = "Test";
-    AuthenticationResponse response = new AuthenticationResponse("Test");
+    AuthenticationResponse response = new AuthenticationResponse("Test", merchant.getId());
 
     when(authenticationManager.authenticate(any())).thenReturn(auth);
     when(merchantRepository.findByUsername(any())).thenReturn(Optional.of(merchant));

@@ -4,9 +4,7 @@ import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.kafka.config.TopicBuilder;
-import org.springframework.stereotype.Component;
 
 @Configuration
 @EnableKafka
@@ -16,16 +14,18 @@ public class KafkaTopic {
   public static String USER_POINT_TOPIC = "user-point-topic";
   public static String VOUCHER_REDEEMED_TOPIC = "voucher-redeemed-topic";
   public static String TRIP_TOPIC = "trip-topic";
-  public static String AIR_QUALITY_RAW = "air-quality-raw";
-  public static String AIR_QUALITY_PROCESSED = "air-quality-processed";
-  public static String AIR_QUALITY_COMPACTED = "air-quality-compacted";
+  public static String AIR_QUALITY_RAW = "air-quality-raw-topic";
+  public static String AIR_QUALITY_PROCESSED = "air-quality-processed-topic";
+  public static String AIR_QUALITY_COMPACTED = "air-quality-compacted-topic";
+
+  public static int USER_POINT_TOPIC_PARTITION = 3;
 
 
   @Bean
   public NewTopic userPointCompacted() {
     return TopicBuilder
       .name(USER_POINT_COMPACTED_TOPIC)
-      .replicas(3)
+      .replicas(2)
       .partitions(3)
       .compact()
       .build();
@@ -35,7 +35,7 @@ public class KafkaTopic {
   public NewTopic userPoint() {
     return TopicBuilder
       .name(USER_POINT_TOPIC)
-      .replicas(3)
+      .replicas(2)
       .partitions(3)
       .build();
   }
@@ -44,7 +44,7 @@ public class KafkaTopic {
   public NewTopic tripCompletedTopic() {
     return TopicBuilder
       .name(TRIP_TOPIC)
-      .replicas(3)
+      .replicas(2)
       .partitions(3)
       .build();
   }
@@ -53,7 +53,7 @@ public class KafkaTopic {
   public NewTopic voucherRedeemedTopic() {
     return TopicBuilder
       .name(VOUCHER_REDEEMED_TOPIC)
-      .replicas(3)
+      .replicas(2)
       .partitions(3)
       .build();
   }
@@ -62,7 +62,7 @@ public class KafkaTopic {
   public NewTopic airQualityRaw() {
     return TopicBuilder
       .name(AIR_QUALITY_RAW)
-      .replicas(3)
+      .replicas(2)
       .partitions(3)
       .build();
   }
@@ -71,7 +71,7 @@ public class KafkaTopic {
   public NewTopic airQualityProcessed() {
     return TopicBuilder
       .name(AIR_QUALITY_PROCESSED)
-      .replicas(3)
+      .replicas(2)
       .partitions(3)
       .build();
   }
@@ -80,7 +80,7 @@ public class KafkaTopic {
   public NewTopic airQualityCompacted() {
     return TopicBuilder
       .name(AIR_QUALITY_COMPACTED)
-      .replicas(3)
+      .replicas(2)
       .partitions(3)
       .compact()
       .build();

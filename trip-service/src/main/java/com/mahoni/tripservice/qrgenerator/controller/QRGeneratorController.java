@@ -102,4 +102,13 @@ public class QRGeneratorController {
   public ResponseEntity<List<QRGeneratorNode>> shortestPath(@RequestParam("node1") UUID node1, @RequestParam("node2") UUID node2 ) {
     return ResponseEntity.ok(qrGeneratorService.shortestPathBetweenNodes(node1, node2));
   }
+
+  @GetMapping("/decode-qr")
+  public ResponseEntity<String> decodeQR(@RequestParam("data") String data) {
+    try {
+      return ResponseEntity.ok(QRGeneratorService.decodeQRCodeImage(data));
+    } catch (Exception e) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    }
+  }
 }

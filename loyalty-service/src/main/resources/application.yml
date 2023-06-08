@@ -1,0 +1,109 @@
+spring:
+  datasource:
+    url: jdbc:h2:file:./data/loyaltyservice
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  h2:
+    console.enabled: true
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    hibernate.ddl-auto: update
+  kafka:
+    bootstrap.servers: localhost:9092,localhost:9093,localhost:9094
+    schema.registry.url: http://localhost:8081
+    producer:
+      bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: http://localhost:8081
+    consumer:
+      bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      auto-offset-reset: earliest
+      properties:
+        schema.registry.url: http://localhost:8081
+        specific.avro.reader: true
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+server:
+  port: 8080
+  error:
+    include-message: ALWAYS
+logging:
+  level:
+    com: INFO
+---
+spring:
+  config.activate.on-profile: docker
+  datasource:
+    url: jdbc:h2:file:./data/loyaltyservice
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  h2:
+    console.enabled: true
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    hibernate.ddl-auto: update
+  kafka:
+    bootstrap.servers: "PLAINTEXT://kafka:29092"
+    schema.registry.url: http://kafka-schema-registry:8081
+    producer:
+      bootstrap-servers: "PLAINTEXT://kafka:29092"
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: http://kafka-schema-registry:8081
+    consumer:
+      bootstrap-servers: "PLAINTEXT://kafka:29092"
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        schema.registry.url: http://kafka-schema-registry:8081
+        specific.avro.reader: true
+---
+server:
+  port: 8080
+spring:
+  config.activate.on-profile: cloud
+  datasource:
+    url: jdbc:h2:file:./data/loyaltyservice
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  h2:
+    console.enabled: true
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    hibernate.ddl-auto: update
+  kafka:
+    bootstrap.servers: 34.129.184.97:9092,34.129.184.97:9093,34.129.184.97:9094
+    schema.registry.url: http://34.129.184.97:8081
+    producer:
+      bootstrap-servers: ${spring.kafka.bootstrap.servers}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: ${spring.kafka.schema.registry.url}
+    consumer:
+      bootstrap-servers: ${spring.kafka.bootstrap.servers}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      auto-offset-reset: earliest
+      properties:
+        schema.registry.url: ${spring.kafka.schema.registry.url}
+        specific.avro.reader: true

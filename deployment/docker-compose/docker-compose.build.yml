@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+
+  trip-service:
+    build: .
+    image: zsaschz/trip-service:1.0-SNAPSHOT
+
+  voucher-service:
+    build: .
+    image: zsaschz/voucher-service:1.0-SNAPSHOT
+
+  air-quality-service:
+    build: .
+    image: zsaschz/air-quality-service:1.0-SNAPSHOT
+
+  user-service:
+    build: .
+    image: zsaschz/user-service:1.0-SNAPSHOT
+
+  loyalty-service:
+      build: .
+      image: zsaschz/loyalty-service:1.0-SNAPSHOT
+
+  stream-data-generator:
+    build: .
+    image: zsaschz/stream-data-generator:1.0-SNAPSHOT

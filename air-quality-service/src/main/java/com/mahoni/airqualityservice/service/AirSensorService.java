@@ -4,6 +4,7 @@ import com.mahoni.airqualityservice.dto.AirSensorRequest;
 import com.mahoni.airqualityservice.exception.AirSensorAlreadyExistException;
 import com.mahoni.airqualityservice.exception.AirSensorNotFoundException;
 import com.mahoni.airqualityservice.exception.LocationNotFoundException;
+import com.mahoni.airqualityservice.kafka.AirQualityServiceStream;
 import com.mahoni.airqualityservice.model.AirSensor;
 import com.mahoni.airqualityservice.model.Location;
 import com.mahoni.airqualityservice.repository.AirSensorRepository;
@@ -12,8 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -25,17 +25,20 @@ public class AirSensorService {
   @Autowired
   LocationRepository locationRepository;
 
+  @Autowired
+  AirQualityServiceStream airQualityServiceStream;
+
   public AirSensor create(AirSensorRequest airSensor) {
-    Optional<Location> location = locationRepository.findById(airSensor.getIdLocation());
-    if (airSensorRepository.findById(airSensor.getId()).isPresent()) {
-      throw new AirSensorAlreadyExistException(airSensor.getId());
+    Optional<Location> location = locationRepository.findById(Long.parseLong(airSensor.getLocationId()));
+    if (airSensorRepository.findById(Long.parseLong(airSensor.getId())).isPresent()) {
+      throw new AirSensorAlreadyExistException(Long.parseLong(airSensor.getId()));
     }
     if (location.isEmpty()) {
-      throw new LocationNotFoundException(airSensor.getIdLocation());
+      throw new LocationNotFoundException(Long.parseLong(airSensor.getLocationId()));
     }
     return airSensorRepository.save(new AirSensor(
-      airSensor.getId(),
-      airSensor.getNameLocation(),
+      Long.parseLong(airSensor.getId()),
+      airSensor.getLocationName(),
       location.get()
     ));
   }
@@ -66,13 +69,13 @@ public class AirSensorService {
     if (airSensor.isEmpty()) {
       throw new AirSensorNotFoundException(id);
     }
-    Optional<Location> location = locationRepository.findById(newAirSensor.getIdLocation());
+    Optional<Location> location = locationRepository.findById(Long.parseLong(newAirSensor.getLocationId()));
     if (location.isEmpty()) {
-      throw new LocationNotFoundException(newAirSensor.getIdLocation());
+      throw new LocationNotFoundException(Long.parseLong(newAirSensor.getLocationId()));
     }
     AirSensor updatedAirSensor = airSensor.get();
-    updatedAirSensor.setId(newAirSensor.getId());
-    updatedAirSensor.setNameLocation(newAirSensor.getNameLocation());
+    updatedAirSensor.setId(Long.parseLong(newAirSensor.getId()));
+    updatedAirSensor.setLocationName(newAirSensor.getLocationName());
     updatedAirSensor.setLocation(location.get());
     return airSensorRepository.save(updatedAirSensor);
   }

@@ -47,16 +47,19 @@ public class VoucherServiceTest {
   ArgumentCaptor<Voucher> voucherArgumentCaptor;
 
   private Merchant merchant;
+
   private VoucherRequest request;
+
   private Voucher voucher;
+
   private UUID id;
 
   @BeforeEach
   void init() {
     id = UUID.randomUUID();
     merchant = new Merchant("Test", "Test", "Test@mail.com", "Test", MerchantRole.MERCHANT);
-    request = new VoucherRequest("Test", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now());
-    voucher = new Voucher("Test", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now(), merchant);
+    request = new VoucherRequest("Test", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, LocalDateTime.now(), LocalDateTime.now());
+    voucher = new Voucher("Test", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, LocalDateTime.now(), LocalDateTime.now(), merchant);
     UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(merchant, null, merchant.getAuthorities());
     SecurityContextHolder.getContext().setAuthentication(auth);
   }
@@ -128,6 +131,7 @@ public class VoucherServiceTest {
   @Test
   public void testGivenIdToBeDeleted_thenDeleteAndReturnDeletedVoucherAdminRole() {
     setAdmin();
+
     when(voucherRepository.findById(any())).thenReturn(Optional.of(voucher));
     Voucher deletedVoucher = voucherService.deleteById(id);
 
@@ -155,8 +159,8 @@ public class VoucherServiceTest {
 
   @Test
   public void testGivenIdAndVoucherRequest_thenUpdateAndReturnUpdatedVoucherMerchantRole() {
-    request = new VoucherRequest("Test2", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now());
-    Voucher expectedVoucher = new Voucher("Test2", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now(), merchant);
+    request = new VoucherRequest("Test2", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, LocalDateTime.now(), LocalDateTime.now());
+    Voucher expectedVoucher = new Voucher("Test2", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, LocalDateTime.now(), LocalDateTime.now(), merchant);
 
     when(voucherRepository.findById(any())).thenReturn(Optional.of(voucher));
     when(voucherRepository.save(any())).thenReturn(expectedVoucher);
@@ -170,8 +174,8 @@ public class VoucherServiceTest {
   @Test
   public void testGivenIdAndVoucherRequest_thenUpdateAndReturnUpdatedVoucherAdminRole() {
     setAdmin();
-    request = new VoucherRequest("Test2", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now());
-    Voucher expectedVoucher = new Voucher("Test2", "Test", VoucherType.FNB, 1, LocalDateTime.now(), LocalDateTime.now(), merchant);
+    request = new VoucherRequest("Test2", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, LocalDateTime.now(), LocalDateTime.now());
+    Voucher expectedVoucher = new Voucher("Test2", "Test", VoucherType.FOOD_AND_BEVERAGES, 1, LocalDateTime.now(), LocalDateTime.now(), merchant);
 
     when(voucherRepository.findById(any())).thenReturn(Optional.of(voucher));
     when(voucherRepository.save(any())).thenReturn(expectedVoucher);

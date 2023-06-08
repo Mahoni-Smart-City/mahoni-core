@@ -34,3 +34,5 @@ build/
 
 /kafka/
 /data/
+/cassandra/
+!**/data/

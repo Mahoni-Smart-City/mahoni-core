@@ -14,26 +14,22 @@ import java.util.Base64;
 @Service
 @Slf4j
 public class CryptographyService {
-  private static SecretKeySpec secretKey;
-  private static byte[] key;
+//  private static SecretKeySpec secretKey;
+//  private static byte[] key;
   private static final String ALGORITHM = "AES";
 
-  public void prepareSecreteKey(String myKey) {
-    MessageDigest sha = null;
-    try {
-      key = myKey.getBytes(StandardCharsets.UTF_8);
-      sha = MessageDigest.getInstance("SHA-1");
-      key = sha.digest(key);
-      key = Arrays.copyOf(key, 16);
-      secretKey = new SecretKeySpec(key, ALGORITHM);
-    } catch ( NoSuchAlgorithmException e) {
-      e.printStackTrace();
-    }
+  public SecretKeySpec prepareSecreteKey(String myKey) throws NoSuchAlgorithmException {
+    byte[] key = myKey.getBytes(StandardCharsets.UTF_8);
+    MessageDigest sha = MessageDigest.getInstance("SHA-1");
+    key = sha.digest(key);
+    key = Arrays.copyOf(key, 16);
+    return new SecretKeySpec(key, ALGORITHM);
   }
 
   public String encrypt(String strToEncrypt, String secret) {
     try {
-      prepareSecreteKey(secret);
+      log.info("Trying to encrypt: " + strToEncrypt + " " + secret);
+      SecretKeySpec secretKey = prepareSecreteKey(secret);
       Cipher cipher = Cipher.getInstance(ALGORITHM);
       cipher.init(Cipher.ENCRYPT_MODE, secretKey);
       return Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes(StandardCharsets.UTF_8)));
@@ -45,7 +41,8 @@ public class CryptographyService {
 
   public String decrypt(String strToDecrypt, String secret) {
     try {
-      prepareSecreteKey(secret);
+      log.info("Trying to decrypt: " + strToDecrypt + " " + secret);
+      SecretKeySpec secretKey = prepareSecreteKey(secret);
       Cipher cipher = Cipher.getInstance(ALGORITHM);
       cipher.init(Cipher.DECRYPT_MODE, secretKey);
       return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));

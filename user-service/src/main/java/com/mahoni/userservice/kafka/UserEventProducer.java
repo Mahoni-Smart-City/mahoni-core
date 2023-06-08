@@ -4,6 +4,7 @@ import com.mahoni.schema.UserPointSchema;
 import com.mahoni.userservice.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
+
+import static com.mahoni.userservice.kafka.KafkaTopic.USER_POINT_TOPIC_PARTITION;
 
 @Component
 @Slf4j
@@ -33,7 +36,11 @@ public class UserEventProducer {
       .build();
 
     log.info("Sending event to " + KafkaTopic.USER_POINT_TOPIC + " with payload: " + event.toString());
-    kafkaTemplate.send(new ProducerRecord<>(KafkaTopic.USER_POINT_TOPIC, id, event));
+    kafkaTemplate.send(new ProducerRecord<>(KafkaTopic.USER_POINT_TOPIC, partition(event.getUserId()), id, event));
+  }
+
+  private int partition(String identifier) {
+    return Utils.toPositive(Utils.murmur2(identifier.getBytes())) % USER_POINT_TOPIC_PARTITION;
   }
 
   private long parseTimestamp(LocalDateTime dateTime) {
