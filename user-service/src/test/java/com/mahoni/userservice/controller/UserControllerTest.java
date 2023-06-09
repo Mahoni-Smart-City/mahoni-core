@@ -1,8 +1,10 @@
 package com.mahoni.userservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mahoni.schema.UserPointTableSchema;
 import com.mahoni.userservice.dto.UserRequest;
 import com.mahoni.userservice.exception.ResourceNotFoundException;
+import com.mahoni.userservice.kafka.UserStreams;
 import com.mahoni.userservice.model.Sex;
 import com.mahoni.userservice.model.User;
 import com.mahoni.userservice.service.UserService;
@@ -39,6 +41,9 @@ public class UserControllerTest {
 
   @MockBean
   private UserService userService;
+
+  @MockBean
+  private UserStreams userStreams;
 
   @Test
   public void testPost_thenReturnNewUser() throws Exception {
@@ -169,5 +174,21 @@ public class UserControllerTest {
         .content(objectMapper.writeValueAsString(request)))
       .andExpect(status().isNotFound())
       .andReturn();
+  }
+
+  @Test
+  public void testGetPoint_thenReturnPoint() throws Exception {
+    UserPointTableSchema schema = UserPointTableSchema.newBuilder()
+      .setUserId(UUID.randomUUID().toString())
+      .setPoint(50)
+      .build();
+
+    when(userStreams.get(any())).thenReturn(schema);
+
+    MvcResult result = this.mockMvc.perform(get("/api/v1/users/point/{id}", UUID.randomUUID()))
+      .andExpect(status().isOk())
+      .andReturn();
+
+    assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(schema.getPoint()));
   }
 }

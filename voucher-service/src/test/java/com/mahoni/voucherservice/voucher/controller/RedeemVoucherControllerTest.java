@@ -1,10 +1,12 @@
 package com.mahoni.voucherservice.voucher.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mahoni.schema.UserPointTableSchema;
 import com.mahoni.voucherservice.auth.config.JwtTokenUtil;
 import com.mahoni.voucherservice.voucher.dto.RedeemVoucherRequest;
 import com.mahoni.voucherservice.voucher.dto.RedeemVoucherResponse;
 import com.mahoni.voucherservice.voucher.exception.RedeemVoucherNotFoundException;
+import com.mahoni.voucherservice.voucher.kafka.VoucherServiceStream;
 import com.mahoni.voucherservice.voucher.model.RedeemVoucher;
 import com.mahoni.voucherservice.voucher.model.Voucher;
 import com.mahoni.voucherservice.voucher.model.VoucherStatus;
@@ -51,6 +53,9 @@ public class RedeemVoucherControllerTest {
 
   @MockBean
   private RedeemVoucherService redeemVoucherService;
+
+  @MockBean
+  private VoucherServiceStream voucherServiceStream;
 
   private RedeemVoucher redeemVoucher;
 
@@ -181,5 +186,21 @@ public class RedeemVoucherControllerTest {
       redeemVoucher.getRedeemedAt(),
       redeemVoucher.getExpiredAt()
     );
+  }
+
+  @Test
+  public void testGetPoint_thenReturnPoint() throws Exception {
+    UserPointTableSchema schema = UserPointTableSchema.newBuilder()
+      .setUserId(UUID.randomUUID().toString())
+      .setPoint(50)
+      .build();
+
+    when(voucherServiceStream.get(any())).thenReturn(schema);
+
+    MvcResult result = this.mockMvc.perform(get("/api/v1/redeem/point/{id}", UUID.randomUUID()))
+      .andExpect(status().isOk())
+      .andReturn();
+
+    assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(schema.getPoint()));
   }
 }
