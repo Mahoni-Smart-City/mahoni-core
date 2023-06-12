@@ -191,4 +191,13 @@ public class UserControllerTest {
 
     assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(schema.getPoint()));
   }
+
+  @Test
+  public void testGetPoint_thenThrowResourceNotFound() throws Exception {
+    when(userStreams.get(any())).thenThrow(ResourceNotFoundException.class);
+
+    this.mockMvc.perform(get("/api/v1/users/point/{id}", UUID.randomUUID()))
+      .andExpect(status().isNotFound())
+      .andReturn();
+  }
 }

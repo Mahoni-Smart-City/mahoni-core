@@ -1,6 +1,5 @@
 package com.mahoni.userservice.service;
 
-import com.mahoni.schema.AirQualityRawSchema;
 import com.mahoni.userservice.dto.UserRequest;
 import com.mahoni.userservice.exception.ResourceAlreadyExistException;
 import com.mahoni.userservice.exception.ResourceNotFoundException;
@@ -71,9 +70,9 @@ public class UserService {
     updatedUser.setYearOfBirth(newUser.getYearOfBirth());
     return userRepository.save(updatedUser);
   }
-
-  @KafkaListener(topics = "air-quality-raw-topic")
-  public void test(AirQualityRawSchema airQualityRawSchema){
-    System.out.println(airQualityRawSchema.getAqi());
-  }
+//
+//  @KafkaListener(topics = "air-quality-raw-topic")
+//  public void test(AirQualityRawSchema airQualityRawSchema){
+//    System.out.println(airQualityRawSchema.getAqi());
+//  }
 }

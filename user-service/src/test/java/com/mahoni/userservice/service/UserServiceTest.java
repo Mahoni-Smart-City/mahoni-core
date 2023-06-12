@@ -3,6 +3,7 @@ package com.mahoni.userservice.service;
 import com.mahoni.userservice.dto.UserRequest;
 import com.mahoni.userservice.exception.ResourceAlreadyExistException;
 import com.mahoni.userservice.exception.ResourceNotFoundException;
+import com.mahoni.userservice.kafka.UserEventProducer;
 import com.mahoni.userservice.model.Sex;
 import com.mahoni.userservice.model.User;
 import com.mahoni.userservice.repository.UserRepository;
@@ -31,6 +32,9 @@ class UserServiceTest {
   @Mock
   UserRepository userRepository;
 
+  @Mock
+  UserEventProducer userEventProducer;
+
   @InjectMocks
   UserService userService;
 
@@ -40,7 +44,7 @@ class UserServiceTest {
   @Test
   public void testGivenUserRequest_thenSaveUser() {
     UserRequest request = new UserRequest("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000);
-    User user = new User("Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, userService.DEFAULT_USER_POINT);
+    User user = new User(UUID.randomUUID(), "Test", "Test", "Test@mail.com", Sex.NOT_KNOWN, 2000, userService.DEFAULT_USER_POINT);
 
     when(userRepository.findByUsername(any())).thenReturn(Optional.empty());
     when(userRepository.save(any())).thenReturn(user);
